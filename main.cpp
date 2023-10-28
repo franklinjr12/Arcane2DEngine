@@ -10,9 +10,9 @@
 
 void initialize_test_image(GLuint& texture, int& image_width, int& image_height) {
     int width, height, nrChannels;
-    //const char* image_path = "big_demon_run_anim_f3.png";
-    //const char* image_path = "big_demon_run_anim_f3.bmp";
-    const char* image_path = "first_spell.png";
+    //const char* image_path = "assets/big_demon_run_anim_f3.png";
+    //const char* image_path = "assets/big_demon_run_anim_f3.bmp";
+    const char* image_path = "assets/first_spell.png";
     unsigned char* data = stbi_load(image_path, &width, &height, &nrChannels, 0);
     printf("loading image: %s with width %d and height %d and channels %d\n", image_path, width, height, nrChannels);
 
