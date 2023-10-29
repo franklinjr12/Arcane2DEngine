@@ -8,6 +8,54 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
+class Image {
+public:
+    Image(std::string path) {
+        loadImage(path);
+
+    }
+    void loadImage(std::string path) {
+        if (texture_id != 0)
+            glDeleteTextures(1, &texture_id);
+        this->path = path;
+        int nrChannels;
+        unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+
+        glGenTextures(1, &this->texture_id);
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        if (data)
+        {
+            if (nrChannels == 4) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            }
+            else if (nrChannels == 3) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            }
+            else {
+                std::cerr << "Unsupported channel count: " << nrChannels << std::endl;
+            }
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cerr << "Failed to load texture" << std::endl;
+        }
+
+        stbi_image_free(data);
+
+    }
+protected:
+    std::string path;
+    int width, height;
+    GLuint texture_id = 0;
+};
+
 void initialize_test_image(GLuint& texture, int& image_width, int& image_height) {
     int width, height, nrChannels;
     //const char* image_path = "assets/big_demon_run_anim_f3.png";
@@ -49,6 +97,7 @@ static void glfw_error_callback(int error, const char* description) {
     std::cout << "GLFW Error: " << description << std::endl;
 }
 
+//void drawTexture(&Image, int x, int y, )
 
 int main()
 {
