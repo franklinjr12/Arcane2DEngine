@@ -1,12 +1,9 @@
+#pragma once
 #include <iostream>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
 
 class Image {
 public:
@@ -51,7 +48,7 @@ public:
         stbi_image_free(data);
 
     }
-    void draw(float x =  -1, float y = -1) {
+    void draw(float x = -1, float y = -1) {
         if (x < 0 || y < -1) return;
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glBegin(GL_QUADS);
@@ -65,61 +62,3 @@ public:
     int width, height;
     GLuint texture_id = 0;
 };
-
-static void glfw_error_callback(int error, const char* description) {
-    std::cout << "GLFW Error: " << description << std::endl;
-}
-
-int main()
-{
-    std::cout << "Hello World!\n";
-
-    GLFWwindow* window;
-
-    glfwSetErrorCallback(glfw_error_callback);
-    if (!glfwInit())
-        return -1;
-
-    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
-
-    glfwMakeContextCurrent(window);
-    if (glewInit() != GLEW_OK) {
-        std::cout << "Failed to initialize GLEW" << std::endl;
-        return -1;
-    }
-
-    // Set up the orthogonal projection
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, -1.0, 1.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    // Enable 2D texturing
-    glEnable(GL_TEXTURE_2D);
-    // Enable blending
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    Image img("assets/big_demon_run_anim_f3.png");
-
-    while (!glfwWindowShouldClose(window))
-    {
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-        img.draw(0, 0);
-
-        glfwSwapBuffers(window);
-
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
-    return 0;
-}
