@@ -19,6 +19,7 @@ public:
             glDeleteTextures(1, &texture_id);
         this->path = path;
         int nrChannels;
+        stbi_set_flip_vertically_on_load(true);
         unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 
         glGenTextures(1, &this->texture_id);
@@ -50,54 +51,24 @@ public:
         stbi_image_free(data);
 
     }
-protected:
+    void draw(float x =  -1, float y = -1) {
+        if (x < 0 || y < -1) return;
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 0.0f); glVertex2f(x, height * 1.0f + y);
+        glTexCoord2f(1.0f, 0.0f); glVertex2f(x + width * 1.0f, height * 1.0f + y);
+        glTexCoord2f(1.0f, 1.0f); glVertex2f(x + width * 1.0f, y);
+        glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y);
+        glEnd();
+    }
     std::string path;
     int width, height;
     GLuint texture_id = 0;
 };
 
-void initialize_test_image(GLuint& texture, int& image_width, int& image_height) {
-    int width, height, nrChannels;
-    //const char* image_path = "assets/big_demon_run_anim_f3.png";
-    //const char* image_path = "assets/big_demon_run_anim_f3.bmp";
-    const char* image_path = "assets/first_spell.png";
-    unsigned char* data = stbi_load(image_path, &width, &height, &nrChannels, 0);
-    printf("loading image: %s with width %d and height %d and channels %d\n", image_path, width, height, nrChannels);
-
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    if (data)
-    {
-        if (nrChannels == 4) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        }
-        else if (nrChannels == 3) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        }
-        else {
-            std::cout << "Unsupported channel count: " << nrChannels << std::endl;
-        }
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-
-    stbi_image_free(data);
-}
-
 static void glfw_error_callback(int error, const char* description) {
     std::cout << "GLFW Error: " << description << std::endl;
 }
-
-//void drawTexture(&Image, int x, int y, )
 
 int main()
 {
@@ -134,32 +105,15 @@ int main()
     // Enable blending
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    GLuint texture;
-    int image_width, image_height;
-    initialize_test_image(texture, image_width, image_height);
+
+    Image img("assets/big_demon_run_anim_f3.png");
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-
-        glLoadIdentity();  // Reset the MODELVIEW matrix
-        float centerX = SCREEN_WIDTH * 1.0f / 2.0f;
-        float centerY = SCREEN_HEIGHT * 1.0f / 2.0f;
-
-        glTranslatef(centerX, centerY, 0.0f);   // Move to the center of the image
-        glRotatef(180.0f, 0.0f, 0.0f, 1.0f);   // Rotate around Z-axis
-        glRotatef(180.0f, 0.0f, 1.0f, 0.0f);   // Rotate around Y-axis
-        glTranslatef(-centerX, -centerY, 0.0f); // Move back
-
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, SCREEN_HEIGHT * 1.0f / 2.0f);
-        glTexCoord2f(1.0f, 0.0f); glVertex2f(SCREEN_WIDTH * 1.0f / 2.0f, SCREEN_HEIGHT * 1.0f / 2.0f);
-        glTexCoord2f(1.0f, 1.0f); glVertex2f(SCREEN_WIDTH * 1.0f / 2.0f, 0.0f);
-        glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, 0.0f);
-        glEnd();
+        img.draw(0, 0);
 
         glfwSwapBuffers(window);
 
