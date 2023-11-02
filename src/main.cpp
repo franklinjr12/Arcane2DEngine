@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Image.hpp"
+#include "FrameController.hpp"
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -51,8 +52,11 @@ int main()
 
     Image img("assets/big_demon_run_anim_f3.png");
 
+    const int max_fps = 30;
+    FramesController fc(max_fps);
     while (!glfwWindowShouldClose(window))
     {
+        fc.frameBegin();
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -61,6 +65,8 @@ int main()
         glfwSwapBuffers(window);
 
         glfwPollEvents();
+        fc.frameEnd();
+        fc.sleep();
     }
 
     glfwTerminate();
