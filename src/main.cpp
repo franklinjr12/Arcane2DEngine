@@ -67,6 +67,7 @@ int main()
         glfwPollEvents();
         fc.frameEnd();
         fc.sleep();
+        std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
     }
 
     glfwTerminate();

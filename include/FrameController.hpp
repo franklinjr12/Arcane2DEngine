@@ -15,13 +15,16 @@ struct FramesController {
 	void sleep() {
 		auto diff = frame_end - frame_begin;
 		frame_ms = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
-		auto sleep_time = 1000 / fps - frame_ms;
+		if (frame_ms > 0) real_fps = 1000 / frame_ms;
+		sleep_time = 1000 / (fps - frame_ms);
 		if (sleep_time > 0) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
 		}
 	}
 	int fps = 0;
 	long long frame_ms = 0;
+	long long sleep_time = 0;
+	long long real_fps = 0;
 	std::chrono::system_clock::time_point frame_begin;
 	std::chrono::system_clock::time_point frame_end;
 };
