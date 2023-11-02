@@ -146,6 +146,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\BodyRectangle.hpp" />
     <ClInclude Include="include\FrameController.hpp" />
     <ClInclude Include="include\Image.hpp" />
   </ItemGroup>

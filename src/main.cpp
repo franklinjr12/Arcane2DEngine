@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "Image.hpp"
 #include "FrameController.hpp"
+#include "Body.hpp"
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -16,15 +17,13 @@ static void glfw_error_callback(int error, const char* description) {
 
 int main()
 {
-    std::cout << "Hello World!\n";
-
     GLFWwindow* window;
 
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return -1;
 
-    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arcane2D", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -51,16 +50,34 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     Image img("assets/big_demon_run_anim_f3.png");
+    BodyRectangle br(0, 0, img.width, img.height);
+    Body body(img, br);
+
+    Image img2("assets/big_demon_run_anim_f3.png");
+    BodyRectangle br2(SCREEN_WIDTH/2, 0, img.width, img.height);
+    Body body2(img2, br2);
 
     const int max_fps = 30;
     FramesController fc(max_fps);
+    unsigned int counter = 0;
     while (!glfwWindowShouldClose(window))
     {
         fc.frameBegin();
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        img.draw(0, 0);
+        if (isRectColliding(body.rectangle, body2.rectangle)) {
+			std::cout << "Collision" << std::endl;
+		}
+        else if (counter % 3 == 0) {
+            body.setX(body.getX() + 5);
+            body2.setX(body2.getX() - 5);
+        }
+
+        counter++;
+
+        body.draw();
+        body2.draw();
 
         glfwSwapBuffers(window);
 
