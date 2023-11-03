@@ -7,9 +7,10 @@
 
 class Image {
 public:
-    Image(std::string path) {
+    Image(std::string path, bool texture_clamp=false) {
+        if (texture_clamp)
+            texture_mode = GL_REPEAT;
         loadImage(path);
-
     }
     void loadImage(std::string path) {
         if (texture_id != 0)
@@ -22,8 +23,8 @@ public:
         glGenTextures(1, &this->texture_id);
         glBindTexture(GL_TEXTURE_2D, texture_id);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, texture_mode);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, texture_mode);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -48,8 +49,8 @@ public:
         stbi_image_free(data);
 
     }
-    void draw(float x = -1, float y = -1) {
-        if (x < 0 || y < -1) return;
+    void draw(float x, float y) {
+        if (x < -1 || y < -1) return;
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex2f(x, height * 1.0f + y);
@@ -58,7 +59,18 @@ public:
         glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y);
         glEnd();
     }
+    void draw(float x, float y, int w, int h) {
+        if (x < -1 || y < -1) return;
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 0.0f); glVertex2f(x, h * 1.0f + y);
+        glTexCoord2f((w / width) * 1.0f, 0.0f); glVertex2f(x + w * 1.0f, h * 1.0f + y);
+        glTexCoord2f((w / width) * 1.0f, (h / height) * 1.0f); glVertex2f(x + w * 1.0f, y);
+        glTexCoord2f(0.0f, (h / height) * 1.0f); glVertex2f(x, y);
+        glEnd();
+    }
     std::string path;
     int width, height;
     GLuint texture_id = 0;
+    GLint texture_mode = GL_CLAMP_TO_EDGE;
 };

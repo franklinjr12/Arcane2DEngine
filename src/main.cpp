@@ -5,6 +5,7 @@
 #include "Image.hpp"
 #include "FrameController.hpp"
 #include "Body.hpp"
+#include "Surface.hpp"
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -57,6 +58,11 @@ int main()
     BodyRectangle br2(SCREEN_WIDTH/2, 0, img.width, img.height);
     Body body2(img2, br2);
 
+    Image img3("assets/wall_edge_left.png", true);
+    BodyRectangle br3(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, 20);
+    Body surface_body(img3, br3);
+    Surface surface(surface_body);
+
     const int max_fps = 30;
     FramesController fc(max_fps);
     unsigned int counter = 0;
@@ -73,11 +79,11 @@ int main()
             body.setX(body.getX() + 5);
             body2.setX(body2.getX() - 5);
         }
-
         counter++;
-
         body.draw();
         body2.draw();
+
+        surface.draw();
 
         glfwSwapBuffers(window);
 
