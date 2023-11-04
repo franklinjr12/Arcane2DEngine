@@ -4,9 +4,7 @@
 
 class Surface {
 public:
-	Surface(Body& body) : body(body) {}
-	void draw() {
-		body.draw(body.rectangle.w, body.rectangle.h);
-	}
+	Surface(Body& body);
+	void draw();
 	Body body;
 };

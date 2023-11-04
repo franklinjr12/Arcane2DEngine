@@ -5,17 +5,13 @@
 
 class Body {
 public:
-	Body(Image& im, BodyRectangle& rect) : image(im), rectangle(rect) {}
-	void draw() {
-		image.draw(rectangle.x, rectangle.y);
-	}
-	void draw(int w, int h) {
-		image.draw(rectangle.x, rectangle.y, w, h);
-	}
-	void setX(int x) { rectangle.x = x; }
-	int getX() { return rectangle.x; }
-	void setY(int y) {rectangle.x = y;}
-	int getY() { return rectangle.y; }
+	Body(Image& im, BodyRectangle& rect);
+	void draw();
+	void draw(int w, int h);
+	void setX(int x);
+	int getX();
+	void setY(int y);
+	int getY();
 	Image image;
 	BodyRectangle rectangle;
 };
