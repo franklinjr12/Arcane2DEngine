@@ -28,6 +28,7 @@ public:
 	std::map<uint32_t, GLFWkeyfun> key_callbacks;
 	GLFWwindow* window = nullptr;
 	int width, height;
+	GLFWwindow* window_imgui = nullptr;
 };
 
 static void glfw_error_callback(int error, const char* description) {

@@ -14,6 +14,8 @@ int Application::init() {
 	if (!glfwInit())
 		return -1;
 
+	
+	window_imgui = glfwCreateWindow(width, height, "Arcane2D Debug", NULL, NULL);
 	window = glfwCreateWindow(width, height, "Arcane2D", NULL, NULL);
 	if (!window)
 	{
@@ -49,7 +51,7 @@ int Application::init() {
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplGlfw_InitForOpenGL(window_imgui, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
 
 	return 0;
@@ -79,46 +81,52 @@ void Application::setWindowCallbacks(GLFWwindow* window) {
 void Application::run() {
 	const int max_fps = 30;
 	FramesController fc(max_fps);
-	unsigned int counter = 0;
-	while (!glfwWindowShouldClose(window))
-	{
+
+	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		// Poll and handle events (inputs, window resize, etc.)
 		glfwPollEvents();
 
-		// (Your code calls glfwPollEvents())
-		// ...
+		// Now draw to the game window
+		glfwMakeContextCurrent(window); // Make the game window's context current
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+		// Update and draw your game scene
+		current_scene->update();
+		current_scene->draw();
+
+		// Swap the buffers for the game window
+		glfwSwapBuffers(window);
+
 		// Start the Dear ImGui frame
+		glfwMakeContextCurrent(window_imgui); // Make the ImGui window's context current
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::ShowDemoWindow(); // Show demo window! :)
 
-		// Update application/game state
-		current_scene->update();
+		// Here you can do your ImGui rendering
+		ImGui::ShowDemoWindow(); // Show demo window!
 
-		// Render contents into a framebuffer
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		current_scene->draw();
-
-
-		// Rendering
-		// (Your code clears your framebuffer, renders your other stuff etc.)
+		// Render ImGui
 		ImGui::Render();
+		glClear(GL_COLOR_BUFFER_BIT); // Clear the framebuffer
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		// (Your code calls glfwSwapBuffers() etc.)
-		// Swap/Present framebuffer to the screen
-		glfwSwapBuffers(window);
 
-		// Wait some time (e.g. 1/60 of a second)
+		// Swap the buffers for the ImGui window
+		glfwSwapBuffers(window_imgui);
+
 		fc.frameEnd();
 		fc.sleep();
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
 	}
 
+	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+
+	glfwDestroyWindow(window_imgui); // Destroy the ImGui window
+	glfwDestroyWindow(window); // Destroy the game window
 	glfwTerminate();
 }
