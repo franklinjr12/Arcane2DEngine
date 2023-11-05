@@ -6,5 +6,5 @@ class Surface {
 public:
 	Surface(Body& body);
 	void draw();
-	Body body;
+	Body& body;
 };

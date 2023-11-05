@@ -7,12 +7,14 @@
 
 class Scene {
 public:
-	Scene(Camera& camera, uint32_t w, uint32_t h);
+	Scene(Camera& camera, Body& player, uint32_t w, uint32_t h);
 	void draw();
 	void update();
-	Camera camera;
-	std::vector<Body> bodies;
-	std::vector<Surface> surfaces;
+	void move_player(int x, int y);
+	Camera& camera;
+	Body& player;
+	std::vector<Body*> bodies;
+	std::vector<Surface*> surfaces;
 	uint32_t w, h;
 	float gravity = 0.1f;
 };

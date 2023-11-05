@@ -13,8 +13,8 @@ public:
 	void setY(int y);
 	int getY();
 	void update(float gravity = 0);
-	Image image;
-	BodyRectangle rectangle;
+	Image& image;
+	BodyRectangle& rectangle;
 	bool suffer_gravity = true;
 	float accel_x = 0, accel_y = 0;
 	float vel_x = 0, vel_y = 0;
