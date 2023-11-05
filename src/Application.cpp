@@ -1,4 +1,7 @@
 #include "Application.hpp"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 Application::Application(int width, int height) {
 	this->width = width;
@@ -37,26 +40,22 @@ int Application::init() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	setWindowCallbacks(window);
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplOpenGL3_Init();
+
 	return 0;
 }
 
 void Application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	//switch (key) {
-	//case GLFW_KEY_ESCAPE:
-	//	glfwSetWindowShouldClose(window, GLFW_TRUE);
-	//	break;
-	//case GLFW_KEY_LEFT:
-	//	break;
-	//case GLFW_KEY_RIGHT:
-	//	current_scene->move_player(1, 0);
-	//	break;
-	//case GLFW_KEY_UP:
-	//	break;
-	//case GLFW_KEY_DOWN:
-	//	break;
-	//default:
-	//	break;
-	//}
 	if (key_callbacks.find(key) != key_callbacks.end())
 		key_callbacks[key](window, key, scancode, action, mods);
 }
@@ -84,20 +83,42 @@ void Application::run() {
 	while (!glfwWindowShouldClose(window))
 	{
 		fc.frameBegin();
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		// Poll and handle events (inputs, window resize, etc.)
+		glfwPollEvents();
 
+		// (Your code calls glfwPollEvents())
+		// ...
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		ImGui::ShowDemoWindow(); // Show demo window! :)
+
+		// Update application/game state
 		current_scene->update();
 
+		// Render contents into a framebuffer
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		current_scene->draw();
 
+
+		// Rendering
+		// (Your code clears your framebuffer, renders your other stuff etc.)
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		// (Your code calls glfwSwapBuffers() etc.)
+		// Swap/Present framebuffer to the screen
 		glfwSwapBuffers(window);
 
-		glfwPollEvents();
+		// Wait some time (e.g. 1/60 of a second)
 		fc.frameEnd();
 		fc.sleep();
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
 	}
 
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	glfwTerminate();
 }
