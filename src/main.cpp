@@ -80,6 +80,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+		scene.update();
+
 		//if (isRectColliding(body.rectangle, surface.body.rectangle)) {
 		//	std::cout << "Collision" << std::endl;
 		//}
@@ -88,11 +90,11 @@ int main()
 		//	body.setY(body.getY() + 5);
 		//}
 
-		if (counter % 3 == 0) {
-			scene.camera.rect.x += 5;
-		 }
+		//if (counter % 3 == 0) {
+		//	scene.camera.rect.x += 5;
+		// }
 
-		counter++;
+		//counter++;
 		//body.draw();
 		//body2.draw();
 		//surface.draw();

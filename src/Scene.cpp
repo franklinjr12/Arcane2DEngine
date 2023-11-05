@@ -2,6 +2,12 @@
 
 Scene::Scene(Camera& camera, uint32_t w, uint32_t h) : camera(camera), w(w), h(h) {}
 
+void Scene::update() {
+	for (auto& body : bodies) {
+		body.update(gravity);
+	}
+}
+
 void Scene::draw() {
 	for (auto& body : bodies) {
 		if (isRectColliding(camera.rect, body.rectangle))
