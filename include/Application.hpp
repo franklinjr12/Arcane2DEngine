@@ -28,6 +28,8 @@ public:
 	void poll_events();
 	void update();
 	void draw();
+	void print_text(float x, float y, char* text, float r, float g, float b);
+	// TODO compiel ImGui only on debug
 	void handle_imgui();
 	Scene* current_scene = nullptr;
 	std::vector<Scene> scenes;

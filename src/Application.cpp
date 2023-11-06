@@ -1,4 +1,8 @@
 #include "Application.hpp"
+#define STB_EASY_FONT_IMPLEMENTATION
+#include "stb_easy_font.h"
+
+// TODO compiel ImGui only on debug
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -92,10 +96,9 @@ void Application::draw() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	current_scene->draw();
-	// Swap the buffers for the game window
-	glfwSwapBuffers(window);
 }
 
+// TODO compiel ImGui only on debug
 void Application::handle_imgui() {
 	// Start the Dear ImGui frame
 	glfwMakeContextCurrent(window_imgui); // Make the ImGui window's context current
@@ -112,28 +115,46 @@ void Application::handle_imgui() {
 	glfwSwapBuffers(window_imgui);
 }
 
+
+void Application::print_text(float x, float y, char* text, float r, float g, float b) {
+	static char buffer[99999]; // ~500 chars
+	int num_quads;
+	unsigned char color[4] = { 0,0,0,0 };
+	num_quads = stb_easy_font_print(x, y, text, color, buffer, sizeof(buffer));
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 16, buffer);
+
+	glDrawArrays(GL_QUADS, 0, num_quads * 4);
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+
 void Application::run() {
 	const int max_fps = 30;
 	FramesController fc(max_fps);
-
+	const char* text = "Hello, world!\n";
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		poll_events();
 		update();
 		game_loop();
 		draw();
+		print_text(SCREEN_WIDTH/2, 10, (char*)text, 1.0f, 0.0f, 0.0f);
+		// Swap the buffers for the game window
+		glfwSwapBuffers(window);
 		handle_imgui();
 		fc.frameEnd();
 		fc.sleep();
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
 	}
-
-	// Cleanup
+	// TODO compiel ImGui only on debug
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-
 	glfwDestroyWindow(window_imgui); // Destroy the ImGui window
+
+	// Cleanup
 	glfwDestroyWindow(window); // Destroy the game window
 	glfwTerminate();
 }
