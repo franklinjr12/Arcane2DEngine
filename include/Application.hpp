@@ -15,6 +15,8 @@
 class Application {
 public:
 	Application(int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
+	// override this method and put 
+	virtual void game_loop();
 
 	// capture keyboard events
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -23,6 +25,10 @@ public:
 	void setWindowCallbacks(GLFWwindow* window);
 	int init();
 	void run();
+	void poll_events();
+	void update();
+	void draw();
+	void handle_imgui();
 	Scene* current_scene = nullptr;
 	std::vector<Scene> scenes;
 	std::map<uint32_t, GLFWkeyfun> key_callbacks;

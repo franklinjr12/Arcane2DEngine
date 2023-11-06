@@ -76,7 +76,41 @@ void Application::setWindowCallbacks(GLFWwindow* window) {
 	glfwSetKeyCallback(window, Application::KeyCallbackTrampoline); // Set the trampoline as the key callback
 }
 
+void Application::poll_events() {
+	// Poll and handle events (inputs, window resize, etc.)
+	glfwPollEvents();
+}
 
+void Application::update() {
+	current_scene->update();
+}
+
+void Application::game_loop() {}
+
+void Application::draw() {
+	glfwMakeContextCurrent(window); // Make the game window's context current
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	current_scene->draw();
+	// Swap the buffers for the game window
+	glfwSwapBuffers(window);
+}
+
+void Application::handle_imgui() {
+	// Start the Dear ImGui frame
+	glfwMakeContextCurrent(window_imgui); // Make the ImGui window's context current
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	// Here you can do your ImGui rendering
+	ImGui::ShowDemoWindow(); // Show demo window!
+	// Render ImGui
+	ImGui::Render();
+	glClear(GL_COLOR_BUFFER_BIT); // Clear the framebuffer
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	// Swap the buffers for the ImGui window
+	glfwSwapBuffers(window_imgui);
+}
 
 void Application::run() {
 	const int max_fps = 30;
@@ -84,38 +118,11 @@ void Application::run() {
 
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
-		// Poll and handle events (inputs, window resize, etc.)
-		glfwPollEvents();
-
-		// Now draw to the game window
-		glfwMakeContextCurrent(window); // Make the game window's context current
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-		// Update and draw your game scene
-		current_scene->update();
-		current_scene->draw();
-
-		// Swap the buffers for the game window
-		glfwSwapBuffers(window);
-
-		// Start the Dear ImGui frame
-		glfwMakeContextCurrent(window_imgui); // Make the ImGui window's context current
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		// Here you can do your ImGui rendering
-		ImGui::ShowDemoWindow(); // Show demo window!
-
-		// Render ImGui
-		ImGui::Render();
-		glClear(GL_COLOR_BUFFER_BIT); // Clear the framebuffer
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		// Swap the buffers for the ImGui window
-		glfwSwapBuffers(window_imgui);
-
+		poll_events();
+		update();
+		game_loop();
+		draw();
+		handle_imgui();
 		fc.frameEnd();
 		fc.sleep();
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
