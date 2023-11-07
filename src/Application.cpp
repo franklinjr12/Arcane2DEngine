@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "Font.hpp"
 #define STB_EASY_FONT_IMPLEMENTATION
 #include "stb_easy_font.h"
 
@@ -6,6 +7,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+
+#include <stdio.h>
 
 Application::Application(int width, int height) {
 	this->width = width;
@@ -133,19 +136,27 @@ void Application::print_text(float x, float y, char* text, float r, float g, flo
 void Application::run() {
 	const int max_fps = 30;
 	FramesController fc(max_fps);
-	const char* text = "Hello, world!\n";
+	// TODO debug ifdef
+	const int buf_size = 128;
+	char text_buffer[buf_size];
+	Font font;
+	font.stbtt_initfont();
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		poll_events();
 		update();
 		game_loop();
 		draw();
-		print_text(SCREEN_WIDTH/2, 10, (char*)text, 1.0f, 0.0f, 0.0f);
+		// TODO debug ifdef
+		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
+		print_text(SCREEN_WIDTH/2, 10, (char*)text_buffer, 1.0f, 0.0f, 0.0f);
+		font.stbtt_print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
 		// Swap the buffers for the game window
 		glfwSwapBuffers(window);
 		handle_imgui();
 		fc.frameEnd();
 		fc.sleep();
+		// TODO debug ifdef
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
 	}
 	// TODO compiel ImGui only on debug
