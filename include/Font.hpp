@@ -4,7 +4,6 @@
 #include "stb_truetype.h"
 
 #include <fstream>
-#include <vector>
 
 class Font {
 public:
@@ -16,11 +15,7 @@ public:
         infile.seekg(0, std::ios::beg);
         font_ttf_buffer = new unsigned char[file_size];
         infile.read((char*)font_ttf_buffer, file_size);
-        //std::vector<unsigned char> buffer(file_size);
-        //infile.read(reinterpret_cast<char*>(buffer.data()), file_size);
-        //memcpy(font_ttf_buffer, buffer.data(), file_size);
         infile.close();
-        //fread(font_ttf_buffer, 1, 1 << 20, fopen_s(&file, , "rb"));
         stbtt_BakeFontBitmap(font_ttf_buffer, 0, 32.0, font_temp_bitmap, 512, 512, 32, 96, font_cdata); // no guarantee this fits!
         // can free font_ttf_buffer at this point
         glGenTextures(1, &font_ftex);
@@ -30,7 +25,7 @@ public:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
 
-    void stbtt_print(float x, float y, char* text)
+    void stbtt_print(float x, float y, char* text, float r=0, float g=0, float b=0, float a=1)
     {
         // assume orthographic projection with units = screen pixels, origin at top left
         glEnable(GL_BLEND);
@@ -38,6 +33,7 @@ public:
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, font_ftex);
         glBegin(GL_QUADS);
+        glColor4f(r, g, b, a);
         while (*text) {
             if (*text >= 32 && *text < 128) {
                 stbtt_aligned_quad q;
@@ -49,6 +45,7 @@ public:
             }
             ++text;
         }
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //unset the color to not affect other stuff
         glEnd();
     }
     unsigned char* font_ttf_buffer;
