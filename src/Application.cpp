@@ -1,7 +1,5 @@
 #include "Application.hpp"
 #include "Font.hpp"
-#define STB_EASY_FONT_IMPLEMENTATION
-#include "stb_easy_font.h"
 
 // TODO compiel ImGui only on debug
 #include "imgui.h"
@@ -120,18 +118,6 @@ void Application::handle_imgui() {
 }
 
 
-void Application::print_text(float x, float y, char* text, float r, float g, float b) {
-	static char buffer[99999]; // ~500 chars
-	int num_quads;
-	unsigned char color[4] = { 0,0,0,0 };
-	num_quads = stb_easy_font_print(x, y, text, color, buffer, sizeof(buffer));
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(2, GL_FLOAT, 16, buffer);
-
-	glDrawArrays(GL_QUADS, 0, num_quads * 4);
-	glDisableClientState(GL_VERTEX_ARRAY);
-}
 
 
 void Application::run() {
@@ -150,7 +136,6 @@ void Application::run() {
 		draw();
 		// TODO debug ifdef
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
-		print_text(SCREEN_WIDTH/2, 10, (char*)text_buffer, 1.0f, 0.0f, 0.0f);
 		font.stbtt_print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
 		// Swap the buffers for the game window
 		glfwSwapBuffers(window);

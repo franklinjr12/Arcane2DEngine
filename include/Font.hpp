@@ -1,9 +1,10 @@
 #pragma once
 
+#include "GL/glew.h"
+#include <fstream>
+
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
-
-#include <fstream>
 
 class Font {
 public:
@@ -16,12 +17,15 @@ public:
         font_ttf_buffer = new unsigned char[file_size];
         infile.read((char*)font_ttf_buffer, file_size);
         infile.close();
+        font_temp_bitmap = new unsigned char[512 * 512];
         stbtt_BakeFontBitmap(font_ttf_buffer, 0, 32.0, font_temp_bitmap, 512, 512, 32, 96, font_cdata); // no guarantee this fits!
         // can free font_ttf_buffer at this point
+        delete(font_ttf_buffer);
         glGenTextures(1, &font_ftex);
         glBindTexture(GL_TEXTURE_2D, font_ftex);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, 512, 512, 0, GL_ALPHA, GL_UNSIGNED_BYTE, font_temp_bitmap);
         // can free font_temp_bitmap at this point
+        delete(font_temp_bitmap);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
 
@@ -49,7 +53,7 @@ public:
         glEnd();
     }
     unsigned char* font_ttf_buffer;
-    unsigned char font_temp_bitmap[512 * 512];
+    unsigned char* font_temp_bitmap;
     stbtt_bakedchar font_cdata[96]; // ASCII 32..126 is 95 glyphs
     GLuint font_ftex;
 };
