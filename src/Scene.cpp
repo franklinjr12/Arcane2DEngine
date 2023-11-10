@@ -1,6 +1,6 @@
 #include "Scene.hpp"
 
-Scene::Scene(Camera& camera, Body& player, uint32_t w, uint32_t h) : camera(camera), player(player), w(w), h(h) {}
+Scene::Scene(Camera& camera, Body& player, Image& background, uint32_t w, uint32_t h) : camera(camera), player(player), background(background), w(w), h(h) {}
 
 void Scene::update() {
 	for (auto& body : bodies) {
@@ -9,6 +9,7 @@ void Scene::update() {
 }
 
 void Scene::draw() {
+	background.draw(camera.rect.x, camera.rect.y);
 	for (Body* body : bodies) {
 		if (isRectColliding(camera.rect, body->rectangle))
 		{

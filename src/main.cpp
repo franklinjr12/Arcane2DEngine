@@ -22,7 +22,8 @@ int main()
 	Surface surface(surface_body);
 
 	Camera camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	Scene scene(camera, body, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
+	Image background("assets/dark_cloud_background1024_720.png");
+	Scene scene(camera, body, background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	scene.gravity = 0;
 	scene.bodies.push_back(&body);
 	scene.bodies.push_back(&body2);

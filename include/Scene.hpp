@@ -8,12 +8,13 @@
 
 class Scene {
 public:
-	Scene(Camera& camera, Body& player, uint32_t w, uint32_t h);
+	Scene(Camera& camera, Body& player, Image& background, uint32_t w, uint32_t h);
 	void draw();
 	void update();
 	void move_player(int x, int y);
 	Camera& camera;
 	Body& player;
+	Image& background;
 	std::vector<Body*> bodies;
 	std::vector<Surface*> surfaces;
 	std::vector<Button*> buttons;
