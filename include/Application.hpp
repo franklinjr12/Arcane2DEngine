@@ -39,6 +39,7 @@ public:
 	GLFWwindow* window = nullptr;
 	int width, height;
 	GLFWwindow* window_imgui = nullptr;
+	double mouse_xpos, mouse_ypos;
 };
 
 static void glfw_error_callback(int error, const char* description) {

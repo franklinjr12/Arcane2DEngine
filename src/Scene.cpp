@@ -19,7 +19,6 @@ void Scene::draw() {
 			body->rectangle = rect;
 		}
 	}
-	// check for surfaces
 	for (Surface* surface : surfaces) {
 		if (isRectColliding(camera.rect, surface->body.rectangle))
 		{
@@ -28,6 +27,15 @@ void Scene::draw() {
 			surface->body.rectangle.y -= camera.rect.y;
 			surface->draw();
 			surface->body.rectangle = rect;
+		}
+	}
+	for (Button* button : buttons) {
+		if (button->should_draw) {
+			BodyRectangle rect = button->rect;
+			button->rect.x += camera.rect.x;
+			button->rect.y += camera.rect.y;
+			button->draw();
+			button->rect = rect;
 		}
 	}
 }

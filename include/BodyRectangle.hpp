@@ -8,3 +8,4 @@ public:
 };
 
 bool isRectColliding(BodyRectangle& a, BodyRectangle& b);
+bool isPointRectColliding(BodyRectangle& a, int x, int y);

@@ -1,5 +1,6 @@
 #include "Application.hpp"
 #include "Font.hpp"
+#include "Button.hpp"
 
 // TODO compiel ImGui only on debug
 #include "imgui.h"
@@ -84,6 +85,7 @@ void Application::setWindowCallbacks(GLFWwindow* window) {
 void Application::poll_events() {
 	// Poll and handle events (inputs, window resize, etc.)
 	glfwPollEvents();
+	glfwGetCursorPos(window, &mouse_xpos, &mouse_ypos);
 }
 
 void Application::update() {
@@ -144,6 +146,7 @@ void Application::run() {
 		fc.sleep();
 		// TODO debug ifdef
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
+		std::cout << "Mousex: " << mouse_xpos << " Mousey: " << mouse_ypos << "\n";
 	}
 	// TODO compiel ImGui only on debug
 	ImGui_ImplOpenGL3_Shutdown();

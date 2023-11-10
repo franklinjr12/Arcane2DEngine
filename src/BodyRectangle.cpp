@@ -19,3 +19,16 @@ bool isRectColliding(BodyRectangle& a, BodyRectangle& b) {
 	// If neither of the above are true, then the rectangles are overlapping
 	return true;
 }
+
+bool isPointRectColliding(BodyRectangle& a, int x, int y) {
+	// Check if one rectangle is to the left of the other
+	if (a.x + a.w < x || x < a.x) {
+		return false;
+	}
+	// Check if one rectangle is above the other
+	if (a.y + a.h < y || y < a.y) {
+		return false;
+	}
+	// If neither of the above are true, then the rectangles are overlapping
+	return true;
+}

@@ -42,6 +42,14 @@ int main()
 		((Application*)glfwGetWindowUserPointer(window))->current_scene->move_player(0, 1);
 	};
 
+	int neww = 200, newh = 200;
+	//Image btn_img("assets/basic_button.png");
+	Image btn_img("assets/basic_button.png", neww, newh);
+	//btn_img.resize(neww, newh);
+	Button btn((SCREEN_WIDTH - SCREEN_WIDTH / 3), 10, neww, newh, "btn", btn_img);
+	app.current_scene->buttons.push_back(&btn);
+
+
 	app.run();
 
 	return 0;

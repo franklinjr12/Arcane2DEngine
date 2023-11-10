@@ -3,6 +3,7 @@
 #include "Camera.hpp"
 #include "Body.hpp"
 #include "Surface.hpp"
+#include "Button.hpp"
 #include <vector>
 
 class Scene {
@@ -15,6 +16,7 @@ public:
 	Body& player;
 	std::vector<Body*> bodies;
 	std::vector<Surface*> surfaces;
+	std::vector<Button*> buttons;
 	uint32_t w, h;
 	float gravity = 0.1f;
 };
