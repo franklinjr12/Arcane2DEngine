@@ -6,9 +6,11 @@
 
 class Player {
 public:
-	Player(Body& body, EventHandler& handler) : body(body), handler(handler) {}
-	void process_keyboard(std::vector<uint8_t> data) {
-		if (data[0] == (uint8_t)EventType::KeyboardInput) {
+	Player(Body& body) : body(body) {
+	}
+
+	void process_keyboard(std::vector<event_bytes_type> data) {
+		if (data[0] == (event_bytes_type)EventType::KeyboardInput) {
 			switch (data[1]) {
 			case GLFW_KEY_RIGHT:
 				body.setX(body.getX() + 5);

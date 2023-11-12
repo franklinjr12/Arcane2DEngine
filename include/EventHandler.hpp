@@ -6,5 +6,5 @@
 
 class EventHandler {
 public:
-	std::function<void(std::vector<uint8_t>)> callback;
+	std::function<void(std::vector<event_bytes_type>)> callback;
 };

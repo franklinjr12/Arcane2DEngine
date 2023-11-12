@@ -64,9 +64,13 @@ int Application::init() {
 }
 
 void Application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if (key_callbacks.find(key) != key_callbacks.end())
-		key_callbacks[key](window, key, scancode, action, mods);
+	EventData ed;
+	ed.type = EventType::KeyboardInput;
+	ed.data.push_back((event_bytes_type)EventType::KeyboardInput);
+	ed.data.push_back((event_bytes_type)key);
+	events_manager->events_data.push(ed);
 }
+
 // Static trampoline function to the real member function callback
 void Application::KeyCallbackTrampoline(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	// Retrieve the instance of Application class associated with this window
@@ -85,6 +89,7 @@ void Application::setWindowCallbacks(GLFWwindow* window) {
 void Application::poll_events() {
 	// Poll and handle events (inputs, window resize, etc.)
 	glfwPollEvents();
+	events_manager->run();
 	glfwGetCursorPos(window, &mouse_xpos, &mouse_ypos);
 }
 

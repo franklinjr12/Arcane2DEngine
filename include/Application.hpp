@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "Scene.hpp"
 #include "Player.hpp"
+#include "EventsManager.hpp"
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -37,11 +38,11 @@ public:
 	void handle_imgui();
 	Scene* current_scene = nullptr;
 	std::vector<Scene> scenes;
-	std::map<uint32_t, GLFWkeyfun> key_callbacks;
 	GLFWwindow* window = nullptr;
 	int width, height;
 	GLFWwindow* window_imgui = nullptr;
 	double mouse_xpos=0, mouse_ypos=0;
+	EventsManager* events_manager;
 };
 
 static void glfw_error_callback(int error, const char* description) {

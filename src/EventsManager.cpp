@@ -5,7 +5,7 @@
 EventsManager::EventsManager() {}
 
 void EventsManager::run() {
-	while (true) {
+	//while (true) {
 		while (!events_data.empty()) {
 			auto& evt = events_data.front();
 			auto& v = subscribers[evt.type];
@@ -13,7 +13,7 @@ void EventsManager::run() {
 				v[i]->callback(evt.data);
 			events_data.pop();
 		}
-	}
+	//}
 }
 
 void EventsManager::subscribe(EventType evt, EventHandler& handler) {

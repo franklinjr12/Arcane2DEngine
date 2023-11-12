@@ -7,7 +7,9 @@ enum class EventType {
 	MouseInput
 };
 
+typedef uint32_t event_bytes_type;
+
 struct EventData {
 	EventType type;
-	std::vector<uint8_t> data;
+	std::vector<event_bytes_type> data;
 };
