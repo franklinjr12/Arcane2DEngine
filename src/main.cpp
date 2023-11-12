@@ -2,15 +2,33 @@
 
 #include "Application.hpp"
 
+class GameExample : public Application {
+public:
+	GameExample() {
+
+	}
+	void game_loop() override {
+
+	}
+	void game_draw() override {
+
+	}
+};
+
 int main()
 {
 
-	Application app;
+	GameExample app;
 	app.init();
 
 	Image img("assets/main_character.png");
 	BodyRectangle br(0, 0, img.width, img.height);
 	Body body(img, br);
+	//EventHandler player_event_handler;
+	//player_event_handler.callback = [](std::vector<uint8_t> data) {
+	//	};
+	//EventHandler player_event_handler;
+	//Player player(body, player_event_handler);
 
 	Image img2("assets/big_demon_run_anim_f3.png");
 	BodyRectangle br2(SCREEN_WIDTH + 10, 0, img.width, img.height);
@@ -32,16 +50,16 @@ int main()
 	app.current_scene = &scene;
 	app.key_callbacks[GLFW_KEY_LEFT] = [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 		((Application*)glfwGetWindowUserPointer(window))->current_scene->move_player(-1, 0);
-	};
+		};
 	app.key_callbacks[GLFW_KEY_RIGHT] = [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 		((Application*)glfwGetWindowUserPointer(window))->current_scene->move_player(1, 0);
-	};
+		};
 	app.key_callbacks[GLFW_KEY_UP] = [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 		((Application*)glfwGetWindowUserPointer(window))->current_scene->move_player(0, -1);
-	};
+		};
 	app.key_callbacks[GLFW_KEY_DOWN] = [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 		((Application*)glfwGetWindowUserPointer(window))->current_scene->move_player(0, 1);
-	};
+		};
 
 	int neww = 200, newh = 200;
 	//Image btn_img("assets/basic_button.png");

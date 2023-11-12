@@ -9,6 +9,7 @@
 #include "Surface.hpp"
 #include "Camera.hpp"
 #include "Scene.hpp"
+#include "Player.hpp"
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -17,8 +18,10 @@
 class Application {
 public:
 	Application(int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
-	// override this method and put 
+	// override this method and put all your game inside
 	virtual void game_loop();
+	// if needed custom drawing put in here
+	virtual void game_draw();
 
 	// capture keyboard events
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -30,7 +33,6 @@ public:
 	void poll_events();
 	void update();
 	void draw();
-	void print_text(float x, float y, char* text, float r, float g, float b);
 	// TODO compiel ImGui only on debug
 	void handle_imgui();
 	Scene* current_scene = nullptr;

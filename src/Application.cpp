@@ -93,6 +93,7 @@ void Application::update() {
 }
 
 void Application::game_loop() {}
+void Application::game_draw() {}
 
 void Application::draw() {
 	glfwMakeContextCurrent(window); // Make the game window's context current
@@ -129,16 +130,16 @@ void Application::run() {
 	const int buf_size = 128;
 	char text_buffer[buf_size];
 	Font font;
-	font.stbtt_initfont();
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		poll_events();
 		update();
 		game_loop();
 		draw();
+		game_draw();
 		// TODO debug ifdef
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
-		font.stbtt_print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
+		font.print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
 		// Swap the buffers for the game window
 		glfwSwapBuffers(window);
 		handle_imgui();

@@ -2,6 +2,8 @@
 
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
+#include "EventHandler.hpp"
+#include <vector>
 
 class Body {
 public:

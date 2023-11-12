@@ -8,9 +8,9 @@
 
 class Font {
 public:
-    void stbtt_initfont(void)
+    Font(std::string font_path = "assets/16020_FUTURAM.ttf", int font_size = 32)
     {
-        std::fstream infile("assets/16020_FUTURAM.ttf", std::ios::binary | std::ios::in);
+        std::fstream infile(font_path, std::ios::binary | std::ios::in);
         infile.seekg(0, std::ios::end);
         std::streamsize file_size = infile.tellg();
         infile.seekg(0, std::ios::beg);
@@ -18,7 +18,7 @@ public:
         infile.read((char*)font_ttf_buffer, file_size);
         infile.close();
         font_temp_bitmap = new unsigned char[512 * 512];
-        stbtt_BakeFontBitmap(font_ttf_buffer, 0, 32.0, font_temp_bitmap, 512, 512, 32, 96, font_cdata); // no guarantee this fits!
+        stbtt_BakeFontBitmap(font_ttf_buffer, 0, (float)font_size, font_temp_bitmap, 512, 512, 32, 96, font_cdata);
         // can free font_ttf_buffer at this point
         delete(font_ttf_buffer);
         glGenTextures(1, &font_ftex);
@@ -29,7 +29,7 @@ public:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
 
-    void stbtt_print(float x, float y, char* text, float r=0, float g=0, float b=0, float a=1)
+    void print(float x, float y, char* text, float r = 0, float g = 0, float b = 0, float a = 1)
     {
         // assume orthographic projection with units = screen pixels, origin at top left
         glEnable(GL_BLEND);
@@ -52,6 +52,7 @@ public:
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //unset the color to not affect other stuff
         glEnd();
     }
+
     unsigned char* font_ttf_buffer;
     unsigned char* font_temp_bitmap;
     stbtt_bakedchar font_cdata[96]; // ASCII 32..126 is 95 glyphs

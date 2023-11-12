@@ -21,3 +21,4 @@ void Body::update(float gravity) {
 	vel_y += accel_y;
 	rectangle.y += vel_y;
 }
+
