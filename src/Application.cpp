@@ -95,6 +95,7 @@ void Application::poll_events() {
 
 void Application::update() {
 	current_scene->update();
+	player->update();
 }
 
 void Application::game_loop() {}
@@ -106,6 +107,7 @@ void Application::draw() {
 	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 	current_scene->draw();
+	player->draw();
 }
 
 // TODO compiel ImGui only on debug

@@ -26,8 +26,16 @@ int main()
 	Body body(img, br);
 	Player player(body);
 	player.handler.callback = [&player](std::vector<event_bytes_type> data) {
-		player.process_keyboard(data);
+		player.process_events(data);
 		};
+	Image ske1("assets/skelleton1.png");
+	Image ske2("assets/skelleton2.png");
+	Image ske3("assets/skelleton3.png");
+	Image ske4("assets/skelleton4.png");
+	player.animation.add_animation(ske1);
+	player.animation.add_animation(ske2);
+	player.animation.add_animation(ske3);
+	player.animation.add_animation(ske4);
 
 	Image img2("assets/big_demon_run_anim_f3.png");
 	BodyRectangle br2(SCREEN_WIDTH + 10, 0, img.width, img.height);
@@ -42,11 +50,12 @@ int main()
 	Image background("assets/dark_cloud_background1024_720.png");
 	Scene scene(camera, body, background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	scene.gravity = 0;
-	scene.bodies.push_back(&body);
+	//scene.bodies.push_back(&body);
 	scene.bodies.push_back(&body2);
 	scene.surfaces.push_back(&surface);
 
 	app.current_scene = &scene;
+	app.player = &player;
 
 	int neww = 200, newh = 200;
 	Image btn_img("assets/basic_button.png", neww, newh);

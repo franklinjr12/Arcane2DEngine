@@ -43,6 +43,7 @@ public:
 	GLFWwindow* window_imgui = nullptr;
 	double mouse_xpos=0, mouse_ypos=0;
 	EventsManager* events_manager;
+	Player* player;
 };
 
 static void glfw_error_callback(int error, const char* description) {

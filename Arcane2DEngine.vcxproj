@@ -157,6 +157,7 @@
     <ClCompile Include="src\FrameController.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Surface.cpp" />
   </ItemGroup>
