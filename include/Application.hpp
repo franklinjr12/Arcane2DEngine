@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "Scene.hpp"
 #include "Player.hpp"
+#include "Particle.hpp"
 #include "EventsManager.hpp"
 
 #define SCREEN_WIDTH 1024

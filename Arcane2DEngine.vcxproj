@@ -73,6 +73,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExecutablePath>$(SolutionDir)dependencies\glfw\lib;$(SolutionDir)dependencies\glew\lib;$(ExecutablePath)</ExecutablePath>
     <PublicModuleDirectories>$(SolutionDir)imgui\backends;$(SolutionDir)imgui;$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include</IncludePath>
+    <SourcePath>$(VC_SourcePath);$(SolutionDir)src</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,7 +117,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glfw3dll.lib;opengl32.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:library %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRT %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <CustomBuildStep>
       <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)x64\Debug\glew32.dll"</Command>
@@ -148,6 +150,7 @@
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Body.cpp" />
     <ClCompile Include="src\BodyRectangle.cpp" />
@@ -165,10 +168,22 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Animation.hpp" />
+    <ClInclude Include="include\Application.hpp" />
     <ClInclude Include="include\Body.hpp" />
     <ClInclude Include="include\BodyRectangle.hpp" />
+    <ClInclude Include="include\Button.hpp" />
+    <ClInclude Include="include\Camera.hpp" />
+    <ClInclude Include="include\EventHandler.hpp" />
+    <ClInclude Include="include\EventsManager.hpp" />
+    <ClInclude Include="include\EventType.hpp" />
+    <ClInclude Include="include\Font.hpp" />
     <ClInclude Include="include\FrameController.hpp" />
     <ClInclude Include="include\Image.hpp" />
+    <ClInclude Include="include\Particle.hpp" />
+    <ClInclude Include="include\Player.hpp" />
+    <ClInclude Include="include\Scene.hpp" />
+    <ClInclude Include="include\Surface.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

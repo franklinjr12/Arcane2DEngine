@@ -47,6 +47,14 @@ int main()
 	Body surface_body(img3, br3);
 	Surface surface(surface_body);
 
+	//Image particle_img("assets/first_spell.png", 100, 100);
+	Image particle_img("assets/first_spell.png");
+	BodyRectangle particle_rect(0, 300, particle_img.width, particle_img.height);
+	Body particle_body(particle_img, particle_rect);
+	particle_body.suffer_gravity = false;
+	particle_body.vel_y = 5;
+	Particle particle1(particle_body);
+
 	Camera camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	Image background("assets/dark_cloud_background1024_720.png");
 	Scene scene(camera, body, background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
@@ -54,6 +62,7 @@ int main()
 	//scene.bodies.push_back(&body);
 	scene.bodies.push_back(&body2);
 	scene.surfaces.push_back(&surface);
+	scene.particles.push_back(&particle1);
 
 	app.current_scene = &scene;
 	app.player = &player;

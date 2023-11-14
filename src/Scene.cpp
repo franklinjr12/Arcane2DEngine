@@ -3,9 +3,30 @@
 Scene::Scene(Camera& camera, Body& player, Image& background, uint32_t w, uint32_t h) : camera(camera), player(player), background(background), w(w), h(h) {}
 
 void Scene::update() {
-	for (auto& body : bodies) {
-		body->update(gravity);
+	for (auto it = bodies.begin(); it != bodies.end(); ++it) {
+		(*it)->update(gravity);
+		if ((*it)->getX() > w || (*it)->getX() < 0 ||
+			(*it)->getY() > h || (*it)->getY() < 0) {
+			bodies.erase(it);
+		}
+		// check particle collision
+		for (auto it_p = particles.begin(); it_p != particles.end(); ++it_p) {
+			if (isRectColliding((*it)->rectangle, (*it_p)->body.rectangle)) {
+				particles.erase(it_p);
+			}
+		}
 	}
+	for (auto it = particles.begin(); it != particles.end(); ++it) {
+		if((*it)->body.suffer_gravity)
+			(*it)->body.update(gravity);
+		else
+			(*it)->body.update();
+		if ((*it)->body.getX() > w || (*it)->body.getX() < 0 ||
+			(*it)->body.getY() > h || (*it)->body.getY() < 0) {
+			particles.erase(it);
+		}
+	}
+
 }
 
 void Scene::draw() {
@@ -19,6 +40,13 @@ void Scene::draw() {
 			body->draw();
 			body->rectangle = rect;
 		}
+	}
+	for (Particle* particle : particles) {
+		BodyRectangle rect = particle->body.rectangle;
+		particle->body.rectangle.x -= camera.rect.x;
+		particle->body.rectangle.y -= camera.rect.y;
+		particle->body.draw();
+		particle->body.rectangle = rect;
 	}
 	for (Surface* surface : surfaces) {
 		if (isRectColliding(camera.rect, surface->body.rectangle))
