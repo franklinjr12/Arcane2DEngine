@@ -22,16 +22,17 @@ int main()
 	app.init();
 
 	Image img("assets/main_character.png");
+	Image ske1("assets/skelleton1.png");
+	Image ske2("assets/skelleton2.png");
+	Image ske3("assets/skelleton3.png");
+	Image ske4("assets/skelleton4.png");
+	img = ske1;
 	BodyRectangle br(0, 0, img.width, img.height);
 	Body body(img, br);
 	Player player(body);
 	player.handler.callback = [&player](std::vector<event_bytes_type> data) {
 		player.process_events(data);
 		};
-	Image ske1("assets/skelleton1.png");
-	Image ske2("assets/skelleton2.png");
-	Image ske3("assets/skelleton3.png");
-	Image ske4("assets/skelleton4.png");
 	player.animation.add_animation(ske1);
 	player.animation.add_animation(ske2);
 	player.animation.add_animation(ske3);

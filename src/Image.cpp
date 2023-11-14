@@ -13,6 +13,11 @@ Image::Image(std::string path, int custom_w, int custom_h, bool texture_clamp) {
 	else
 		loadImage(path);
 }
+Image::~Image() {
+	if (texture_id != 0)
+		glDeleteTextures(1, &texture_id);
+
+}
 void Image::loadImage(std::string path) {
 	if (texture_id != 0)
 		glDeleteTextures(1, &texture_id);
