@@ -1,8 +1,13 @@
 #include "Scene.hpp"
+#include <algorithm>
 
 Scene::Scene(Camera& camera, Body& player, Image& background, uint32_t w, uint32_t h) : camera(camera), player(player), background(background), w(w), h(h) {}
 
 void Scene::update() {
+	if (player.suffer_gravity)
+		player.update(gravity);
+	else
+		player.update();
 	for (auto it = bodies.begin(); it != bodies.end(); ++it) {
 		(*it)->update(gravity);
 		if ((*it)->getX() > w || (*it)->getX() < 0 ||
@@ -10,14 +15,27 @@ void Scene::update() {
 			bodies.erase(it);
 		}
 		// check particle collision
-		for (auto it_p = particles.begin(); it_p != particles.end(); ++it_p) {
-			if (isRectColliding((*it)->rectangle, (*it_p)->body.rectangle)) {
-				particles.erase(it_p);
+		if ((*it)->can_collide) {
+			std::vector<Particle*> remove;
+			for (auto it_p = particles.begin(); it_p != particles.end(); ++it_p) {
+				if (isRectColliding((*it)->rectangle, (*it_p)->body.rectangle)) {
+					// TODO have a interaction system with particle
+					(*it_p)->should_erase = true;
+				}
+				if (isRectColliding(player.rectangle, (*it_p)->body.rectangle)) {
+					// TODO have a interaction system with particle
+					(*it_p)->should_erase = true;
+				}
+				if ((*it_p)->should_erase) {
+					remove.push_back(*it_p);
+				}
 			}
+			for (auto it = remove.begin(); it != remove.end(); ++it)
+				particles.erase(std::remove(particles.begin(), particles.end(), *it), particles.end());
 		}
 	}
 	for (auto it = particles.begin(); it != particles.end(); ++it) {
-		if((*it)->body.suffer_gravity)
+		if ((*it)->body.suffer_gravity)
 			(*it)->body.update(gravity);
 		else
 			(*it)->body.update();

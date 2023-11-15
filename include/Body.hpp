@@ -18,6 +18,7 @@ public:
 	Image& image;
 	BodyRectangle& rectangle;
 	bool suffer_gravity = true;
+	bool can_collide = true;
 	float accel_x = 0, accel_y = 0;
 	float vel_x = 0, vel_y = 0;
 };
