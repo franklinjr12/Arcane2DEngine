@@ -1,11 +1,4 @@
 #include "Application.hpp"
-#include "Font.hpp"
-#include "Button.hpp"
-
-// TODO compiel ImGui only on debug
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
 #include <stdio.h>
 
@@ -21,7 +14,9 @@ int Application::init() {
 		return -1;
 
 	
+#ifdef COMPILE_IMGUI
 	window_imgui = glfwCreateWindow(width, height, "Arcane2D Debug", NULL, NULL);
+#endif
 	window = glfwCreateWindow(width, height, "Arcane2D", NULL, NULL);
 	if (!window)
 	{
@@ -49,7 +44,7 @@ int Application::init() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	setWindowCallbacks(window);
 
-	// Setup Dear ImGui context
+#ifdef COMPILE_IMGUI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
@@ -59,6 +54,7 @@ int Application::init() {
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window_imgui, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
 	ImGui_ImplOpenGL3_Init();
+#endif
 
 	return 0;
 }
@@ -110,7 +106,7 @@ void Application::draw() {
 	player->draw();
 }
 
-// TODO compiel ImGui only on debug
+#ifdef COMPILE_IMGUI
 void Application::handle_imgui() {
 	// Start the Dear ImGui frame
 	glfwMakeContextCurrent(window_imgui); // Make the ImGui window's context current
@@ -126,6 +122,7 @@ void Application::handle_imgui() {
 	// Swap the buffers for the ImGui window
 	glfwSwapBuffers(window_imgui);
 }
+#endif
 
 
 
@@ -149,18 +146,21 @@ void Application::run() {
 		font.print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
 		// Swap the buffers for the game window
 		glfwSwapBuffers(window);
+#ifdef COMPILE_IMGUI
 		handle_imgui();
+#endif
 		fc.frameEnd();
 		fc.sleep();
 		// TODO debug ifdef
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
 		std::cout << "Mousex: " << mouse_xpos << " Mousey: " << mouse_ypos << "\n";
 	}
-	// TODO compiel ImGui only on debug
+#ifdef COMPILE_IMGUI
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 	glfwDestroyWindow(window_imgui); // Destroy the ImGui window
+#endif
 
 	// Cleanup
 	glfwDestroyWindow(window); // Destroy the game window

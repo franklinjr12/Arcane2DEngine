@@ -12,6 +12,15 @@
 #include "Player.hpp"
 #include "Particle.hpp"
 #include "EventsManager.hpp"
+#include "Button.hpp"
+#include "Font.hpp"
+
+#ifdef COMPILE_IMGUI
+#define IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#endif
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -35,13 +44,14 @@ public:
 	void poll_events();
 	void update();
 	void draw();
-	// TODO compiel ImGui only on debug
-	void handle_imgui();
 	Scene* current_scene = nullptr;
 	std::vector<Scene> scenes;
 	GLFWwindow* window = nullptr;
 	int width, height;
+#ifdef COMPILE_IMGUI
+	void handle_imgui();
 	GLFWwindow* window_imgui = nullptr;
+#endif
 	double mouse_xpos=0, mouse_ypos=0;
 	EventsManager* events_manager;
 	Player* player;

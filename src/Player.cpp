@@ -3,6 +3,7 @@
 void Player::process_events(std::vector<event_bytes_type> data) {
 	switch (data[0]) {
 	case (event_bytes_type)EventType::KeyboardInput:
+		// if (action == GLFW_PRESS) printf("key %d scancode %d name '%s'\n", key, scancode, key_name);
 		switch (data[1]) {
 		case GLFW_KEY_RIGHT:
 			body.setX(body.getX() + 5);
