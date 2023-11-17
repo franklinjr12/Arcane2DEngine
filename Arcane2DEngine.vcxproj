@@ -60,8 +60,8 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MyRelease|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -104,9 +104,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MyRelease|x64'">
     <ExecutablePath>$(SolutionDir)dependencies\glfw\lib;$(SolutionDir)dependencies\glew\lib;$(ExecutablePath)</ExecutablePath>
-    <PublicModuleDirectories>$(SolutionDir)imgui\backends;$(SolutionDir)imgui;$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
+    <PublicModuleDirectories>$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include</IncludePath>
     <SourcePath>$(VC_SourcePath);$(SolutionDir)src</SourcePath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Export\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -174,26 +175,30 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;_WIN64;%(PreprocessorDefinitions);STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui;$(SolutionDir)imgui\backends;$(SolutionDir)include;$(SolutionDir)stb;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)stb;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glfw3dll.lib;opengl32.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:MSVCRT %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRT /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <CustomBuildStep>
-      <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)x64\Debug\glew32.dll"</Command>
+      <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)$(Platform)\$(Configuration)\Export\glew32.dll"</Command>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)x64\Debug\glew32.dll"</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -211,7 +216,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile Include="imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -219,6 +224,8 @@
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Body.cpp" />
