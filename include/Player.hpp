@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include "Body.hpp"
 #include "EventHandler.hpp"
 #include "Animation.hpp"
 
-class Player {
+class A2D_LIB Player {
 public:
 	Player(Body& body) : body(body) {
 	}

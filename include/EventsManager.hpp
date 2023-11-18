@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include "EventType.hpp"
 #include "EventHandler.hpp"
 
@@ -7,7 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
-class EventsManager {
+class A2D_LIB EventsManager {
 public:
 	EventsManager();
 	void run();

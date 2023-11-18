@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include "Body.hpp"
 
-class Surface {
+class A2D_LIB Surface {
 public:
 	Surface(Body& body);
 	void draw();

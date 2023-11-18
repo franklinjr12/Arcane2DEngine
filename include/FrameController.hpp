@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include <chrono>
 
-class FramesController {
+class A2D_LIB FramesController {
 public:
 	FramesController(int fps);
 	void frameBegin();

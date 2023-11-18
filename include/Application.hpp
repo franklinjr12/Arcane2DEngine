@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <map>
+#include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "FrameController.hpp"
 #include "Body.hpp"
@@ -26,7 +27,7 @@
 #define SCREEN_HEIGHT 768
 
 
-class Application {
+class A2D_LIB Application {
 public:
 	Application(int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
 	// override this method and put all your game inside

@@ -1,10 +1,12 @@
 #pragma once
-#include <iostream>
 
+#include "Arcane2DLib.hpp"
+
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-class Image {
+class A2D_LIB Image {
 public:
     Image(std::string path, int custom_w=0, int custom_h=0, bool texture_clamp = false);
     ~Image();

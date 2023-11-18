@@ -60,7 +60,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MyRelease|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -175,7 +175,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;_WIN64;%(PreprocessorDefinitions);STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ARCANE2D_COMPILE;_WIN64;%(PreprocessorDefinitions);STB_IMAGE_IMPLEMENTATION</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)stb;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
@@ -186,11 +186,12 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glfw3dll.lib;opengl32.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/NODEFAULTLIB:MSVCRT /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <CustomBuildStep>
-      <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)$(Platform)\$(Configuration)\Export\glew32.dll"</Command>
+      <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)$(Platform)\$(Configuration)\Export\glew32.dll"
+copy "$(SolutionDir)dependencies\glfw\lib\glfw.dll" "$(SolutionDir)$(Platform)\$(Configuration)\Export\glfw.dll"</Command>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)x64\Debug\glew32.dll"</Command>
@@ -226,6 +227,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <!-- <ClCompile Include="src\main.cpp" /> -->
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Body.cpp" />
@@ -247,6 +249,7 @@
   <ItemGroup>
     <ClInclude Include="include\Animation.hpp" />
     <ClInclude Include="include\Application.hpp" />
+    <ClInclude Include="include\Arcane2DLib.hpp" />
     <ClInclude Include="include\Body.hpp" />
     <ClInclude Include="include\BodyRectangle.hpp" />
     <ClInclude Include="include\Button.hpp" />

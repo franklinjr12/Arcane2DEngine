@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include <vector>
 #include <chrono>
 
-class Animation {
+class A2D_LIB Animation {
 public:
 	Animation();
 	bool has_animation();

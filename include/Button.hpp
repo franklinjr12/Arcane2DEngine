@@ -2,10 +2,11 @@
 
 #include <string>
 #include <functional>
+#include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
 
-class Button {
+class A2D_LIB Button {
 public:
     Button(float x, float y, float width, float height, std::string text, Image& image);
 

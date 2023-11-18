@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
 #include "EventHandler.hpp"
 #include <vector>
 
-class Body {
+class A2D_LIB Body {
 public:
 	Body(Image& im, BodyRectangle& rect);
 	void draw();

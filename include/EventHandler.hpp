@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include "EventType.hpp"
 #include <functional>
 #include <vector>
 
-class EventHandler {
+class A2D_LIB EventHandler {
 public:
 	std::function<void(std::vector<event_bytes_type>)> callback;
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Arcane2DLib.hpp"
 #include "Camera.hpp"
 #include "Body.hpp"
 #include "Particle.hpp"
@@ -7,7 +8,7 @@
 #include "Button.hpp"
 #include <vector>
 
-class Scene {
+class A2D_LIB Scene {
 public:
 	Scene(Camera& camera, Body& player, Image& background, uint32_t w, uint32_t h);
 	void draw();
