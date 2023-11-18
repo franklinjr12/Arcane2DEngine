@@ -46,7 +46,6 @@ public:
 	void update();
 	void draw();
 	Scene* current_scene = nullptr;
-	std::vector<Scene> scenes;
 	GLFWwindow* window = nullptr;
 	int width, height;
 #ifdef COMPILE_IMGUI
