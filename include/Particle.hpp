@@ -6,6 +6,7 @@
 class A2D_LIB Particle {
 public:
 	Particle(Body& body) : body(body) {}
+	~Particle() {}
 	bool should_erase = false;
 	Body& body;
 };

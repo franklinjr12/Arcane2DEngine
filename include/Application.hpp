@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <map>
+#include <iostream>
 #include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "FrameController.hpp"
@@ -30,6 +31,7 @@
 class A2D_LIB Application {
 public:
 	Application(int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
+	//~Application();
 	// override this method and put all your game inside
 	virtual void game_loop();
 	// if needed custom drawing put in here
@@ -55,6 +57,7 @@ public:
 	double mouse_xpos=0, mouse_ypos=0;
 	EventsManager* events_manager;
 	Player* player;
+	//std::string window_name;
 };
 
 static void glfw_error_callback(int error, const char* description) {

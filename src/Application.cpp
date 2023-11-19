@@ -5,7 +5,10 @@
 Application::Application(int width, int height) {
 	this->width = width;
 	this->height = height;
+	//window_name = name;
 }
+
+//Application::~Application(){}
 
 int Application::init() {
 

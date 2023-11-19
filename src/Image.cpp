@@ -1,4 +1,5 @@
 #pragma once
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <stb_image_resize2.h>
@@ -45,14 +46,14 @@ void Image::loadImage(std::string path) {
 			std::cerr << "Unsupported channel count: " << nrChannels << std::endl;
 		}
 		glGenerateMipmap(GL_TEXTURE_2D);
+		stbi_image_free(data);
 	}
 	else
 	{
 		std::cerr << "Failed to load texture" << std::endl;
+		std::cerr << stbi_failure_reason() << std::endl;
+		
 	}
-
-	stbi_image_free(data);
-
 }
 void Image::draw(float x, float y) {
 	glBindTexture(GL_TEXTURE_2D, texture_id);
