@@ -136,7 +136,9 @@ void Application::run() {
 	// TODO debug ifdef
 	const int buf_size = 128;
 	char text_buffer[buf_size];
+#if 0
 	Font font;
+#endif
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		poll_events();
@@ -145,8 +147,10 @@ void Application::run() {
 		draw();
 		game_draw();
 		// TODO debug ifdef
+#if 0
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
 		font.print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
+#endif
 		// Swap the buffers for the game window
 		glfwSwapBuffers(window);
 #ifdef COMPILE_IMGUI
