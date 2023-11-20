@@ -103,8 +103,8 @@ void Application::game_draw() {}
 void Application::draw() {
 	glfwMakeContextCurrent(window); // Make the game window's context current
 	glClear(GL_COLOR_BUFFER_BIT);
-	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	//glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 	current_scene->draw();
 	player->draw();
 }
@@ -131,12 +131,15 @@ void Application::handle_imgui() {
 
 
 void Application::run() {
+	assert(player != nullptr);
+	assert(current_scene != nullptr);
+	assert(events_manager != nullptr);
 	const int max_fps = 30;
 	FramesController fc(max_fps);
 	// TODO debug ifdef
 	const int buf_size = 128;
 	char text_buffer[buf_size];
-#if 0
+#ifdef DEBUG_SHOW_FPS
 	Font font;
 #endif
 	while (!glfwWindowShouldClose(window)) {
@@ -147,7 +150,7 @@ void Application::run() {
 		draw();
 		game_draw();
 		// TODO debug ifdef
-#if 0
+#ifdef DEBUG_SHOW_FPS
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
 		font.print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
 #endif
@@ -159,8 +162,10 @@ void Application::run() {
 		fc.frameEnd();
 		fc.sleep();
 		// TODO debug ifdef
+#ifdef DEBUG_SHOW_FPS
 		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
 		std::cout << "Mousex: " << mouse_xpos << " Mousey: " << mouse_ypos << "\n";
+#endif
 	}
 #ifdef COMPILE_IMGUI
 	ImGui_ImplOpenGL3_Shutdown();
