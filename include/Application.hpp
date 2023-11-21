@@ -41,6 +41,8 @@ public:
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	// Static trampoline function to the real member function callback
 	static void KeyCallbackTrampoline(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void mouse_callback(GLFWwindow* window, int button, int action, int mods);
+	static void MouseCallbackTrampoline(GLFWwindow* window, int button, int action, int mods);
 	void setWindowCallbacks(GLFWwindow* window);
 	int init();
 	void run();

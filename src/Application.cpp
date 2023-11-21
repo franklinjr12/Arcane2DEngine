@@ -66,6 +66,7 @@ void Application::key_callback(GLFWwindow* window, int key, int scancode, int ac
 	EventData ed;
 	ed.type = EventType::KeyboardInput;
 	ed.data.push_back((event_bytes_type)EventType::KeyboardInput);
+	ed.data.push_back((event_bytes_type)action);
 	ed.data.push_back((event_bytes_type)key);
 	events_manager->events_data.push(ed);
 }
@@ -80,9 +81,29 @@ void Application::KeyCallbackTrampoline(GLFWwindow* window, int key, int scancod
 	app->key_callback(window, key, scancode, action, mods);
 }
 
+void Application::mouse_callback(GLFWwindow* window, int button, int action, int mods) {
+	EventData ed;
+	ed.type = EventType::MouseInput;
+	ed.data.push_back((event_bytes_type)ed.type);
+	ed.data.push_back((event_bytes_type)action);
+	ed.data.push_back((event_bytes_type)button);
+	events_manager->events_data.push(ed);
+}
+
+// Static trampoline function to the real member function callback
+void Application::MouseCallbackTrampoline(GLFWwindow* window, int button, int action, int mods) {
+	// Retrieve the instance of Application class associated with this window
+	void* ptr = glfwGetWindowUserPointer(window);
+	Application* app = static_cast<Application*>(ptr);
+
+	// Call the member function key_callback
+	app->mouse_callback(window, button, action, mods);
+}
+
 void Application::setWindowCallbacks(GLFWwindow* window) {
 	glfwSetWindowUserPointer(window, this); // Set this instance as the user pointer
 	glfwSetKeyCallback(window, Application::KeyCallbackTrampoline); // Set the trampoline as the key callback
+	glfwSetMouseButtonCallback(window, Application::MouseCallbackTrampoline);
 }
 
 void Application::poll_events() {
@@ -94,7 +115,7 @@ void Application::poll_events() {
 
 void Application::update() {
 	current_scene->update();
-	player->update();
+	//player->update();
 }
 
 void Application::game_loop() {}
@@ -127,19 +148,15 @@ void Application::handle_imgui() {
 }
 #endif
 
-
-
-
 void Application::run() {
 	assert(player != nullptr);
 	assert(current_scene != nullptr);
 	assert(events_manager != nullptr);
 	const int max_fps = 30;
 	FramesController fc(max_fps);
-	// TODO debug ifdef
+#ifdef DEBUG_SHOW_FPS
 	const int buf_size = 128;
 	char text_buffer[buf_size];
-#ifdef DEBUG_SHOW_FPS
 	Font font;
 #endif
 	while (!glfwWindowShouldClose(window)) {
