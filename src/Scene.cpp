@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "Collisions.hpp"
 #include <algorithm>
 
 Scene::Scene(Camera& camera, Body& player, Image& background, uint32_t w, uint32_t h) : camera(camera), player(player), background(background), w(w), h(h) {}
@@ -8,32 +9,36 @@ void Scene::update() {
 		player.update(gravity);
 	else
 		player.update();
+	std::vector<Body*> remove_b;
 	for (auto it = bodies.begin(); it != bodies.end(); ++it) {
 		(*it)->update(gravity);
 		if ((*it)->getX() > w || (*it)->getX() < 0 ||
 			(*it)->getY() > h || (*it)->getY() < 0) {
-			bodies.erase(it);
+			remove_b.push_back(*it);
 		}
 		// check particle collision
 		if ((*it)->can_collide) {
-			std::vector<Particle*> remove;
+			std::vector<Particle*> remove_p;
 			for (auto it_p = particles.begin(); it_p != particles.end(); ++it_p) {
-				if (isRectColliding((*it)->rectangle, (*it_p)->body.rectangle)) {
+				if (Collisions::isRectColliding((*it)->rectangle, (*it_p)->body.rectangle)) {
 					// TODO have a interaction system with particle
 					(*it_p)->should_erase = true;
 				}
-				if (isRectColliding(player.rectangle, (*it_p)->body.rectangle)) {
+				if (Collisions::isRectColliding(player.rectangle, (*it_p)->body.rectangle)) {
 					// TODO have a interaction system with particle
 					(*it_p)->should_erase = true;
 				}
 				if ((*it_p)->should_erase) {
-					remove.push_back(*it_p);
+					remove_p.push_back(*it_p);
 				}
 			}
-			for (auto it = remove.begin(); it != remove.end(); ++it)
+			for (auto it = remove_p.begin(); it != remove_p.end(); ++it)
 				particles.erase(std::remove(particles.begin(), particles.end(), *it), particles.end());
 		}
 	}
+	for (auto it = remove_b.begin(); it != remove_b.end(); ++it)
+		bodies.erase(std::remove(bodies.begin(), bodies.end(), *it), bodies.end());
+
 	for (auto it = particles.begin(); it != particles.end(); ++it) {
 		if ((*it)->body.suffer_gravity)
 			(*it)->body.update(gravity);
@@ -50,7 +55,7 @@ void Scene::update() {
 void Scene::draw() {
 	background.draw(camera.rect.x, camera.rect.y);
 	for (Body* body : bodies) {
-		if (isRectColliding(camera.rect, body->rectangle))
+		if (Collisions::isRectColliding(camera.rect, body->rectangle))
 		{
 			BodyRectangle rect = body->rectangle;
 			body->rectangle.x -= camera.rect.x;
@@ -67,7 +72,7 @@ void Scene::draw() {
 		particle->body.rectangle = rect;
 	}
 	for (Surface* surface : surfaces) {
-		if (isRectColliding(camera.rect, surface->body.rectangle))
+		if (Collisions::isRectColliding(camera.rect, surface->body.rectangle))
 		{
 			BodyRectangle rect = surface->body.rectangle;
 			surface->body.rectangle.x -= camera.rect.x;

@@ -6,10 +6,12 @@
 #include <iostream>
 #include "Arcane2DLib.hpp"
 #include "Image.hpp"
-#include "FrameController.hpp"
+#include "BodyRectangle.hpp"
 #include "Body.hpp"
+#include "FrameController.hpp"
 #include "Surface.hpp"
 #include "Camera.hpp"
+#include "Collisions.hpp"
 #include "Scene.hpp"
 #include "Player.hpp"
 #include "Particle.hpp"

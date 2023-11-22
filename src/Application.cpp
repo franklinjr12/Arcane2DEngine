@@ -87,6 +87,8 @@ void Application::mouse_callback(GLFWwindow* window, int button, int action, int
 	ed.data.push_back((event_bytes_type)ed.type);
 	ed.data.push_back((event_bytes_type)action);
 	ed.data.push_back((event_bytes_type)button);
+	ed.data.push_back((event_bytes_type)mouse_xpos);
+	ed.data.push_back((event_bytes_type)mouse_ypos);
 	events_manager->events_data.push(ed);
 }
 
