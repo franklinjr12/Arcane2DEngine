@@ -140,7 +140,7 @@
     <PublicModuleDirectories>$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include</IncludePath>
     <SourcePath>$(VC_SourcePath);$(SolutionDir)src</SourcePath>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Export\</OutDir>
+    <OutDir>$(SolutionDir)Export\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -263,6 +263,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/NODEFAULTLIB:MSVCRT /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
+      <GenerateMapFile>true</GenerateMapFile>
     </Link>
     <CustomBuildStep>
       <Command>
@@ -323,6 +324,7 @@
     <ClCompile Include="src\Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #include "Collisions.hpp"
+#include <cstdio>
 
-bool Collisions::isRectColliding(BodyRectangle& a, BodyRectangle& b) {
+bool isRectColliding(BodyRectangle& a, BodyRectangle& b) {
 	// Check if one rectangle is to the left of the other
 	if (a.x + a.w < b.x || b.x + b.w < a.x) {
 		return false;
@@ -13,7 +14,7 @@ bool Collisions::isRectColliding(BodyRectangle& a, BodyRectangle& b) {
 	return true;
 }
 
-bool Collisions::isPointRectColliding(BodyRectangle& a, int x, int y) {
+bool isPointRectColliding(BodyRectangle& a, int x, int y) {
 	// Check if one rectangle is to the left of the other
 	if (a.x + a.w < x || x < a.x) {
 		return false;

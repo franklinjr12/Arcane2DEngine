@@ -20,11 +20,11 @@ void Scene::update() {
 		if ((*it)->can_collide) {
 			std::vector<Particle*> remove_p;
 			for (auto it_p = particles.begin(); it_p != particles.end(); ++it_p) {
-				if (Collisions::isRectColliding((*it)->rectangle, (*it_p)->body.rectangle)) {
+				if (isRectColliding((*it)->rectangle, (*it_p)->body.rectangle)) {
 					// TODO have a interaction system with particle
 					(*it_p)->should_erase = true;
 				}
-				if (Collisions::isRectColliding(player.rectangle, (*it_p)->body.rectangle)) {
+				if (isRectColliding(player.rectangle, (*it_p)->body.rectangle)) {
 					// TODO have a interaction system with particle
 					(*it_p)->should_erase = true;
 				}
@@ -55,7 +55,7 @@ void Scene::update() {
 void Scene::draw() {
 	background.draw(camera.rect.x, camera.rect.y);
 	for (Body* body : bodies) {
-		if (Collisions::isRectColliding(camera.rect, body->rectangle))
+		if (isRectColliding(camera.rect, body->rectangle))
 		{
 			BodyRectangle rect = body->rectangle;
 			body->rectangle.x -= camera.rect.x;
@@ -72,7 +72,7 @@ void Scene::draw() {
 		particle->body.rectangle = rect;
 	}
 	for (Surface* surface : surfaces) {
-		if (Collisions::isRectColliding(camera.rect, surface->body.rectangle))
+		if (isRectColliding(camera.rect, surface->body.rectangle))
 		{
 			BodyRectangle rect = surface->body.rectangle;
 			surface->body.rectangle.x -= camera.rect.x;
