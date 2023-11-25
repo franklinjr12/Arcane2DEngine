@@ -4,6 +4,7 @@
 
 class A2D_LIB BodyRectangle {
 public:
-	BodyRectangle(int x, int y, int width, int height);
-	int x,y, w, h;
+	BodyRectangle(float x, float y, int width, int height);
+	float x, y;
+	int w, h;
 };

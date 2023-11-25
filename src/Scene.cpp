@@ -53,7 +53,7 @@ void Scene::update() {
 }
 
 void Scene::draw() {
-	//background.draw(camera.rect.x, camera.rect.y);
+	background.draw(camera.rect.x, camera.rect.y);
 	//for (Body* body : bodies) {
 	//	if (isRectColliding(camera.rect, body->rectangle))
 	//	{
