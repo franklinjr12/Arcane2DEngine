@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
-class A2D_LIB EventsManager {
+class A2D_API EventsManager {
 public:
 	EventsManager();
 	void run();

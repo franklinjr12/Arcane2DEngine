@@ -3,7 +3,7 @@
 #include "Arcane2DLib.hpp"
 #include <chrono>
 
-class A2D_LIB FramesController {
+class A2D_API FramesController {
 public:
 	FramesController(int fps);
 	void frameBegin();

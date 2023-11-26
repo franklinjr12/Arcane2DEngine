@@ -6,7 +6,7 @@
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
 
-class A2D_LIB Button {
+class A2D_API Button {
 public:
     Button(float x, float y, float width, float height, std::string text, Image& image);
 

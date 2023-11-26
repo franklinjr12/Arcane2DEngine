@@ -5,7 +5,7 @@
 #include <functional>
 #include <vector>
 
-class A2D_LIB EventHandler {
+class A2D_API EventHandler {
 public:
 	std::function<void(std::vector<event_bytes_type>)> callback;
 };

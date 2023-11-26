@@ -5,7 +5,7 @@
 #include "EventHandler.hpp"
 #include "Animation.hpp"
 
-class A2D_LIB Player {
+class A2D_API Player {
 public:
 	Player(Body& body) : body(body) {
 	}

@@ -2,6 +2,8 @@
 
 #include "Application.hpp"
 
+gluBeginCurve
+
 class GameExample : public Application {
 public:
 	GameExample() {

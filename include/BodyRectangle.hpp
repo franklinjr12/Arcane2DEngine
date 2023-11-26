@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Arcane2DLib.hpp"
+#include "Types.hpp"
 
-class A2D_LIB BodyRectangle {
+class A2D_API BodyRectangle {
 public:
-	BodyRectangle(float x, float y, int width, int height);
-	float x, y;
+
+	BodyRectangle(Vecf pos, int width, int height);
+
+	Point pos;
 	int w, h;
 };

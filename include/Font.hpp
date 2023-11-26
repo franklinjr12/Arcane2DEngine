@@ -7,7 +7,7 @@
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
 
-class A2D_LIB Font {
+class A2D_API Font {
 public:
 	Font(std::string font_path = "assets/16020_FUTURAM.ttf", int font_size = 32);
 

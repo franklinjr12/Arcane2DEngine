@@ -5,7 +5,7 @@
 #include <vector>
 #include <chrono>
 
-class A2D_LIB Animation {
+class A2D_API Animation {
 public:
 	Animation();
 	bool has_animation();

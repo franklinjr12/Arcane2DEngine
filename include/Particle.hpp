@@ -3,7 +3,7 @@
 #include "Arcane2DLib.hpp"
 #include "Body.hpp"
 
-class A2D_LIB Particle {
+class A2D_API Particle {
 public:
 	Particle(Body& body) : body(body) {}
 	~Particle() {}

@@ -3,23 +3,28 @@
 #include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
-#include "EventHandler.hpp"
-#include <vector>
+#include "Object.hpp"
 
-class A2D_LIB Body {
+class A2D_API Body : public Object {
 public:
-	Body(Image& im, BodyRectangle& rect);
-	void draw();
-	void draw(int w, int h);
+	
+	Body();
+	Body(Image* im, BodyRectangle* rect);
+	~Body();
+	virtual void draw();
+	virtual void draw(int w, int h);
+	virtual void update();
+	virtual void handle_collision(ObjectId id) {};
 	void setX(int x);
 	int getX();
 	void setY(int y);
 	int getY();
-	void update(float gravity = 0);
-	Image& image;
-	BodyRectangle& rectangle;
-	bool suffer_gravity = true;
+
+	Image* image = nullptr;
+	BodyRectangle* rectangle = nullptr;
 	bool can_collide = true;
-	float accel_x = 0, accel_y = 0;
-	float vel_x = 0, vel_y = 0;
+
+private:
+
+	float x, y;
 };

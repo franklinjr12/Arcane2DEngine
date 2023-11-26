@@ -120,5 +120,17 @@
     <ClInclude Include="include\Collisions.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\DynamicBody.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IdGenerator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

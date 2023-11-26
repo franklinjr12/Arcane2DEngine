@@ -55,7 +55,9 @@ void Image::loadImage(std::string path) {
 		
 	}
 }
-void Image::draw(float x, float y) {
+void Image::draw(Vecf pos) {
+	float x = pos[0];
+	float y = pos[1];
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0f, 0.0f); glVertex2f(x, height * 1.0f + y);
@@ -64,7 +66,9 @@ void Image::draw(float x, float y) {
 	glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y);
 	glEnd();
 }
-void Image::draw(float x, float y, int w, int h) {
+void Image::draw(Vecf pos, int w, int h) {
+	float x = pos[0];
+	float y = pos[1];
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0f, 0.0f); glVertex2f(x, h * 1.0f + y);

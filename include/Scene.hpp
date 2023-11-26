@@ -8,7 +8,7 @@
 #include "Button.hpp"
 #include <vector>
 
-class A2D_LIB Scene {
+class A2D_API Scene {
 public:
 	Scene(Camera& camera, Body& player, Image& background, uint32_t w, uint32_t h);
 	void draw();
