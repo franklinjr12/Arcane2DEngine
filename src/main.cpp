@@ -12,7 +12,13 @@ public:
 
 	}
 	void game_draw() override {
-
+		const int buf_size = 128;
+		char text_buffer[buf_size];
+		Font font;
+		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_xpos, (int)mouse_ypos);
+		font.print(10, 40, (char*)text_buffer);
+		sprintf_s(text_buffer, "px: %03d py: %03d", (int)player->getX(), (int)player->getY());
+		font.print(10, 60, (char*)text_buffer);
 	}
 };
 
@@ -29,7 +35,8 @@ int main()
 	//Image ske3("assets/skelleton3.png");
 	//Image ske4("assets/skelleton4.png");
 	//img = ske1;
-	Vecf p1 = { SCREEN_WIDTH / 2 - img.width/2, SCREEN_HEIGHT / 2 + img.height/2};
+	Vecf p1 = { SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 };
+	//Vecf p1 = { SCREEN_WIDTH / 2 - img.width/2, SCREEN_HEIGHT / 2 + img.height/2};
 	BodyRectangle br(p1, img.width, img.height);
 	Player player(&img, &br);
 	player.draw_rect_overlay = true;

@@ -131,11 +131,6 @@ void Application::draw() {
 	//glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 	current_scene->draw();
 	player->draw();
-	const int buf_size = 128;
-	char text_buffer[buf_size];
-	Font font;
-	sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_xpos, (int)mouse_ypos);
-	font.print(10, 40, (char*)text_buffer);
 }
 
 #ifdef COMPILE_IMGUI
