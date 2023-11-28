@@ -19,6 +19,8 @@ public:
 		font.print(10, 40, (char*)text_buffer);
 		sprintf_s(text_buffer, "px: %03d py: %03d", (int)player->getX(), (int)player->getY());
 		font.print(10, 60, (char*)text_buffer);
+		sprintf_s(text_buffer, "rx: %03d ry: %03d", (int)player->rectangle->pos.x, (int)player->rectangle->pos.x);
+		font.print(10, 80, (char*)text_buffer);
 	}
 };
 
@@ -40,6 +42,7 @@ int main()
 	BodyRectangle br(p1, img.width, img.height);
 	Player player(&img, &br);
 	player.draw_rect_overlay = true;
+	player.vel[0] = 0.1;
 	player.handler.callback = [&player](std::vector<event_bytes_type> data) {
 		//player.process_events(data);
 		};

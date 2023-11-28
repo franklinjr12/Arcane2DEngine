@@ -23,7 +23,7 @@ void DynamicBody::update(float gravity) {
 		pos.y -= (gravity + accel[1]);
 	else
 		pos.y -= -accel[1];
-	rectangle->pos.x = pos.x - image->width / 2;
-	rectangle->pos.y = pos.y + image->height / 2;
+	rectangle->pos.x = pos.x;
+	rectangle->pos.y = pos.y;
 	_update();
 }

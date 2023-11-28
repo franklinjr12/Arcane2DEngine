@@ -2,7 +2,7 @@
 
 #include "Arcane2DLib.hpp"
 #include "Camera.hpp"
-#include "Body.hpp"
+#include "DynamicBody.hpp"
 #include "Particle.hpp"
 #include "Surface.hpp"
 #include "Button.hpp"
@@ -10,11 +10,11 @@
 
 class A2D_API Scene {
 public:
-	Scene(Camera& camera, Body* player, Image& background, uint32_t w, uint32_t h);
+	Scene(Camera& camera, DynamicBody* player, Image& background, uint32_t w, uint32_t h);
 	void draw();
 	void update();
 	Camera& camera;
-	Body* player;
+	DynamicBody* player;
 	Image& background;
 	std::vector<Body*> bodies;
 	std::vector<Particle*> particles;
