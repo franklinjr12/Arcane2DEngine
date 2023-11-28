@@ -2,14 +2,18 @@
 
 #include "Arcane2DLib.hpp"
 #include "Body.hpp"
+#include "Types.hpp"
 
 class A2D_API DynamicBody : public Body {
 public:
 
-	void update(float gravity=0) override;
+	
+	DynamicBody();
+	DynamicBody(Image* im, BodyRectangle* rect);
+	virtual void update(float gravity=0) override;
+	virtual void _update() {}
 
-	float accel_x = 0;
-	float accel_y = 0;
-	float vel_x = 0;
-	float vel_y = 0;
+	Vecf accel;
+	Vecf vel;
+	bool suffer_gravity = false;
 };

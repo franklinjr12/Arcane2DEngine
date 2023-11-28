@@ -24,7 +24,7 @@ void Image::loadImage(std::string path) {
 		glDeleteTextures(1, &texture_id);
 	int nrChannels;
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+	uint8_t* data = (uint8_t*)stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 
 	glGenTextures(1, &this->texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
@@ -52,29 +52,25 @@ void Image::loadImage(std::string path) {
 	{
 		std::cerr << "Failed to load texture" << std::endl;
 		std::cerr << stbi_failure_reason() << std::endl;
-		
+
 	}
 }
-void Image::draw(Vecf pos) {
-	float x = pos[0];
-	float y = pos[1];
-	glBindTexture(GL_TEXTURE_2D, texture_id);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex2f(x, height * 1.0f + y);
-	glTexCoord2f(1.0f, 0.0f); glVertex2f(x + width * 1.0f, height * 1.0f + y);
-	glTexCoord2f(1.0f, 1.0f); glVertex2f(x + width * 1.0f, y);
-	glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y);
-	glEnd();
-}
+
 void Image::draw(Vecf pos, int w, int h) {
+	draw(pos, FULL_WHITE, w, h);
+}
+
+void Image::draw(Vecf pos, RGBA_t color, int w, int h) {
 	float x = pos[0];
 	float y = pos[1];
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glBegin(GL_QUADS);
+	glColor4f(color[0], color[1], color[2], color[3]);
 	glTexCoord2f(0.0f, 0.0f); glVertex2f(x, h * 1.0f + y);
 	glTexCoord2f((w / width) * 1.0f, 0.0f); glVertex2f(x + w * 1.0f, h * 1.0f + y);
 	glTexCoord2f((w / width) * 1.0f, (h / height) * 1.0f); glVertex2f(x + w * 1.0f, y);
 	glTexCoord2f(0.0f, (h / height) * 1.0f); glVertex2f(x, y);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //unset the color to not affect other stuff
 	glEnd();
 }
 

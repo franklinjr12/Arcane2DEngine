@@ -6,6 +6,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <array>
 
 class A2D_API Image {
 public:
@@ -13,8 +14,8 @@ public:
     Image(std::string path, int custom_w=0, int custom_h=0, bool texture_clamp = false);
     ~Image();
     void loadImage(std::string path);
-    void draw(Vecf pos);
-    void draw(Vecf pos, int w, int h);
+    void draw(Vecf pos, int w = 1, int h = 1);
+    void draw(Vecf pos, RGBA_t color, int w=1, int h=1);
     void resize(int neww, int newh);
 
     std::string path;

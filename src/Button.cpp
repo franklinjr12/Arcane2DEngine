@@ -1,6 +1,6 @@
 #include "Button.hpp"
 
-Button::Button(float x, float y, float width, float height, std::string text, Image& image) : img(image), rect(x,y,width,height) {
+Button::Button(float x, float y, float width, float height, std::string text, Image& image) : img(image), rect(Vecf{x,y}, width, height) {
 	this->x = x;
 	this->y = y;
 	this->w = width;
@@ -10,7 +10,7 @@ Button::Button(float x, float y, float width, float height, std::string text, Im
 
 void Button::draw() {
 	if (should_draw)
-		img.draw(x, y, w, h);
+		img.draw(Vecf{ x, y }, w, h);
 }
 
 void Button::update() {}

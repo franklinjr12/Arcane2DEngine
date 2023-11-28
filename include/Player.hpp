@@ -4,15 +4,18 @@
 #include "Body.hpp"
 #include "EventHandler.hpp"
 #include "Animation.hpp"
+#include "DynamicBody.hpp"
 
-class A2D_API Player {
+class A2D_API Player : public DynamicBody {
 public:
-	Player(Body& body) : body(body) {
+	Player(){
 	}
-	void draw();
-	void update();
+	Player(Image* im, BodyRectangle* rect) : DynamicBody(im, rect) {
+		image = im;
+		rectangle = rect;
+	}
+	void _update() override;
 	void process_events(std::vector<event_bytes_type> data);
-	Body body;
 	EventHandler handler;
 	Animation animation;
 };

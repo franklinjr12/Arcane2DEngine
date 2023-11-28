@@ -4,6 +4,7 @@
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
 #include "Object.hpp"
+#include "Types.hpp"
 
 class A2D_API Body : public Object {
 public:
@@ -13,7 +14,7 @@ public:
 	~Body();
 	virtual void draw();
 	virtual void draw(int w, int h);
-	virtual void update();
+	virtual void update(float gravity = 0);
 	virtual void handle_collision(ObjectId id) {};
 	void setX(int x);
 	int getX();
@@ -23,8 +24,9 @@ public:
 	Image* image = nullptr;
 	BodyRectangle* rectangle = nullptr;
 	bool can_collide = true;
+	bool draw_rect_overlay = false;
 
-private:
+protected:
 
-	float x, y;
+	Point pos;
 };
