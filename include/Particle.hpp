@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Arcane2DLib.hpp"
-#include "Body.hpp"
+#include "DynamicBody.hpp"
 
-class A2D_API Particle {
+class A2D_API Particle : public DynamicBody {
 public:
-	Particle(Body& body) : body(body) {}
+	Particle() {}
 	~Particle() {}
-	bool should_erase = false;
-	Body& body;
+	bool can_collide = false;
 };

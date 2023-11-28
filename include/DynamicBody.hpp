@@ -2,7 +2,7 @@
 
 #include "Arcane2DLib.hpp"
 #include "Body.hpp"
-#include "Types.hpp"
+#include "ArcaneTypes.hpp"
 
 class A2D_API DynamicBody : public Body {
 public:
@@ -15,5 +15,4 @@ public:
 
 	Vecf accel;
 	Vecf vel;
-	bool suffer_gravity = false;
 };

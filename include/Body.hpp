@@ -4,7 +4,7 @@
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
 #include "Object.hpp"
-#include "Types.hpp"
+#include "ArcaneTypes.hpp"
 
 class A2D_API Body : public Object {
 public:
@@ -24,7 +24,9 @@ public:
 	Image* image = nullptr;
 	BodyRectangle* rectangle = nullptr;
 	bool can_collide = true;
+	bool suffer_gravity = false;
 	bool draw_rect_overlay = false;
+	bool should_erase = false;
 
 protected:
 

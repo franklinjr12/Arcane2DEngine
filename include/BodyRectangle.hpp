@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Arcane2DLib.hpp"
-#include "Types.hpp"
+#include "ArcaneTypes.hpp"
 
 class A2D_API BodyRectangle {
 public:

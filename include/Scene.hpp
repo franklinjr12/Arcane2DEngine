@@ -2,24 +2,29 @@
 
 #include "Arcane2DLib.hpp"
 #include "Camera.hpp"
-#include "DynamicBody.hpp"
+#include "Body.hpp"
 #include "Particle.hpp"
-#include "Surface.hpp"
 #include "Button.hpp"
 #include <vector>
+#include <forward_list>
+#include <unordered_map>
 
 class A2D_API Scene {
 public:
-	Scene(Camera& camera, DynamicBody* player, Image& background, uint32_t w, uint32_t h);
+
+	Scene(Camera* camera, Image* background, uint32_t w, uint32_t h);
 	void draw();
 	void update();
-	Camera& camera;
-	DynamicBody* player;
-	Image& background;
-	std::vector<Body*> bodies;
-	std::vector<Particle*> particles;
-	std::vector<Surface*> surfaces;
-	std::vector<Button*> buttons;
+	void add_body(Body* body);
+	Body* get_body(ObjectId id);
+	Body* remove_body(ObjectId id);
+	Camera* camera;
+	Image* background;
 	uint32_t w, h;
 	float gravity = 0.1f;
+
+protected:
+
+	std::forward_list<Body*> bodies;
+	std::unordered_map<ObjectId, Body*> bodies_map;
 };

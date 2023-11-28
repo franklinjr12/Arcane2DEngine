@@ -17,7 +17,7 @@ struct Point {
 	};
 };
 
-typedef uint32_t ObjectId;
+typedef uint64_t ObjectId;
 typedef uint32_t ObjectGroup;
 
 typedef float RGBA_t[4];

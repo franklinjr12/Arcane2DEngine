@@ -323,7 +323,6 @@
     <ClCompile Include="src\Paticle.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Scene.cpp" />
-    <ClCompile Include="src\Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -349,8 +348,8 @@
     <ClInclude Include="include\Particle.hpp" />
     <ClInclude Include="include\Player.hpp" />
     <ClInclude Include="include\Scene.hpp" />
-    <ClInclude Include="include\Types.hpp" />
-    <ClInclude Include="include\Surface.hpp" />
+    <ClInclude Include="include\StaticBody.hpp" />
+    <ClInclude Include="include\ArcaneTypes.hpp" />
     <ClInclude Include="include\Collisions.hpp" />
     <ClInclude Include="include\ArcaneUtils.hpp" />
   </ItemGroup>

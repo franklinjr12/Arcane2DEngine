@@ -78,13 +78,25 @@ int main()
 
 	Camera camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	Image background("assets/dark_cloud_background1024_720.png");
-	Scene scene(camera, &player, background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
+	Scene scene(&camera, &background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	scene.gravity = 0;
 	//scene.bodies.push_back(&body);
 	//scene.bodies.push_back(&body2);
 	//scene.surfaces.push_back(&surface);
 	//scene.particles.push_back(&particle1);
 	//scene.particles.push_back(&particle2);
+
+	Image img2("assets/main_character.png");
+	Vecf p2 = { SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2 };
+	BodyRectangle br2(p2, img2.width, img2.height);
+	DynamicBody b2(&img2, &br2);
+	b2.draw_rect_overlay = true;
+	b2.vel[0] = -1;
+
+	//scene.bodies.push_front(&player);
+	//scene.bodies.push_front(&b2);
+	scene.add_body(&player);
+	scene.add_body(&b2);
 
 	app.current_scene = &scene;
 	app.player = &player;

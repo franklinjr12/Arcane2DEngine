@@ -27,9 +27,6 @@
     <ClCompile Include="src\Body.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Surface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
     <ClInclude Include="include\Scene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Surface.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Font.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -153,7 +147,7 @@
     <ClInclude Include="include\DynamicBody.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Types.hpp">
+    <ClInclude Include="include\ArcaneTypes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Object.hpp">
@@ -163,6 +157,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ArcaneUtils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StaticBody.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,15 +1,12 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <map>
 #include <iostream>
 #include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
 #include "Body.hpp"
 #include "FrameController.hpp"
-#include "Surface.hpp"
+#include "StaticBody.hpp"
 #include "Camera.hpp"
 #include "Collisions.hpp"
 #include "Scene.hpp"
@@ -25,6 +22,9 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #endif
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
