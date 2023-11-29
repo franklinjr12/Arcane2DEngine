@@ -24,6 +24,7 @@ public:
 	Image* image = nullptr;
 	BodyRectangle* rectangle = nullptr;
 	bool can_collide = true;
+	bool collided = false;
 	bool suffer_gravity = false;
 	bool draw_rect_overlay = false;
 	bool should_erase = false;

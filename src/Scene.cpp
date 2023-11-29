@@ -14,9 +14,14 @@ void Scene::update() {
 		if (body->can_collide) {
 			for (auto it_inner = bodies.begin(); it_inner != bodies.end(); it_inner++) {
 				Body* body_inner = *it_inner;
-				if (body != body_inner) { // don't check collision with self
+				if (body_inner->can_collide) {
 					if (isRectColliding(*body->rectangle, *body_inner->rectangle)) {
-						printf("body %lu and %lu collided\n", body->id, body_inner->id);
+						if (body != body_inner) { // don't check collision with self
+							printf("body %lu and %lu collided\n", body->id, body_inner->id);
+							body->collided = true;
+							body_inner->collided = true;
+							body->handle_collision(body_inner->id);
+						}
 					}
 				}
 			}
@@ -35,7 +40,7 @@ void Scene::draw() {
 void Scene::add_body(Body* body) {
 	bodies.push_front(body);
 	bodies_map[body->id] = body;
- }
+}
 
 Body* Scene::get_body(ObjectId id) {
 	return bodies_map[id];
