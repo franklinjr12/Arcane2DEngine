@@ -1,12 +1,14 @@
 #pragma once
 
-#include <string>
-#include <functional>
 #include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
+#include "Object.hpp"
 
-class A2D_API Button {
+#include <string>
+#include <functional>
+
+class A2D_API Button : public Object {
 public:
     Button(float x, float y, float width, float height, std::string text, Image& image);
 

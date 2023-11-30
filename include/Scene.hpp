@@ -9,7 +9,7 @@
 #include <forward_list>
 #include <unordered_map>
 
-class A2D_API Scene {
+class A2D_API Scene : public Object {
 public:
 
 	Scene(Camera* camera, Image* background, uint32_t w, uint32_t h);
@@ -22,8 +22,6 @@ public:
 	Image* background;
 	uint32_t w, h;
 	float gravity = 0.1f;
-
-protected:
 
 	std::forward_list<Body*> bodies;
 	std::unordered_map<ObjectId, Body*> bodies_map;

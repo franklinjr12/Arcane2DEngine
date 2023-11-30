@@ -21,6 +21,10 @@ public:
 		font.print(10, 60, (char*)text_buffer);
 		sprintf_s(text_buffer, "rx: %03d ry: %03d", (int)player->rectangle->pos.x, (int)player->rectangle->pos.x);
 		font.print(10, 80, (char*)text_buffer);
+#ifdef DEBUG_SHOW_FPS
+		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
+		font.print(SCREEN_WIDTH / 2, 100, (char*)text_buffer);
+#endif
 	}
 };
 

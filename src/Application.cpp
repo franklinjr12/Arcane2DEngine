@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-Application::Application(int width, int height) {
+Application::Application(int width, int height) : fc(DEFAULT_FPS) {
 	this->width = width;
 	this->height = height;
 	//window_name = name;
@@ -153,13 +153,6 @@ void Application::run() {
 	assert(player != nullptr);
 	assert(current_scene != nullptr);
 	assert(events_manager != nullptr);
-	const int max_fps = 30;
-	FramesController fc(max_fps);
-#ifdef DEBUG_SHOW_FPS
-	const int buf_size = 128;
-	char text_buffer[buf_size];
-	Font font;
-#endif
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		poll_events();
@@ -167,11 +160,6 @@ void Application::run() {
 		game_loop();
 		draw();
 		game_draw();
-		// TODO debug ifdef
-#ifdef DEBUG_SHOW_FPS
-		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
-		font.print(SCREEN_WIDTH / 2, 40, (char*)text_buffer);
-#endif
 		// Swap the buffers for the game window
 		glfwSwapBuffers(window);
 #ifdef COMPILE_IMGUI
@@ -179,11 +167,6 @@ void Application::run() {
 #endif
 		fc.frameEnd();
 		fc.sleep();
-		// TODO debug ifdef
-#ifdef DEBUG_SHOW_FPS
-		std::cout << "Fps: " << fc.sleep_time << " Real Fps: " << fc.real_fps << std::endl;
-		std::cout << "Mousex: " << mouse_xpos << " Mousey: " << mouse_ypos << "\n";
-#endif
 	}
 #ifdef COMPILE_IMGUI
 	ImGui_ImplOpenGL3_Shutdown();

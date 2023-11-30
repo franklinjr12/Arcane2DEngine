@@ -63,6 +63,7 @@ Body* Scene::remove_body(ObjectId id) {
 				bodies_map.erase(it);
 			}
 
+			if (current == bodies.end()) return nullptr;
 			return *current; // Return a pointer to the removed body
 		}
 

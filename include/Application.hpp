@@ -15,6 +15,7 @@
 #include "EventsManager.hpp"
 #include "Button.hpp"
 #include "Font.hpp"
+#include "FrameController.hpp"
 
 #ifdef COMPILE_IMGUI
 #define IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION
@@ -28,6 +29,8 @@
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
+
+#define DEFAULT_FPS 30
 
 
 class A2D_API Application {
@@ -61,6 +64,7 @@ public:
 	double mouse_xpos=0, mouse_ypos=0;
 	EventsManager* events_manager;
 	Player* player;
+	FramesController fc;
 	//std::string window_name;
 };
 
