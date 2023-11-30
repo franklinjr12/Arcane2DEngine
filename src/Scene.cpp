@@ -30,7 +30,7 @@ void Scene::update() {
 }
 
 void Scene::draw() {
-	background->draw(Vecf{ camera->rect.pos.x, camera->rect.pos.y });
+	background->draw(Vecf{ camera->rect.pos.x, camera->rect.pos.y }, background->width, background->height);
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
 		Body* body = *it;
 		body->draw();

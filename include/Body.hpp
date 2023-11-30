@@ -16,10 +16,10 @@ public:
 	virtual void draw(int w, int h);
 	virtual void update(float gravity = 0);
 	virtual void handle_collision(ObjectId id) {};
-	void setX(int x);
-	int getX();
-	void setY(int y);
-	int getY();
+	void setX(float x);
+	float getX();
+	void setY(float y);
+	float getY();
 
 	Image* image = nullptr;
 	BodyRectangle* rectangle = nullptr;
@@ -27,7 +27,7 @@ public:
 	bool collided = false;
 	bool suffer_gravity = false;
 	bool draw_rect_overlay = false;
-	bool should_erase = false;
+	bool should_delete = false;
 
 protected:
 

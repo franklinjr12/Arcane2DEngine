@@ -40,19 +40,19 @@ void Body::draw(int w, int h) {
 	}
 }
 
-void Body::setX(int x) {
+void Body::setX(float x) {
 	pos.x = x;
 	rectangle->pos.x = x;
 }
 
-int Body::getX() { return pos.x + image->width/2; }
+float Body::getX() { return pos.x + image->width/2; }
 
-void Body::setY(int y) {
+void Body::setY(float y) {
 	pos.y = y;
 	rectangle->pos.y = y;
 }
 
-int Body::getY() { return pos.y + image->height / 2; }
+float Body::getY() { return pos.y + image->height / 2; }
 
 void Body::update(float gravity) {}
 

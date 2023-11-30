@@ -20,9 +20,9 @@ void DynamicBody::update(float gravity) {
 	vel[1] += accel[1];
 	pos.x += vel[0];
 	if (suffer_gravity)
-		pos.y -= (gravity + accel[1]);
+		pos.y += (gravity + vel[1]);
 	else
-		pos.y -= -accel[1];
+		pos.y += vel[1];
 	rectangle->pos.x = pos.x;
 	rectangle->pos.y = pos.y;
 	_update();
