@@ -138,5 +138,8 @@
     <ClInclude Include="include\StaticBody.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ArcaneVersion.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

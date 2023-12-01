@@ -335,6 +335,7 @@
       <Optimization>MaxSpeed</Optimization>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -411,6 +412,7 @@
     <ClInclude Include="include\Animation.hpp" />
     <ClInclude Include="include\Application.hpp" />
     <ClInclude Include="include\Arcane2DLib.hpp" />
+    <ClInclude Include="include\ArcaneVersion.hpp" />
     <ClInclude Include="include\Body.hpp" />
     <ClInclude Include="include\BodyRectangle.hpp" />
     <ClInclude Include="include\Button.hpp" />
