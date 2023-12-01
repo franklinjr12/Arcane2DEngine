@@ -15,7 +15,7 @@ public:
 	virtual void draw();
 	virtual void draw(int w, int h);
 	virtual void update(float gravity = 0);
-	virtual void handle_collision(ObjectId id) {};
+	virtual void handle_collision(ObjectId _id) {};
 	void setX(float x);
 	float getX();
 	void setY(float y);
