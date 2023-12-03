@@ -1,17 +1,29 @@
 #include <ArcaneVersion.hpp>
 #include <Application.hpp>
+#include <StaticBody.hpp>
 #include <cstdio>
+#include <cstdlib>
+
+const std::string top_wall_name = "top_wall";
+const std::string bop_wall_name = "bop_wall";
+const std::string player_name = "player";
+const std::string enemy_name = "enemy";
+const std::string ball_name = "ball";
 
 class Pong : public Application {
 public:
 
 	void game_loop() override {
-
+		enemy->vel[0] = player->vel[0];
+		enemy->vel[1] = player->vel[1];
 	}
 
 	void game_draw() override {
 
 	}
+
+	DynamicBody* enemy;
+	DynamicBody* ball;
 };
 
 static Pong* app;
@@ -54,11 +66,24 @@ public:
 		rectangle = new BodyRectangle(pos.pos, image->width, image->height);
 		setX(SCREEN_WIDTH / 2);
 		setY(SCREEN_HEIGHT / 2);
-		vel[0] = -ball_vel;
-		vel[1] = -ball_vel;
+		srand(time(0));
+		float xdir = rand() % 6 > 3 ? 1 : -1;
+		float ydir = rand() % 6 > 3 ? 1 : -1;
+		vel[0] = xdir * ball_vel;
+		vel[1] = ydir * ball_vel;
 	}
 
-	const float ball_vel = 10;
+	void handle_collision(ObjectId _id) override {
+		std::string obj_name = app->current_scene->get_body(_id)->name;
+		if (obj_name == top_wall_name || obj_name == bop_wall_name) {
+			vel[1] *= -1.0;
+		}
+		else if (obj_name == player_name || obj_name == enemy_name) {
+			vel[0] *= -1.0;
+		}
+	}
+
+	const float ball_vel = 7;
 };
 
 int main() {
@@ -69,8 +94,10 @@ int main() {
 	app = new Pong();
 	app->init();
 
-	PlayerPaddle* player = new PlayerPaddle();
-	player->handler.callback = [player](std::vector<event_bytes_type> data) {
+	app->player = new PlayerPaddle();
+	app->player->name = player_name;
+	PlayerPaddle* player = (PlayerPaddle*)app->player;
+	app->player->handler.callback = [player](std::vector<event_bytes_type> data) {
 		switch (data[0]) {
 		case (event_bytes_type)EventType::KeyboardInput:
 			if (data[1] == GLFW_PRESS || data[1] == GLFW_REPEAT) {
@@ -97,23 +124,41 @@ int main() {
 			}
 		}
 		};
-
-	Ball* ball = new Ball();
+	app->enemy = new Paddle(Veci{ SCREEN_WIDTH - 20, SCREEN_HEIGHT / 2 });
+	app->enemy->name = enemy_name;
+	app->ball = new Ball();
+	app->ball->name = ball_name;
+	const int WALL_WIDTH = SCREEN_WIDTH;
+	const int WALL_HEIGHT = 10;
+	//Image* wall_image = new Image("assets/wall_test_texture.png", WALL_WIDTH, WALL_HEIGHT);
+	Image* wall_image = new Image("assets/blue_rect.png", WALL_WIDTH, WALL_HEIGHT);
+	Vecf pos_br1 = { SCREEN_WIDTH / 2,0 };
+	BodyRectangle* br1 = new BodyRectangle(pos_br1, WALL_WIDTH, WALL_HEIGHT);
+	StaticBody* top_wall = new StaticBody(wall_image, br1);
+	top_wall->name = top_wall_name;
+	top_wall->draw_rect_overlay = true;
+	Vecf pos_br2 = { SCREEN_WIDTH / 2,SCREEN_HEIGHT - wall_image->height };
+	BodyRectangle* br2 = new BodyRectangle(pos_br2, WALL_WIDTH, WALL_HEIGHT);
+	StaticBody* bop_wall = new StaticBody(wall_image, br2);
+	bop_wall->draw_rect_overlay = true;
+	bop_wall->name = bop_wall_name;
 
 	Camera* camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	Scene* scene = new Scene(camera, nullptr, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	scene->gravity = 0;
 
-	scene->add_body(player);
-	scene->add_body(ball);
+	scene->add_body(app->player);
+	scene->add_body(app->enemy);
+	scene->add_body(app->ball);
+	scene->add_body(top_wall);
+	scene->add_body(bop_wall);
 
 	EventsManager ev_manager;
-	ev_manager.subscribe(EventType::KeyboardInput, player->handler);
+	ev_manager.subscribe(EventType::KeyboardInput, app->player->handler);
 
 	app->events_manager = &ev_manager;
 	app->current_scene = scene;
-	app->player = player;
 
 	app->run();
 
