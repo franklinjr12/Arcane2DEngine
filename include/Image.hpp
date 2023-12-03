@@ -11,12 +11,12 @@
 class A2D_API Image {
 public:
 
-    Image(std::string path, int custom_w=0, int custom_h=0, bool texture_clamp = false);
+    Image(std::string path, int custom_w=0, int custom_h=0, bool texture_clamp = false, bool flipv = true);
     ~Image();
-    void loadImage(std::string path);
+    void loadImage(std::string path, bool flipv = true);
     void draw(Vecf pos, int w = 1, int h = 1);
     void draw(Vecf pos, RGBA_t color, int w=1, int h=1);
-    void resize(int neww, int newh);
+    void resize(int neww, int newh, bool flipv = true);
 
     std::string path;
     int width, height;

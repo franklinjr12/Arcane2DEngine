@@ -5,25 +5,25 @@
 #include <stb_image_resize2.h>
 #include "Image.hpp"
 
-Image::Image(std::string path, int custom_w, int custom_h, bool texture_clamp) {
+Image::Image(std::string path, int custom_w, int custom_h, bool texture_clamp, bool flipv) {
 	this->path = path;
 	if (texture_clamp)
 		texture_mode = GL_REPEAT;
 	if (custom_w && custom_h)
-		resize(custom_w, custom_h);
+		resize(custom_w, custom_h, flipv);
 	else
-		loadImage(path);
+		loadImage(path, flipv);
 }
 Image::~Image() {
 	if (texture_id != 0)
 		glDeleteTextures(1, &texture_id);
 
 }
-void Image::loadImage(std::string path) {
+void Image::loadImage(std::string path, bool flipv) {
 	if (texture_id != 0)
 		glDeleteTextures(1, &texture_id);
 	int nrChannels;
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(flipv);
 	uint8_t* data = (uint8_t*)stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 
 	glGenTextures(1, &this->texture_id);
@@ -74,11 +74,11 @@ void Image::draw(Vecf pos, RGBA_t color, int w, int h) {
 	glEnd();
 }
 
-void Image::resize(int neww, int newh) {
+void Image::resize(int neww, int newh, bool flipv) {
 	if (texture_id != 0)
 		glDeleteTextures(1, &texture_id);
 	int nrChannels;
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(flipv);
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 	unsigned char* resized_data = new unsigned char[neww * newh * nrChannels];
 

@@ -17,12 +17,13 @@ DynamicBody::DynamicBody(Image* im, BodyRectangle* rect) : Body(im, rect) {
 
 void DynamicBody::update(float gravity) {
 	vel[0] += accel[0];
-	vel[1] += accel[1];
+	//vel[1] += accel[1];
 	pos.x += vel[0];
 	if (suffer_gravity)
-		pos.y += (gravity + vel[1]);
+		vel[1] += accel[1] + gravity;
 	else
-		pos.y += vel[1];
+		vel[1] += accel[1];
+	pos.y += vel[1];
 	rectangle->pos.x = pos.x;
 	rectangle->pos.y = pos.y;
 	_update();
