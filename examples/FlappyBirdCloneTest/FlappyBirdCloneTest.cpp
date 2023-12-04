@@ -1,8 +1,11 @@
+// Built with Arcane engine version 0.1.0.2 
+
 #include <ArcaneVersion.hpp>
 #include <Application.hpp>
 
 #include <iostream>
 #include <chrono>
+#include <cstdlib>
 
 using namespace std::chrono;
 
@@ -58,8 +61,37 @@ public:
 class FlappyBird : public Application {
 public:
 
+	FlappyBird() {
+		auto now = system_clock::now();
+		tp = now;
+		srand(now.time_since_epoch().count());
+	}
+
 	void game_loop() override {
-		
+		auto t = system_clock::now() - tp;
+		auto count = duration_cast<milliseconds>(t).count();
+		if (count > tunnel_spawn_time_ms) {
+			body_count++;
+			printf("body count: %d\n", body_count);
+			tp = system_clock::now();
+			int tunnel_height = rand() % max_tunnel_height;
+			if (tunnel_height < min_tunnel_height)
+				tunnel_height = min_tunnel_height;
+			Tunnel* t = new Tunnel(last_tunnel_top, tunnel_height);
+			current_scene->add_body(t);
+			last_tunnel_top = !last_tunnel_top;
+		}
+		auto current = current_scene->bodies.begin();
+		while (current != current_scene->bodies.end()) {
+			Body* const temp = *current;
+			current++;
+			const int offscreen = -100;
+			if (temp->getX() < offscreen) {
+				body_count--;
+				current_scene->remove_body(temp->id);
+				delete temp;
+			}
+		}
 	}
 
 	void game_draw() override {
@@ -67,7 +99,10 @@ public:
 
 	bool last_tunnel_top = false;
 	system_clock::time_point tp;
-
+	long tunnel_spawn_time_ms = 1000;
+	int min_tunnel_height = 200;
+	int max_tunnel_height = 400;
+	int body_count = 0;
 };
 
 static FlappyBird* app;
@@ -102,10 +137,8 @@ int main()
 	Scene* scene = new Scene(camera, nullptr, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	scene->gravity = 1;
 
-	Tunnel* t1 = new Tunnel(true, 600);
 
 	scene->add_body(player);
-	scene->add_body(t1);
 
 	EventsManager ev_manager;
 	ev_manager.subscribe(EventType::KeyboardInput, player->handler);
