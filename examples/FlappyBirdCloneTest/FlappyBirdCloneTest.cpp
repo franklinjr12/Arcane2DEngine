@@ -19,13 +19,17 @@ class Bird : public Player {
 public:
 
 	Bird() {
-		image = new Image("assets/bird.png");
+		idle = new Image("assets/bird.png");
+		up = new Image("assets/bird_up.png");
+		down = new Image("assets/bird_down.png");
+		image = idle;
 		Vecf initial_pos = { 60 + image->width, SCREEN_HEIGHT / 2 };
 		rectangle = new BodyRectangle(initial_pos, image->width, image->height);
 		name = bird_name;
 		setX(initial_pos[0]);
 		setY(initial_pos[1]);
 		suffer_gravity = true;
+
 	}
 
 	void _update() override {
@@ -33,9 +37,21 @@ public:
 			vel[1] = 5;
 		else if (vel[1] < -5)
 			vel[1] = -5;
+		if (vel[1] >= velocity_thresh)
+			image = down;
+		else if (vel[1] <= -velocity_thresh)
+			image = up;
+		else
+			image = idle;
+		rectangle->w = image->width;
+		rectangle->h = image->height;
 	}
 
 	const float vel_up = -10;
+	Image* down;
+	Image* up;
+	Image* idle;
+	const float velocity_thresh = 3;
 };
 
 class Tunnel : public DynamicBody {
@@ -117,6 +133,9 @@ public:
 		Font font;
 		int ypos = 90;
 		sprintf_s(text_buffer, "SCORE: %d\n", score);
+		font.print(10, ypos, (char*)text_buffer, 1, 1, 1);
+		ypos += 20;
+		sprintf_s(text_buffer, "vel: %02.1f\n", player->vel[1]);
 		font.print(10, ypos, (char*)text_buffer, 1, 1, 1);
 		if (current_scene == game_over_scene) {
 			sprintf_s(text_buffer, "GAME OVER\n");
