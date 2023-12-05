@@ -1,3 +1,5 @@
+// Built with Arcane engine version 0.1.0.1
+
 #include <ArcaneVersion.hpp>
 #include <Application.hpp>
 #include <StaticBody.hpp>

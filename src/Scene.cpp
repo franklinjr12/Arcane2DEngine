@@ -17,7 +17,6 @@ void Scene::update() {
 				if (body_inner->can_collide) {
 					if (isRectColliding(*body->rectangle, *body_inner->rectangle)) {
 						if (body != body_inner) { // don't check collision with self
-							printf("body %lu and %lu collided\n", body->id, body_inner->id);
 							body->collided = true;
 							body_inner->collided = true;
 							body->handle_collision(body_inner->id);
