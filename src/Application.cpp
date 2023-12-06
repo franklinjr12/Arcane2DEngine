@@ -1,6 +1,7 @@
 #include "Application.hpp"
 
 #include <stdio.h>
+#include <assert.h>
 
 Application::Application(int width, int height) : fc(DEFAULT_FPS) {
 	this->width = width;

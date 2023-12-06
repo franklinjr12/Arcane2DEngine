@@ -1,7 +1,8 @@
-#include <iostream>
-
 #include "Application.hpp"
 #include "DynamicBody.hpp"
+
+#include <iostream>
+#include <Windows.h>
 
 class GameExample : public Application {
 public:
@@ -28,7 +29,11 @@ public:
 	}
 };
 
+#ifdef _DEBUG
 int main()
+#else
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+#endif
 {
 
 	GameExample app;

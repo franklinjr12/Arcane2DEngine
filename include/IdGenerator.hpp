@@ -4,4 +4,4 @@
 
 #include <chrono>
 
-ObjectId generate_id();
+A2D_API ObjectId generate_id();
