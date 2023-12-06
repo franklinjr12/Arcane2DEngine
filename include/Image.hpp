@@ -6,7 +6,6 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <array>
 
 class A2D_API Image {
 public:
