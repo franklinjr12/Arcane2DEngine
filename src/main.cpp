@@ -35,16 +35,11 @@ int main()
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 #endif
 {
-	GameExample app;
-	app.init();
-
-	A2D_LOGD("debug");
-	A2D_LOGI("info");
-	A2D_LOGW("warning");
-	A2D_LOGE("error");
+	GameExample* app = new GameExample();
+	app->init();
 
 	//Image img("assets/blue_rect.png");
-	Image img("assets/main_character.png");
+	Image* img = new Image("assets/main_character.png");
 	//Image ske1("assets/skelleton1.png");
 	//Image ske2("assets/skelleton2.png");
 	//Image ske3("assets/skelleton3.png");
@@ -52,17 +47,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//img = ske1;
 	Vecf p1 = { SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 };
 	//Vecf p1 = { SCREEN_WIDTH / 2 - img.width/2, SCREEN_HEIGHT / 2 + img.height/2};
-	BodyRectangle br(p1, img.width, img.height);
-	Player player(&img, &br);
-	player.draw_rect_overlay = true;
-	player.vel[0] = 0.1;
-	player.handler.callback = [&player](std::vector<event_bytes_type> data) {
-		//player.process_events(data);
+	BodyRectangle* br = new BodyRectangle(p1, img->width, img->height);
+	Player* player = new Player(img, br);
+	player->draw_rect_overlay = true;
+	player->vel[0] = 0.1;
+	player->handler.callback = [&player](std::vector<event_bytes_type> data) {
+		//player->process_events(data);
 		};
-	//player.animation.add_animation(ske1);
-	//player.animation.add_animation(ske2);
-	//player.animation.add_animation(ske3);
-	//player.animation.add_animation(ske4);
+	//player->animation.add_animation(ske1);
+	//player->animation.add_animation(ske2);
+	//player->animation.add_animation(ske3);
+	//player->animation.add_animation(ske4);
 
 	//Image img2("assets/big_demon_run_anim_f3.png");
 	//BodyRectangle br2(SCREEN_WIDTH + 10, 0, img.width, img.height);
@@ -89,41 +84,43 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//particle_body2.vel_y = 5;
 	//Particle particle2(particle_body2);
 
-	Camera camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	Image background("assets/dark_cloud_background1024_720.png");
-	Scene scene(&camera, &background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
-	scene.gravity = 0;
+	Camera* camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Image* background = new Image("assets/dark_cloud_background1024_720.png");
+	Scene* scene = new Scene(camera, background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
+	scene->gravity = 0;
 	//scene.bodies.push_back(&body);
 	//scene.bodies.push_back(&body2);
 	//scene.surfaces.push_back(&surface);
 	//scene.particles.push_back(&particle1);
 	//scene.particles.push_back(&particle2);
 
-	Image img2("assets/main_character.png");
+	Image* img2 = new Image("assets/main_character.png");
 	Vecf p2 = { SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2 };
-	BodyRectangle br2(p2, img2.width, img2.height);
-	DynamicBody b2(&img2, &br2);
-	b2.draw_rect_overlay = true;
-	b2.vel[0] = -1;
+	BodyRectangle* br2 = new BodyRectangle(p2, img2->width, img2->height);
+	DynamicBody* b2 = new DynamicBody(img2, br2);
+	b2->draw_rect_overlay = true;
+	b2->vel[0] = -1;
 
 	//scene.bodies.push_front(&player);
 	//scene.bodies.push_front(&b2);
-	scene.add_body(&player);
-	scene.add_body(&b2);
+	scene->add_body(player);
+	scene->add_body(b2);
 
-	app.current_scene = &scene;
-	app.player = &player;
+	app->current_scene = scene;
+	app->player = player;
 
 	//int neww = 200, newh = 200;
 	//Image btn_img("assets/basic_button.png", neww, newh);
 	//Button btn((SCREEN_WIDTH - SCREEN_WIDTH / 3), 10, neww, newh, "btn", btn_img);
-	//app.current_scene->buttons.push_back(&btn);
+	//app->current_scene->buttons.push_back(&btn);
 
 	EventsManager ev_manager;
-	ev_manager.subscribe(EventType::KeyboardInput, player.handler);
-	app.events_manager = &ev_manager;
+	ev_manager.subscribe(EventType::KeyboardInput, player->handler);
+	app->events_manager = &ev_manager;
 
-	app.run();
+	app->run();
+
+	delete app;
 
 	return 0;
 }
