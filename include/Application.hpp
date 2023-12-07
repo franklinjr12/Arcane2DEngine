@@ -16,6 +16,7 @@
 #include "Button.hpp"
 #include "Font.hpp"
 #include "FrameController.hpp"
+#include "Logger.hpp"
 
 #ifdef COMPILE_IMGUI
 #define IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION

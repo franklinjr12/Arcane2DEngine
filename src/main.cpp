@@ -35,9 +35,13 @@ int main()
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 #endif
 {
-
 	GameExample app;
 	app.init();
+
+	A2D_LOGD("debug");
+	A2D_LOGI("info");
+	A2D_LOGW("warning");
+	A2D_LOGE("error");
 
 	//Image img("assets/blue_rect.png");
 	Image img("assets/main_character.png");

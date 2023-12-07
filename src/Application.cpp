@@ -12,6 +12,7 @@ Application::Application(int width, int height) : fc(DEFAULT_FPS) {
 //Application::~Application(){}
 
 int Application::init() {
+	set_arcane_logger();
 
 	glfwSetErrorCallback(glfw_error_callback);
 	if (!glfwInit())
