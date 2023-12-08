@@ -29,6 +29,51 @@ public:
 	}
 };
 
+class MovablePlayer : public Player {
+public:
+
+	MovablePlayer() {
+		image = new Image("assets/main_character.png");
+		Vecf p1 = { SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 };
+		rectangle = new BodyRectangle(p1, image->width, image->height);
+		setX(p1[0]);
+		setY(p1[1]);
+	}
+
+	void process_events(std::vector<event_bytes_type> data) override {
+		switch (data[0]) {
+		case (event_bytes_type)EventType::KeyboardInput:
+			if (data[1] == GLFW_PRESS || GLFW_RELEASE) {
+				switch (data[2]) {
+				case GLFW_KEY_RIGHT:
+					vel[0] = 5;
+					break;
+				case GLFW_KEY_LEFT:
+					vel[0] = -5;
+					break;
+
+				case GLFW_KEY_DOWN:
+					vel[1] = 5;
+					break;
+
+				case GLFW_KEY_UP:
+					vel[1] = -5;
+					break;
+				default:
+					break;
+				}
+			}
+			else {
+				vel[0] = 0;
+				vel[1] = 0;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+};
+
 #ifdef _DEBUG
 int main()
 #else
@@ -38,22 +83,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GameExample* app = new GameExample();
 	app->init();
 
-	//Image img("assets/blue_rect.png");
-	Image* img = new Image("assets/main_character.png");
 	//Image ske1("assets/skelleton1.png");
 	//Image ske2("assets/skelleton2.png");
 	//Image ske3("assets/skelleton3.png");
 	//Image ske4("assets/skelleton4.png");
 	//img = ske1;
-	Vecf p1 = { SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 };
-	//Vecf p1 = { SCREEN_WIDTH / 2 - img.width/2, SCREEN_HEIGHT / 2 + img.height/2};
-	BodyRectangle* br = new BodyRectangle(p1, img->width, img->height);
-	Player* player = new Player(img, br);
+	MovablePlayer* player = new MovablePlayer();
 	player->draw_rect_overlay = true;
 	player->vel[0] = 0.1;
-	player->handler.callback = [&player](std::vector<event_bytes_type> data) {
-		//player->process_events(data);
-		};
 	//player->animation.add_animation(ske1);
 	//player->animation.add_animation(ske2);
 	//player->animation.add_animation(ske3);
@@ -114,9 +151,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//Button btn((SCREEN_WIDTH - SCREEN_WIDTH / 3), 10, neww, newh, "btn", btn_img);
 	//app->current_scene->buttons.push_back(&btn);
 
-	EventsManager ev_manager;
-	ev_manager.subscribe(EventType::KeyboardInput, player->handler);
-	app->events_manager = &ev_manager;
+	app->events_manager = new EventsManager();
+	app->events_manager->subscribe(EventType::KeyboardInput, player);
 
 	app->run();
 

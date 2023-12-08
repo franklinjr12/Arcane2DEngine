@@ -129,9 +129,6 @@
     <ClInclude Include="include\Camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\EventHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\EventsManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

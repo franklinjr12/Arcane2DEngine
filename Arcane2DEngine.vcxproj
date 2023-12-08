@@ -420,7 +420,6 @@
     <ClInclude Include="include\Button.hpp" />
     <ClInclude Include="include\Camera.hpp" />
     <ClInclude Include="include\DynamicBody.hpp" />
-    <ClInclude Include="include\EventHandler.hpp" />
     <ClInclude Include="include\EventsManager.hpp" />
     <ClInclude Include="include\EventType.hpp" />
     <ClInclude Include="include\Font.hpp" />

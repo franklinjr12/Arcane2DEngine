@@ -2,7 +2,6 @@
 
 #include "Arcane2DLib.hpp"
 #include "Body.hpp"
-#include "EventHandler.hpp"
 #include "Animation.hpp"
 #include "DynamicBody.hpp"
 
@@ -15,7 +14,5 @@ public:
 		rectangle = rect;
 	}
 	void _update() override;
-	void process_events(std::vector<event_bytes_type> data);
-	EventHandler handler;
 	Animation animation;
 };

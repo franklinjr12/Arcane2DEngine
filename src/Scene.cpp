@@ -1,5 +1,6 @@
 #include "Scene.hpp"
 #include "Collisions.hpp"
+#include "Logger.hpp"
 
 Scene::Scene(Camera* camera, Image* background, uint32_t w, uint32_t h) : camera(camera), background(background), w(w), h(h) {}
 
@@ -38,6 +39,7 @@ void Scene::draw() {
 }
 
 void Scene::add_body(Body* body) {
+	A2D_LOGI("body {} added", body->id);
 	bodies.push_front(body);
 	bodies_map[body->id] = body;
 }
@@ -47,6 +49,7 @@ Body* Scene::get_body(ObjectId id) {
 }
 
 Body* Scene::remove_body(ObjectId id) {
+	A2D_LOGI("body {} removed", id);
 	auto prev = bodies.before_begin();
 	auto current = bodies.begin();
 
