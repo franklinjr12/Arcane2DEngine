@@ -11,7 +11,6 @@ public:
 	DynamicBody();
 	DynamicBody(Image* im, BodyRectangle* rect);
 	virtual void update(float gravity=0) override;
-	virtual void _update() {}
 
 	Vecf accel;
 	Vecf vel;

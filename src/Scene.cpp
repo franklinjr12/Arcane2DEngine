@@ -4,7 +4,7 @@
 
 Scene::Scene(Camera* camera, Image* background, uint32_t w, uint32_t h) : camera(camera), background(background), w(w), h(h) {}
 
-void Scene::update() {
+void Scene::update(Veci mouse_pos) {
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
 		Body* body = *it;
 		if (body->suffer_gravity)
@@ -27,6 +27,16 @@ void Scene::update() {
 			}
 		}
 	}
+	for (auto it = uis.begin(); it != uis.end(); it++) {
+		UiComponent* ui = *it;
+		if (ui->should_draw) {
+			Point p;
+			p.x = mouse_pos[0];
+			p.y = mouse_pos[1];
+			if (isPointRectColliding(*(ui->rect), p))
+				ui->mouse_over();
+		}
+	}
 }
 
 void Scene::draw() {
@@ -35,6 +45,11 @@ void Scene::draw() {
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
 		Body* body = *it;
 		body->draw();
+	}
+	for (auto it = uis.begin(); it != uis.end(); it++) {
+		UiComponent* ui = *it;
+		if(ui->should_draw)
+			ui->draw();
 	}
 }
 

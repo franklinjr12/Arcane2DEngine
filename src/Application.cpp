@@ -89,8 +89,8 @@ void Application::mouse_callback(GLFWwindow* window, int button, int action, int
 	ed.data.push_back((event_bytes_type)ed.type);
 	ed.data.push_back((event_bytes_type)action);
 	ed.data.push_back((event_bytes_type)button);
-	ed.data.push_back((event_bytes_type)mouse_xpos);
-	ed.data.push_back((event_bytes_type)mouse_ypos);
+	ed.data.push_back((event_bytes_type)mouse_pos[0]);
+	ed.data.push_back((event_bytes_type)mouse_pos[1]);
 	events_manager->events_data.push(ed);
 }
 
@@ -114,11 +114,14 @@ void Application::poll_events() {
 	// Poll and handle events (inputs, window resize, etc.)
 	glfwPollEvents();
 	events_manager->run();
-	glfwGetCursorPos(window, &mouse_xpos, &mouse_ypos);
+	double mx, my;
+	glfwGetCursorPos(window, &mx, &my);
+	mouse_pos[0] = (int)mx;
+	mouse_pos[1] = (int)my;
 }
 
 void Application::update() {
-	current_scene->update();
+	current_scene->update(mouse_pos);
 }
 
 void Application::game_loop() {}

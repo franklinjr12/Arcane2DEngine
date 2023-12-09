@@ -435,6 +435,7 @@
     <ClInclude Include="include\ArcaneTypes.hpp" />
     <ClInclude Include="include\Collisions.hpp" />
     <ClInclude Include="include\ArcaneUtils.hpp" />
+    <ClInclude Include="include\UiComponent.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

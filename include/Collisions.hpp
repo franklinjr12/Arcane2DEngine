@@ -4,4 +4,4 @@
 #include "ArcaneTypes.hpp"
 
 bool A2D_API isRectColliding(BodyRectangle& a, BodyRectangle& b);
-bool A2D_API isPointRectColliding(BodyRectangle& a, Point p);
+bool A2D_API isPointRectColliding(BodyRectangle& a, Point& p);

@@ -7,7 +7,8 @@
 
 enum class A2D_API EventType {
 	KeyboardInput,
-	MouseInput
+	MouseInput,
+	ButtonClicked
 };
 
 typedef uint32_t event_bytes_type;

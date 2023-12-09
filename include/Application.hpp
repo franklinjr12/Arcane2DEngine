@@ -62,7 +62,7 @@ public:
 	void handle_imgui();
 	GLFWwindow* window_imgui = nullptr;
 #endif
-	double mouse_xpos=0, mouse_ypos=0;
+	Veci mouse_pos;
 	EventsManager* events_manager;
 	Player* player;
 	FramesController fc;
@@ -70,5 +70,5 @@ public:
 };
 
 static void glfw_error_callback(int error, const char* description) {
-	std::cout << "GLFW Error: " << description << std::endl;
+	A2D_LOGE("GLFW Error {} description {}", error, description);
 }

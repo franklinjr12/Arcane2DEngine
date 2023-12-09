@@ -4,7 +4,8 @@
 #include "Camera.hpp"
 #include "Body.hpp"
 #include "Particle.hpp"
-#include "Button.hpp"
+#include "UiComponent.hpp"
+
 #include <vector>
 #include <forward_list>
 #include <unordered_map>
@@ -14,7 +15,7 @@ public:
 
 	Scene(Camera* camera, Image* background, uint32_t w, uint32_t h);
 	void draw();
-	void update();
+	void update(Veci mouse_pos);
 	void add_body(Body* body);
 	Body* get_body(ObjectId id);
 	Body* remove_body(ObjectId id);
@@ -24,5 +25,6 @@ public:
 	float gravity = 0.1f;
 
 	std::forward_list<Body*> bodies;
+	std::forward_list<UiComponent*> uis;
 	std::unordered_map<ObjectId, Body*> bodies_map;
 };

@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-EventsManager::EventsManager() {}
-
 void EventsManager::run() {
 		while (!events_data.empty()) {
 			auto& evt = events_data.front();

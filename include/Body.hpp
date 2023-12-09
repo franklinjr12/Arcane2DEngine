@@ -12,7 +12,7 @@ public:
 	Body();
 	Body(Image* im, BodyRectangle* rect);
 	~Body();
-	virtual void draw();
+	virtual void draw() override;
 	virtual void draw(int w, int h);
 	virtual void update(float gravity = 0);
 	virtual void handle_collision(ObjectId _id) {};

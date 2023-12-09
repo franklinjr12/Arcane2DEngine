@@ -14,7 +14,7 @@ bool isRectColliding(BodyRectangle& a, BodyRectangle& b) {
 	return true;
 }
 
-bool isPointRectColliding(BodyRectangle& a, Point p) {
+bool isPointRectColliding(BodyRectangle& a, Point& p) {
 	// Check if one rectangle is to the left of the other
 	if (a.pos.x + a.w < p.x || p.x < a.pos.x) {
 		return false;

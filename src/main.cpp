@@ -16,7 +16,7 @@ public:
 		const int buf_size = 128;
 		char text_buffer[buf_size];
 		Font font;
-		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_xpos, (int)mouse_ypos);
+		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_pos[0], (int)mouse_pos[1]);
 		font.print(10, 40, (char*)text_buffer);
 		sprintf_s(text_buffer, "px: %03d py: %03d", (int)player->getX(), (int)player->getY());
 		font.print(10, 60, (char*)text_buffer);
@@ -146,12 +146,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->current_scene = scene;
 	app->player = player;
 
-	//int neww = 200, newh = 200;
-	//Image btn_img("assets/basic_button.png", neww, newh);
+	int neww = 200, newh = 200;
+	Image btn_img("assets/basic_button.png", neww, newh);
+	Vecf button_pos = { (SCREEN_WIDTH - SCREEN_WIDTH / 3), 10 };
+	Button btn(button_pos, &btn_img, neww, newh, "btn");
 	//Button btn((SCREEN_WIDTH - SCREEN_WIDTH / 3), 10, neww, newh, "btn", btn_img);
 	//app->current_scene->buttons.push_back(&btn);
+	scene->uis.push_front(&btn);
 
-	app->events_manager = new EventsManager();
+	app->events_manager = EventsManager::getInstance();
 	app->events_manager->subscribe(EventType::KeyboardInput, player);
 
 	app->run();
