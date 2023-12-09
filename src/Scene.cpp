@@ -39,8 +39,29 @@ void Scene::update(Veci mouse_pos) {
 	}
 }
 
+void Scene::process_events(std::vector<event_bytes_type> data) {
+	switch (data[0]) {
+	case (event_bytes_type)EventType::MouseInput:
+		if (data[1] == GLFW_PRESS && data[2] == GLFW_MOUSE_BUTTON_1) {
+			for (auto it = uis.begin(); it != uis.end(); it++) {
+				UiComponent* ui = *it;
+				if (ui->should_draw) {
+					Point p;
+					p.x = data[3];
+					p.y = data[4];
+					if (isPointRectColliding(*(ui->rect), p))
+						ui->on_click();
+				}
+			}
+		}
+		break;
+	default:
+		;
+	}
+}
+
 void Scene::draw() {
-	if(background)
+	if (background)
 		background->draw(Vecf{ camera->rect.pos.x, camera->rect.pos.y }, background->width, background->height);
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
 		Body* body = *it;
@@ -48,7 +69,7 @@ void Scene::draw() {
 	}
 	for (auto it = uis.begin(); it != uis.end(); it++) {
 		UiComponent* ui = *it;
-		if(ui->should_draw)
+		if (ui->should_draw)
 			ui->draw();
 	}
 }

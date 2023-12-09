@@ -29,10 +29,10 @@ public:
 	}
 };
 
-class MovablePlayer : public Player {
+class MyPlayer : public Player {
 public:
 
-	MovablePlayer() {
+	MyPlayer() {
 		image = new Image("assets/main_character.png");
 		Vecf p1 = { SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 };
 		rectangle = new BodyRectangle(p1, image->width, image->height);
@@ -68,6 +68,9 @@ public:
 				vel[1] = 0;
 			}
 			break;
+		case (event_bytes_type)EventType::ButtonClicked:
+			A2D_LOGI("got button event!");
+			break;
 		default:
 			break;
 		}
@@ -88,7 +91,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//Image ske3("assets/skelleton3.png");
 	//Image ske4("assets/skelleton4.png");
 	//img = ske1;
-	MovablePlayer* player = new MovablePlayer();
+	MyPlayer* player = new MyPlayer();
 	player->draw_rect_overlay = true;
 	player->vel[0] = 0.1;
 	//player->animation.add_animation(ske1);
@@ -156,6 +159,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	app->events_manager = EventsManager::getInstance();
 	app->events_manager->subscribe(EventType::KeyboardInput, player);
+	app->events_manager->subscribe(EventType::ButtonClicked, player);
+	app->events_manager->subscribe(EventType::MouseInput, scene);
 
 	app->run();
 

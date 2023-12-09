@@ -14,8 +14,9 @@ class A2D_API Scene : public Object {
 public:
 
 	Scene(Camera* camera, Image* background, uint32_t w, uint32_t h);
-	void draw();
+	void draw() override;
 	void update(Veci mouse_pos);
+	void process_events(std::vector<event_bytes_type> data) override;
 	void add_body(Body* body);
 	Body* get_body(ObjectId id);
 	Body* remove_body(ObjectId id);
