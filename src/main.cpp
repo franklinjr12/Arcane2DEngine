@@ -13,18 +13,25 @@ public:
 
 	}
 	void game_draw() override {
+		Vecf pos;
+		pos[0] = 10;
+		pos[1] = 40;
 		const int buf_size = 128;
 		char text_buffer[buf_size];
 		Font font;
 		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_pos[0], (int)mouse_pos[1]);
-		font.print(10, 40, (char*)text_buffer);
+		font.print(pos, (char*)text_buffer);
+		pos[1] += 20;
 		sprintf_s(text_buffer, "px: %03d py: %03d", (int)player->getX(), (int)player->getY());
-		font.print(10, 60, (char*)text_buffer);
+		font.print(pos, (char*)text_buffer);
+		pos[1] += 20;
 		sprintf_s(text_buffer, "rx: %03d ry: %03d", (int)player->rectangle->pos.x, (int)player->rectangle->pos.x);
-		font.print(10, 80, (char*)text_buffer);
+		font.print(pos, (char*)text_buffer);
 #ifdef DEBUG_SHOW_FPS
+		pos[0] = SCREEN_WIDTH / 2;
+		pos[1] = 100;
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
-		font.print(SCREEN_WIDTH / 2, 100, (char*)text_buffer);
+		font.print(pos, (char*)text_buffer);
 #endif
 	}
 };
@@ -150,11 +157,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->player = player;
 
 	int neww = 200, newh = 200;
-	Image btn_img("assets/basic_button.png", neww, newh);
+	//Image btn_img("assets/basic_button.png", neww, newh);
+	Image btn_img("assets/basic_button_text.png", neww, newh);
 	Vecf button_pos = { (SCREEN_WIDTH - SCREEN_WIDTH / 3), 10 };
-	Button btn(button_pos, &btn_img, neww, newh, "btn");
-	//Button btn((SCREEN_WIDTH - SCREEN_WIDTH / 3), 10, neww, newh, "btn", btn_img);
-	//app->current_scene->buttons.push_back(&btn);
+	Button btn(button_pos, &btn_img, neww, newh);
 	scene->uis.push_front(&btn);
 
 	app->events_manager = EventsManager::getInstance();

@@ -29,8 +29,10 @@ Font::~Font() {
     delete font_cdata;
 }
 
-void Font::print(float x, float y, char* text, float r, float g, float b, float a)
+void Font::print(Vecf pos, char* text, float r, float g, float b, float a)
 {
+    float x = pos[0];
+    float y = pos[1];
     // assume orthographic projection with units = screen pixels, origin at top left
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

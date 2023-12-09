@@ -13,5 +13,5 @@ public:
     void draw() override;
     void on_click() override;
 
-    std::string text;
+    std::string text; //unused at the moment
 };

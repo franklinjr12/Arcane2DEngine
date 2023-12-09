@@ -21,8 +21,9 @@ Button::Button(Vecf pos, Image* image, float width, float height, std::string te
 }
 
 void Button::draw() {
-	if (should_draw)
+	if (should_draw) {
 		image->draw(pos, w, h);
+	}
 }
 
 void Button::on_click() {
