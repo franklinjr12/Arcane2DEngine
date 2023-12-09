@@ -1,5 +1,6 @@
 #include "Application.hpp"
 #include "DynamicBody.hpp"
+#include "ProgressBar.hpp"
 
 #include <iostream>
 #include <Windows.h>
@@ -77,11 +78,14 @@ public:
 			break;
 		case (event_bytes_type)EventType::ButtonClicked:
 			A2D_LOGI("got button event!");
+			health_ui->set_current(health_ui->current - 10);
 			break;
 		default:
 			break;
 		}
 	}
+	
+	ProgressBar* health_ui;
 };
 
 #ifdef _DEBUG
@@ -161,7 +165,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Image btn_img("assets/basic_button_text.png", neww, newh);
 	Vecf button_pos = { (SCREEN_WIDTH - SCREEN_WIDTH / 3), 10 };
 	Button btn(button_pos, &btn_img, neww, newh);
+
+	Image* progress_back = new Image("assets/progress_bar.png");
+	Image* progress_front = new Image("assets/progress_bar_front.png");
+	Vecf pb_pos;
+	pb_pos[0] = 10;
+	pb_pos[1] = SCREEN_HEIGHT-60;
+	ProgressBar* pb = new ProgressBar(pb_pos, progress_back, progress_front);
+	//pb->set_current(50);
+	player->health_ui = pb;
+	
 	scene->uis.push_front(&btn);
+	scene->uis.push_front(pb);
 
 	app->events_manager = EventsManager::getInstance();
 	app->events_manager->subscribe(EventType::KeyboardInput, player);
