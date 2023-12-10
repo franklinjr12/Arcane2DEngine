@@ -406,6 +406,7 @@
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\ProgressBar.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\TextDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -424,6 +425,7 @@
     <ClInclude Include="include\EventsManager.hpp" />
     <ClInclude Include="include\EventType.hpp" />
     <ClInclude Include="include\Font.hpp" />
+    <ClInclude Include="include\FontsManager.hpp" />
     <ClInclude Include="include\FrameController.hpp" />
     <ClInclude Include="include\IdGenerator.hpp" />
     <ClInclude Include="include\Image.hpp" />
@@ -437,6 +439,7 @@
     <ClInclude Include="include\ArcaneTypes.hpp" />
     <ClInclude Include="include\Collisions.hpp" />
     <ClInclude Include="include\ArcaneUtils.hpp" />
+    <ClInclude Include="include\TextDisplay.hpp" />
     <ClInclude Include="include\UiComponent.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

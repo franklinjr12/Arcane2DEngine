@@ -1,6 +1,8 @@
 #include "Application.hpp"
 #include "DynamicBody.hpp"
 #include "ProgressBar.hpp"
+#include "TextDisplay.hpp"
+#include "FontsManager.hpp"
 
 #include <iostream>
 #include <Windows.h>
@@ -175,8 +177,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//pb->set_current(50);
 	player->health_ui = pb;
 	
+	Image* text_display_image = new Image("assets/basic_button.png");
+	Vecf text_pos = {SCREEN_WIDTH/2, SCREEN_HEIGHT-60};
+	Font* f = FontsManager::get_instance()->default_font;
+	std::string t = "T";
+	TextDisplay* td = new TextDisplay(text_pos, text_display_image, t, f);
+	td->font_pos[0] = td->pos[0] + 5;
+	td->font_pos[1] = td->pos[1] + td->image->height / 2 + 5;
+
 	scene->uis.push_front(&btn);
 	scene->uis.push_front(pb);
+	scene->uis.push_front(td);
 
 	app->events_manager = EventsManager::getInstance();
 	app->events_manager->subscribe(EventType::KeyboardInput, player);

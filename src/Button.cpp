@@ -3,11 +3,14 @@
 #include "EventsManager.hpp"
 #include "Logger.hpp"
 
-Button::Button(Vecf pos, Image* image, float width, float height, std::string text) {
+Button::Button(Vecf pos, Image* image, float width, float height, std::string text, Font* font) {
 	this->pos[0] = pos[0];
 	this->pos[1] = pos[1];
+	font_pos[0] = pos[0];
+	font_pos[1] = pos[1];
 	this->image = image;
 	this->text = text;
+	this->font = font;
 	if (width > 0 && height > 0) {
 		w = width;
 		h = height;
@@ -23,6 +26,8 @@ Button::Button(Vecf pos, Image* image, float width, float height, std::string te
 void Button::draw() {
 	if (should_draw) {
 		image->draw(pos, w, h);
+		if (font != nullptr && text != "")
+			font->print(font_pos, (char*)text.c_str());
 	}
 }
 
