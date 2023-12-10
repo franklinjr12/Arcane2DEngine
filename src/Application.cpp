@@ -155,7 +155,6 @@ void Application::handle_imgui() {
 #endif
 
 void Application::run() {
-	assert(player != nullptr);
 	assert(current_scene != nullptr);
 	assert(events_manager != nullptr);
 	while (!glfwWindowShouldClose(window)) {
