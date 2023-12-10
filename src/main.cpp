@@ -9,8 +9,9 @@
 
 class GameExample : public Application {
 public:
-	GameExample() {
 
+	GameExample() {
+		start_btn = nullptr;
 	}
 	void game_loop() override {
 
@@ -37,6 +38,20 @@ public:
 		font->print(pos, (char*)text_buffer);
 #endif
 	}
+	void process_events(std::vector<event_bytes_type> data) override {
+		switch (data[0]) {
+		case (event_bytes_type)EventType::ButtonClicked:
+			ObjectId btn_id = (ObjectId)data[1];
+			if (start_btn != nullptr && btn_id == start_btn->id) {
+				if(game_scene != nullptr)
+					current_scene = game_scene;
+			}
+		}
+	}
+
+	Button* start_btn;
+	Scene* menu_scene;
+	Scene* game_scene;
 };
 
 class MyPlayer : public Player {
@@ -86,7 +101,7 @@ public:
 			break;
 		}
 	}
-	
+
 	ProgressBar* health_ui;
 };
 
@@ -159,9 +174,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	scene->add_body(player);
 	scene->add_body(b2);
 
-	app->current_scene = scene;
+	app->game_scene = scene;
 	app->player = player;
-
 
 	// Ui components
 
@@ -177,33 +191,50 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Image* progress_front = new Image("assets/progress_bar_front.png");
 	Vecf pb_pos;
 	pb_pos[0] = 10;
-	pb_pos[1] = SCREEN_HEIGHT-60;
+	pb_pos[1] = SCREEN_HEIGHT - 60;
 	ProgressBar* pb = new ProgressBar(pb_pos, progress_back, progress_front);
 	//pb->set_current(50);
 	player->health_ui = pb;
-	
+
 	// text display
 	Image* text_display_image = new Image("assets/basic_button.png");
-	Vecf text_pos = {SCREEN_WIDTH/2, SCREEN_HEIGHT-60};
+	Vecf text_pos = { SCREEN_WIDTH / 2, SCREEN_HEIGHT - 60 };
 	Font* f = FontsManager::get_instance()->default_font;
 	std::string t = "T";
 	TextDisplay* td = new TextDisplay(text_pos, text_display_image, t, f);
 	td->font_pos[0] = td->pos[0] + 5;
 	td->font_pos[1] = td->pos[1] + td->image->height / 2 + 5;
 
-	// image display
-
-
 	// add Ui to scene
 	scene->uis.push_front(&btn);
 	scene->uis.push_front(pb);
 	scene->uis.push_front(td);
+
+	// Menu scene
+	Scene* menu_scene = new Scene(camera, background, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	//start button
+	int start_btn_w = 200, start_btn_h = 200;
+	Image btn_start_img("assets/basic_button.png", start_btn_w, start_btn_h);
+	Vecf button_start_pos = { SCREEN_WIDTH / 2 - btn_start_img.width/2, SCREEN_HEIGHT / 2 - btn_start_img.height / 2 };
+	Font* font_start = FontsManager::get_instance()->default_font;
+	Button* btn_start = new Button(button_start_pos, &btn_start_img, start_btn_w, start_btn_h, "START", font_start);
+	btn_start->font_pos[0] = btn_start->pos[0] + 20;
+	btn_start->font_pos[1] = btn_start->pos[1] + 60;
+
+	menu_scene->uis.push_front(btn_start);
+	app->start_btn = btn_start;
+
+	app->menu_scene = menu_scene;
+	app->current_scene = menu_scene;
 
 	// events
 	app->events_manager = EventsManager::getInstance();
 	app->events_manager->subscribe(EventType::KeyboardInput, player);
 	app->events_manager->subscribe(EventType::ButtonClicked, player);
 	app->events_manager->subscribe(EventType::MouseInput, scene);
+	app->events_manager->subscribe(EventType::MouseInput, menu_scene);
+	app->events_manager->subscribe(EventType::ButtonClicked, app);
 
 	// infinity loop
 	app->run();

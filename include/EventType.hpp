@@ -11,7 +11,7 @@ enum class A2D_API EventType {
 	ButtonClicked
 };
 
-typedef uint32_t event_bytes_type;
+typedef uint64_t event_bytes_type;
 
 struct A2D_API EventData {
 	EventType type;

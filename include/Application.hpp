@@ -34,7 +34,7 @@
 #define DEFAULT_FPS 30
 
 
-class A2D_API Application {
+class A2D_API Application : public Object {
 public:
 	Application(int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
 	//~Application();
