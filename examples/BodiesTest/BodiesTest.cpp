@@ -32,12 +32,18 @@ public:
 
 	void handle_collision(ObjectId _id) override {
 		Body* b = app->current_scene->get_body(_id);
-		if (b->getX() >= getX() ||
-			b->getX() <= getX())
-			vel[0] = -vel[0];
-		if (b->getY() >= getY() ||
-			b->getY() <= getY())
+		if (b->name == "wt" || b->name == "wb")
 			vel[1] = -vel[1];
+		else if (b->name == "wl" || b->name == "wr")
+			vel[0] = -vel[0];
+		else {
+			if (b->getX() >= getX() ||
+				b->getX() <= getX())
+				vel[0] = -vel[0];
+			if (b->getY() >= getY() ||
+				b->getY() <= getY())
+				vel[1] = -vel[1];
+		}
 	}
 
 	const int max_vel = 9;
@@ -96,7 +102,7 @@ public:
 
 int main()
 {
-	printf("BodyTest app!1\n");
+	printf("BodyTest app!\n");
 	printf("Arcane version: %s\n", arcane_version_string().c_str());
 
 	app = new BodiesTest();
@@ -108,12 +114,16 @@ int main()
 	Scene* scene = new Scene(camera, background_img, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	auto wt = new Wall(Vecf{ 10,100 }, SCREEN_WIDTH - 80, 20);
+	wt->name = "wt";
 	scene->add_body(wt);
 	auto wb = new Wall(Vecf{ 10,SCREEN_HEIGHT - 100 }, SCREEN_WIDTH - 80, 20);
+	wb->name = "wb";
 	scene->add_body(wb);
 	auto wl = new Wall(Vecf{ 10,100 }, 20, SCREEN_HEIGHT - 190);
+	wl->name = "wl";
 	scene->add_body(wl);
 	auto wr = new Wall(Vecf{ SCREEN_WIDTH - 90, 100 }, 20, SCREEN_HEIGHT - 190);
+	wr->name = "wr";
 	scene->add_body(wr);
 
 	EventsManager* ev_manager = EventsManager::getInstance();
