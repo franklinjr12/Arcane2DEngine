@@ -1,7 +1,8 @@
-// Built with Arcane engine version 0.1.0.2
+// Built with Arcane engine version 0.2.0.4
 
 #include <ArcaneVersion.hpp>
 #include <Application.hpp>
+#include <FontsManager.hpp>
 
 #include <iostream>
 #include <chrono>
@@ -46,6 +47,23 @@ public:
 		rectangle->w = image->width;
 		rectangle->h = image->height;
 	}
+
+	void process_events(std::vector<event_bytes_type> data) override {
+		switch (data[0]) {
+		case (event_bytes_type)EventType::KeyboardInput:
+			if (data[1] == GLFW_PRESS) {
+				switch (data[2]) {
+				case GLFW_KEY_SPACE:
+					vel[1] += vel_up;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
+	}
+
 
 	const float vel_up = -10;
 	Image* down;
@@ -130,16 +148,18 @@ public:
 	void game_draw() override {
 		static const int buf_size = 128;
 		char text_buffer[buf_size];
-		Font font;
-		int ypos = 90;
+		Font* font = FontsManager::get_instance()->default_font;
+		Vecf font_pos;
+		font_pos[0] = 10;
+		font_pos[1] = 90;
 		sprintf_s(text_buffer, "SCORE: %d\n", score);
-		font.print(10, ypos, (char*)text_buffer, 1, 1, 1);
-		ypos += 20;
+		font->print(font_pos, (char*)text_buffer, 1, 1, 1);
+		font_pos[1] += 20;
 		sprintf_s(text_buffer, "vel: %02.1f\n", player->vel[1]);
-		font.print(10, ypos, (char*)text_buffer, 1, 1, 1);
+		font->print(font_pos, (char*)text_buffer, 1, 1, 1);
 		if (current_scene == game_over_scene) {
 			sprintf_s(text_buffer, "GAME OVER\n");
-			font.print(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, (char*)text_buffer, 1, 1, 1);
+			font->print(Vecf{ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, (char*)text_buffer, 1, 1, 1);
 		}
 
 	}
@@ -165,20 +185,6 @@ int main()
 
 	Bird* player = new Bird();
 	app->player = player;
-	player->handler.callback = [player](std::vector<event_bytes_type> data) {
-		switch (data[0]) {
-		case (event_bytes_type)EventType::KeyboardInput:
-			if (data[1] == GLFW_PRESS || data[1] == GLFW_REPEAT) {
-				switch (data[2]) {
-				case GLFW_KEY_SPACE:
-					player->vel[1] += player->vel_up;
-					break;
-				default:
-					break;
-				}
-			}
-		}
-		};
 
 	Camera* camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	Image* background_img = new Image("assets/flappy_bird_background.png");
@@ -191,10 +197,10 @@ int main()
 	game_over_scene = new Scene(camera, background_img, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game_over_scene->name = game_over_name;
 
-	EventsManager ev_manager;
-	ev_manager.subscribe(EventType::KeyboardInput, player->handler);
+	EventsManager* ev_manager = EventsManager::getInstance();
+	ev_manager->subscribe(EventType::KeyboardInput, player);
 
-	app->events_manager = &ev_manager;
+	app->events_manager = ev_manager;
 	app->current_scene = scene;
 
 	app->run();

@@ -104,17 +104,21 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui;$(SolutionDir)imgui\backends;$(SolutionDir)include;$(SolutionDir)stb;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)imgui;$(SolutionDir)imgui\backends;$(SolutionDir)include;$(SolutionDir)stb;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\glfw\include;C:\Users\franklin\source\repos\Arcane2DEngine\dependencies\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;$(SolutionDir)Export;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;Arcane2DEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;$(SolutionDir)Export;C:\Users\franklin\source\repos\Arcane2DEngine\dependencies\spdlog\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;Arcane2DEngine.lib;spdlogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)$(Platform)\$(Configuration)\glew32.dll" &amp; copy "$(SolutionDir)dependencies\glfw\lib\glfw3.dll" "$(SolutionDir)$(Platform)\$(Configuration)\glfw3.dll" &amp; copy "$(SolutionDir)Export\Arcane2DEngine.dll" "$(SolutionDir)$(Platform)\$(Configuration)\Arcane2DEngine.dll"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>copy "$(SolutionDir)dependencies\glew\lib\glew32.dll" "$(SolutionDir)$(Platform)\$(Configuration)\glew32.dll" &amp; copy "$(SolutionDir)dependencies\glfw\lib\glfw3.dll" "$(SolutionDir)$(Platform)\$(Configuration)\glfw3.dll" &amp; copy "$(SolutionDir)Export\Arcane2DEngine.dll" "$(SolutionDir)$(Platform)\$(Configuration)\Arcane2DEngine.dll"</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

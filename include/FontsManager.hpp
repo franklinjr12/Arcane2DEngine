@@ -6,10 +6,11 @@
 class A2D_API FontsManager {
 public:
 
-	static FontsManager* get_instance() {
-		static FontsManager fm;
-		return &fm;
-	}
+	static FontsManager* get_instance();
+	//	static FontsManager* get_instance() {
+	//	static FontsManager fm;
+	//	return &fm;
+	//}
 
 	Font* default_font;
 
