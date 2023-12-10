@@ -2,7 +2,7 @@
 
 #include "Arcane2DLib.hpp"
 #include "Object.hpp"
-
+#include "BodyRectangle.hpp"
 #include "Animation.hpp"
 
 class A2D_API UiComponent : public Object {

@@ -21,20 +21,20 @@ public:
 		pos[1] = 40;
 		const int buf_size = 128;
 		char text_buffer[buf_size];
-		Font font;
+		Font* font = FontsManager::get_instance()->default_font;
 		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_pos[0], (int)mouse_pos[1]);
-		font.print(pos, (char*)text_buffer);
+		font->print(pos, (char*)text_buffer);
 		pos[1] += 20;
 		sprintf_s(text_buffer, "px: %03d py: %03d", (int)player->getX(), (int)player->getY());
-		font.print(pos, (char*)text_buffer);
+		font->print(pos, (char*)text_buffer);
 		pos[1] += 20;
 		sprintf_s(text_buffer, "rx: %03d ry: %03d", (int)player->rectangle->pos.x, (int)player->rectangle->pos.x);
-		font.print(pos, (char*)text_buffer);
+		font->print(pos, (char*)text_buffer);
 #ifdef DEBUG_SHOW_FPS
 		pos[0] = SCREEN_WIDTH / 2;
 		pos[1] = 100;
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
-		font.print(pos, (char*)text_buffer);
+		font->print(pos, (char*)text_buffer);
 #endif
 	}
 };
@@ -162,12 +162,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->current_scene = scene;
 	app->player = player;
 
+
+	// Ui components
+
+	// button
 	int neww = 200, newh = 200;
 	//Image btn_img("assets/basic_button.png", neww, newh);
 	Image btn_img("assets/basic_button_text.png", neww, newh);
 	Vecf button_pos = { (SCREEN_WIDTH - SCREEN_WIDTH / 3), 10 };
 	Button btn(button_pos, &btn_img, neww, newh);
 
+	// progress bar
 	Image* progress_back = new Image("assets/progress_bar.png");
 	Image* progress_front = new Image("assets/progress_bar_front.png");
 	Vecf pb_pos;
@@ -177,6 +182,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//pb->set_current(50);
 	player->health_ui = pb;
 	
+	// text display
 	Image* text_display_image = new Image("assets/basic_button.png");
 	Vecf text_pos = {SCREEN_WIDTH/2, SCREEN_HEIGHT-60};
 	Font* f = FontsManager::get_instance()->default_font;
@@ -185,17 +191,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	td->font_pos[0] = td->pos[0] + 5;
 	td->font_pos[1] = td->pos[1] + td->image->height / 2 + 5;
 
+	// image display
+
+
+	// add Ui to scene
 	scene->uis.push_front(&btn);
 	scene->uis.push_front(pb);
 	scene->uis.push_front(td);
 
+	// events
 	app->events_manager = EventsManager::getInstance();
 	app->events_manager->subscribe(EventType::KeyboardInput, player);
 	app->events_manager->subscribe(EventType::ButtonClicked, player);
 	app->events_manager->subscribe(EventType::MouseInput, scene);
 
+	// infinity loop
 	app->run();
 
+	// cleanup
 	delete app;
 
 	return 0;
