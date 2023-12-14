@@ -1,7 +1,7 @@
 [submodule "stb"]
-	path = stb
+	path = depencencies/stb
 	url = https://github.com/nothings/stb.git
 
 [submodule "imgui"]
-	path = imgui
+	path = depencencies/imgui
 	url = https://github.com/ocornut/imgui.git
