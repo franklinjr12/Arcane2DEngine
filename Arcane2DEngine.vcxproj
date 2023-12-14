@@ -150,7 +150,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExecutablePath>$(SolutionDir)dependencies\glfw\lib;$(SolutionDir)dependencies\glew\lib;$(ExecutablePath)</ExecutablePath>
-    <PublicModuleDirectories>$(SolutionDir)imgui\backends;$(SolutionDir)imgui;$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
+    <PublicModuleDirectories>$(SolutionDir)dependencies\imgui\backends;$(SolutionDir)dependencies\imgui;$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include</IncludePath>
     <SourcePath>$(VC_SourcePath);$(SolutionDir)src</SourcePath>
   </PropertyGroup>
@@ -245,7 +245,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DEBUG_SHOW_FPS;ARCANE2D_COMPILE_EXE;COMPILE_IMGUI;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui;$(SolutionDir)imgui\backends;$(SolutionDir)include;$(SolutionDir)stb;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\glfw\include;$(SolutionDir)dependencies\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\glfw\include;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\spdlog\include;$(SolutionDir)dependencies\stb;$(SolutionDir)dependencies\imgui;$(SolutionDir)dependencies\imgui\backends;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -377,13 +377,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile Include="imgui\backends\imgui_impl_glfw.cpp" />
-    <ClCompile Include="imgui\backends\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="imgui\imgui.cpp" />
-    <ClCompile Include="imgui\imgui_demo.cpp" />
-    <ClCompile Include="imgui\imgui_draw.cpp" />
-    <ClCompile Include="imgui\imgui_tables.cpp" />
-    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="dependencies\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="dependencies\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
