@@ -65,12 +65,29 @@ void Scene::draw() {
 		background->draw(Vecf{ camera->rect.pos.x, camera->rect.pos.y }, background->width, background->height);
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
 		Body* body = *it;
-		body->draw();
+		if (isRectColliding(*body->rectangle, camera->rect)) {
+			Point p;
+			p.x = body->getX();
+			p.y = body->getY();
+			body->setX(p.x + camera->rect.pos.x);
+			body->setY(p.y + camera->rect.pos.y);
+			body->draw();
+			body->setX(p.x);
+			body->setY(p.y);
+		}
 	}
 	for (auto it = uis.begin(); it != uis.end(); it++) {
 		UiComponent* ui = *it;
-		if (ui->should_draw)
+		if (ui->should_draw) {
+			Point p;
+			p.x = ui->pos[0];
+			p.y = ui->pos[1];
+			ui->pos[0] = p.x + camera->rect.pos.x;
+			ui->pos[1] = p.y + camera->rect.pos.y;
 			ui->draw();
+			ui->pos[0] = p.x;
+			ui->pos[1] = p.y;
+		}
 	}
 }
 

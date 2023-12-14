@@ -14,7 +14,6 @@ public:
 		start_btn = nullptr;
 	}
 	void game_loop() override {
-
 	}
 	void game_draw() override {
 		Vecf pos;
