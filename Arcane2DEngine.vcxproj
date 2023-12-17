@@ -163,7 +163,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='EngineOnlyDebug|x64'">
     <ExecutablePath>$(SolutionDir)dependencies\glfw\lib;$(SolutionDir)dependencies\glew\lib;$(ExecutablePath)</ExecutablePath>
-    <PublicModuleDirectories>$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
+    <PublicModuleDirectories>$(SolutionDir)dependencies\imgui\backends;$(SolutionDir)dependencies\imgui;$(SolutionDir)src;$(PublicModuleDirectories)</PublicModuleDirectories>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include</IncludePath>
     <SourcePath>$(VC_SourcePath);$(SolutionDir)src</SourcePath>
     <OutDir>$(SolutionDir)Export\</OutDir>
@@ -297,7 +297,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DEBUG_SHOW_FPS;_DEBUG;ARCANE2D_COMPILE;_WIN64;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)stb;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\glfw\include;C:\Users\franklin\source\repos\Arcane2DEngine\dependencies\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\glfw\include;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\spdlog\include;$(SolutionDir)dependencies\stb;$(SolutionDir)dependencies\imgui;$(SolutionDir)dependencies\imgui\backends;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -305,7 +305,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;C:\Users\franklin\source\repos\Arcane2DEngine\dependencies\spdlog\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\glew\lib;$(SolutionDir)dependencies\glfw\lib;$(SolutionDir)dependencies\spdlog\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;glew32.lib;spdlogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/NODEFAULTLIB:MSVCRT /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
       <GenerateMapFile>true</GenerateMapFile>
