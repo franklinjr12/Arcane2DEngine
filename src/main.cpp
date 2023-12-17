@@ -12,6 +12,16 @@ public:
 
 	GameExample() {
 		start_btn = nullptr;
+		//std::string font_path = "assets/16020_FUTURAM.ttf";
+		//int font_size = 16;
+		//font_small = new Font(font_path, font_size);
+		//font_size = 64;
+		//font_big = new Font(font_path, font_size);
+		//font_small = new Font();
+		//font_big = new Font();
+		//font_small = FontsManager::get_instance()->default_font;
+		//font_big = FontsManager::get_instance()->default_font;
+		//font = font_big;
 	}
 	void game_loop() override {
 	}
@@ -21,7 +31,8 @@ public:
 		pos[1] = 40;
 		const int buf_size = 128;
 		char text_buffer[buf_size];
-		Font* font = FontsManager::get_instance()->default_font;
+		//Font* font = FontsManager::get_instance()->default_font;
+		//Font* font = new Font();
 		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_pos[0], (int)mouse_pos[1]);
 		font->print(pos, (char*)text_buffer);
 		pos[1] += 20;
@@ -35,6 +46,7 @@ public:
 		pos[1] = 100;
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
 		font->print(pos, (char*)text_buffer);
+		//delete font;
 #endif
 	}
 	void process_events(std::vector<event_bytes_type> data) override {
@@ -42,12 +54,17 @@ public:
 		case (event_bytes_type)EventType::ButtonClicked:
 			ObjectId btn_id = (ObjectId)data[1];
 			if (start_btn != nullptr && btn_id == start_btn->id) {
-				if(game_scene != nullptr)
+				if (game_scene != nullptr) {
 					current_scene = game_scene;
+					font = font_small;
+				}
 			}
 		}
 	}
 
+	Font* font;
+	Font* font_small;
+	Font* font_big;
 	Button* start_btn;
 	Scene* menu_scene;
 	Scene* game_scene;
@@ -112,6 +129,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	GameExample* app = new GameExample();
 	app->init();
+	std::string font_path = "assets/16020_FUTURAM.ttf";
+	int font_size = 16;
+	app->font_small = new Font(font_path, font_size);
+	font_size = 64;
+	app->font_big = new Font(font_path, font_size);
+	app->font = app->font_big;
+
 
 	//Image ske1("assets/skelleton1.png");
 	//Image ske2("assets/skelleton2.png");
