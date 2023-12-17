@@ -16,6 +16,7 @@ GLEW
 STB
 SPDLOG
 IMGUI
+INIFILE-CPP
 
 # Build
 Currently only Visual Studio 2022 solution. To build and run the test code under main.cpp use Debug option, to build the examples first slect EngineOnly Release or Debug option, build the Arcane2DEngine after do the build of the example.

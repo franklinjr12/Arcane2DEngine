@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "Arcane2DLib.hpp"
 #include "Image.hpp"
 #include "BodyRectangle.hpp"
@@ -17,6 +16,7 @@
 #include "Font.hpp"
 #include "FrameController.hpp"
 #include "Logger.hpp"
+#include "ConfigurationManager.hpp"
 
 #ifdef COMPILE_IMGUI
 #define IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION
@@ -27,6 +27,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
