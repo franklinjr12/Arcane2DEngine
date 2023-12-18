@@ -24,7 +24,7 @@ public:
 		up = new Image("assets/bird_up.png");
 		down = new Image("assets/bird_down.png");
 		image = idle;
-		Vecf initial_pos = { 60 + image->width, SCREEN_HEIGHT / 2 };
+		Vecf initial_pos = { 60 + image->width, DEFAULT_SCREEN_HEIGHT / 2 };
 		rectangle = new BodyRectangle(initial_pos, image->width, image->height);
 		name = bird_name;
 		setX(initial_pos[0]);
@@ -81,7 +81,7 @@ public:
 			image = new Image("assets/fbird_tunnel.png", default_width, height, false, false);
 		else
 			image = new Image("assets/fbird_tunnel.png", default_width, height);
-		Vecf initial_pos = { SCREEN_WIDTH, SCREEN_HEIGHT - image->height };
+		Vecf initial_pos = { DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT - image->height };
 		if (top)
 			initial_pos[1] = 0;
 		rectangle = new BodyRectangle(initial_pos, image->width, image->height);
@@ -159,7 +159,7 @@ public:
 		font->print(font_pos, (char*)text_buffer, 1, 1, 1);
 		if (current_scene == game_over_scene) {
 			sprintf_s(text_buffer, "GAME OVER\n");
-			font->print(Vecf{ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, (char*)text_buffer, 1, 1, 1);
+			font->print(Vecf{ DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 }, (char*)text_buffer, 1, 1, 1);
 		}
 
 	}
@@ -186,15 +186,15 @@ int main()
 	Bird* player = new Bird();
 	app->player = player;
 
-	Camera* camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Camera* camera = new Camera(0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 	Image* background_img = new Image("assets/flappy_bird_background.png");
 
-	Scene* scene = new Scene(camera, background_img, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
+	Scene* scene = new Scene(camera, background_img, DEFAULT_SCREEN_WIDTH * 2, DEFAULT_SCREEN_HEIGHT * 2);
 	scene->gravity = 1;
 
 	scene->add_body(player);
 
-	game_over_scene = new Scene(camera, background_img, SCREEN_WIDTH, SCREEN_HEIGHT);
+	game_over_scene = new Scene(camera, background_img, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 	game_over_scene->name = game_over_name;
 
 	EventsManager* ev_manager = EventsManager::getInstance();

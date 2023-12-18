@@ -48,7 +48,7 @@ class PlayerPaddle : public Player {
 public:
 
 	PlayerPaddle() {
-		Veci initial_pos = { 1, SCREEN_HEIGHT / 2 };
+		Veci initial_pos = { 1, DEFAULT_SCREEN_HEIGHT / 2 };
 		paddle = new Paddle(initial_pos);
 		image = paddle->image;
 		rectangle = paddle->rectangle;
@@ -66,8 +66,8 @@ public:
 		const std::string sprite_path = "assets/ball10x10.png";
 		image = new Image(sprite_path);
 		rectangle = new BodyRectangle(pos.pos, image->width, image->height);
-		setX(SCREEN_WIDTH / 2);
-		setY(SCREEN_HEIGHT / 2);
+		setX(DEFAULT_SCREEN_WIDTH / 2);
+		setY(DEFAULT_SCREEN_HEIGHT / 2);
 		srand(time(0));
 		float xdir = rand() % 6 > 3 ? 1 : -1;
 		float ydir = rand() % 6 > 3 ? 1 : -1;
@@ -126,28 +126,28 @@ int main() {
 			}
 		}
 		};
-	app->enemy = new Paddle(Veci{ SCREEN_WIDTH - 20, SCREEN_HEIGHT / 2 });
+	app->enemy = new Paddle(Veci{ DEFAULT_SCREEN_WIDTH - 20, DEFAULT_SCREEN_HEIGHT / 2 });
 	app->enemy->name = enemy_name;
 	app->ball = new Ball();
 	app->ball->name = ball_name;
-	const int WALL_WIDTH = SCREEN_WIDTH;
+	const int WALL_WIDTH = DEFAULT_SCREEN_WIDTH;
 	const int WALL_HEIGHT = 10;
 	//Image* wall_image = new Image("assets/wall_test_texture.png", WALL_WIDTH, WALL_HEIGHT);
 	Image* wall_image = new Image("assets/blue_rect.png", WALL_WIDTH, WALL_HEIGHT);
-	Vecf pos_br1 = { SCREEN_WIDTH / 2,0 };
+	Vecf pos_br1 = { DEFAULT_SCREEN_WIDTH / 2,0 };
 	BodyRectangle* br1 = new BodyRectangle(pos_br1, WALL_WIDTH, WALL_HEIGHT);
 	StaticBody* top_wall = new StaticBody(wall_image, br1);
 	top_wall->name = top_wall_name;
 	top_wall->draw_rect_overlay = true;
-	Vecf pos_br2 = { SCREEN_WIDTH / 2,SCREEN_HEIGHT - wall_image->height };
+	Vecf pos_br2 = { DEFAULT_SCREEN_WIDTH / 2,DEFAULT_SCREEN_HEIGHT - wall_image->height };
 	BodyRectangle* br2 = new BodyRectangle(pos_br2, WALL_WIDTH, WALL_HEIGHT);
 	StaticBody* bop_wall = new StaticBody(wall_image, br2);
 	bop_wall->draw_rect_overlay = true;
 	bop_wall->name = bop_wall_name;
 
-	Camera* camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Camera* camera = new Camera(0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 
-	Scene* scene = new Scene(camera, nullptr, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
+	Scene* scene = new Scene(camera, nullptr, DEFAULT_SCREEN_WIDTH * 2, DEFAULT_SCREEN_HEIGHT * 2);
 	scene->gravity = 0;
 
 	scene->add_body(app->player);

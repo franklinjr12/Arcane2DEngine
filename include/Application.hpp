@@ -29,15 +29,15 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
+#define DEFAULT_SCREEN_WIDTH 1920
+#define DEFAULT_SCREEN_HEIGHT 1080
 
 #define DEFAULT_FPS 30
 
 
 class A2D_API Application : public Object {
 public:
-	Application(int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
+	Application(int width = DEFAULT_SCREEN_WIDTH, int height = DEFAULT_SCREEN_HEIGHT);
 	//~Application();
 	// override this method and put all your game inside
 	virtual void game_loop();
@@ -50,6 +50,8 @@ public:
 	static void KeyCallbackTrampoline(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void mouse_callback(GLFWwindow* window, int button, int action, int mods);
 	static void MouseCallbackTrampoline(GLFWwindow* window, int button, int action, int mods);
+	void resolution_callback(GLFWwindow* window, int width, int height);
+	static void ResolutionCallbackTrampoline(GLFWwindow* window, int width, int height);
 	void setWindowCallbacks(GLFWwindow* window);
 	int init();
 	void run();

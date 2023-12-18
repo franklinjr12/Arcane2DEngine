@@ -8,7 +8,12 @@ Application::Application(int width, int height) : fc(DEFAULT_FPS) {
 	this->height = height;
 	//window_name = name;
 	auto conf = ConfigurationManager::get_instance();
-	conf.get_resolution_height();
+	if (conf.get_resolution_height() > 0)
+		this->height = conf.get_resolution_height();
+	if (conf.get_resolution_width() > 0)
+		this->width = conf.get_resolution_width();
+	if (conf.get_fps() > 0)
+		fc.fps = conf.get_fps();
 }
 
 //Application::~Application(){}
@@ -106,10 +111,23 @@ void Application::MouseCallbackTrampoline(GLFWwindow* window, int button, int ac
 	app->mouse_callback(window, button, action, mods);
 }
 
+void Application::resolution_callback(GLFWwindow* window, int width, int height) {
+	this->width = width;
+	this->height = height;
+	printf("Resolution changed to %d %d\n", width, height);
+}
+
+void Application::ResolutionCallbackTrampoline(GLFWwindow* window, int width, int height) {
+	void* ptr = glfwGetWindowUserPointer(window);
+	Application* app = static_cast<Application*>(ptr);
+	app->resolution_callback(window, width, height);
+}
+
 void Application::setWindowCallbacks(GLFWwindow* window) {
 	glfwSetWindowUserPointer(window, this); // Set this instance as the user pointer
 	glfwSetKeyCallback(window, Application::KeyCallbackTrampoline); // Set the trampoline as the key callback
 	glfwSetMouseButtonCallback(window, Application::MouseCallbackTrampoline);
+	glfwSetFramebufferSizeCallback(window, Application::ResolutionCallbackTrampoline);
 }
 
 void Application::poll_events() {

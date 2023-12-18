@@ -108,21 +108,21 @@ int main()
 	app = new BodiesTest();
 	app->init();
 
-	Camera* camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Camera* camera = new Camera(0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 	Image* background_img = new Image("assets/flappy_bird_background.png");
 
-	Scene* scene = new Scene(camera, background_img, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Scene* scene = new Scene(camera, background_img, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 
-	auto wt = new Wall(Vecf{ 10,100 }, SCREEN_WIDTH - 80, 20);
+	auto wt = new Wall(Vecf{ 10,100 }, DEFAULT_SCREEN_WIDTH - 80, 20);
 	wt->name = "wt";
 	scene->add_body(wt);
-	auto wb = new Wall(Vecf{ 10,SCREEN_HEIGHT - 100 }, SCREEN_WIDTH - 80, 20);
+	auto wb = new Wall(Vecf{ 10,DEFAULT_SCREEN_HEIGHT - 100 }, DEFAULT_SCREEN_WIDTH - 80, 20);
 	wb->name = "wb";
 	scene->add_body(wb);
-	auto wl = new Wall(Vecf{ 10,100 }, 20, SCREEN_HEIGHT - 190);
+	auto wl = new Wall(Vecf{ 10,100 }, 20, DEFAULT_SCREEN_HEIGHT - 190);
 	wl->name = "wl";
 	scene->add_body(wl);
-	auto wr = new Wall(Vecf{ SCREEN_WIDTH - 90, 100 }, 20, SCREEN_HEIGHT - 190);
+	auto wr = new Wall(Vecf{ DEFAULT_SCREEN_WIDTH - 90, 100 }, 20, DEFAULT_SCREEN_HEIGHT - 190);
 	wr->name = "wr";
 	scene->add_body(wr);
 

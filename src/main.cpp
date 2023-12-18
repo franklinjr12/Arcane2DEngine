@@ -12,16 +12,6 @@ public:
 
 	GameExample() {
 		start_btn = nullptr;
-		//std::string font_path = "assets/16020_FUTURAM.ttf";
-		//int font_size = 16;
-		//font_small = new Font(font_path, font_size);
-		//font_size = 64;
-		//font_big = new Font(font_path, font_size);
-		//font_small = new Font();
-		//font_big = new Font();
-		//font_small = FontsManager::get_instance()->default_font;
-		//font_big = FontsManager::get_instance()->default_font;
-		//font = font_big;
 	}
 	void game_loop() override {
 	}
@@ -31,8 +21,6 @@ public:
 		pos[1] = 40;
 		const int buf_size = 128;
 		char text_buffer[buf_size];
-		//Font* font = FontsManager::get_instance()->default_font;
-		//Font* font = new Font();
 		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_pos[0], (int)mouse_pos[1]);
 		font->print(pos, (char*)text_buffer);
 		pos[1] += 20;
@@ -42,7 +30,7 @@ public:
 		sprintf_s(text_buffer, "rx: %03d ry: %03d", (int)player->rectangle->pos.x, (int)player->rectangle->pos.x);
 		font->print(pos, (char*)text_buffer);
 #ifdef DEBUG_SHOW_FPS
-		pos[0] = SCREEN_WIDTH / 2;
+		pos[0] = DEFAULT_SCREEN_WIDTH / 2;
 		pos[1] = 100;
 		sprintf_s(text_buffer, "FPS: %d\n", (int)fc.sleep_time);
 		font->print(pos, (char*)text_buffer);
@@ -75,7 +63,7 @@ public:
 
 	MyPlayer() {
 		image = new Image("assets/main_character.png");
-		Vecf p1 = { SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 };
+		Vecf p1 = { DEFAULT_SCREEN_WIDTH / 2 , DEFAULT_SCREEN_HEIGHT / 2 };
 		rectangle = new BodyRectangle(p1, image->width, image->height);
 		setX(p1[0]);
 		setY(p1[1]);
@@ -129,6 +117,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	GameExample* app = new GameExample();
 	app->init();
+
+	// can only initialize fonts after app->init()
 	std::string font_path = "assets/16020_FUTURAM.ttf";
 	int font_size = 16;
 	app->font_small = new Font(font_path, font_size);
@@ -155,7 +145,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//Body body2(img2, br2);
 
 	//Image img3("assets/wall_edge_left.png", true);
-	//BodyRectangle br3(0, SCREEN_HEIGHT / 2, SCREEN_WIDTH + 30, 20);
+	//BodyRectangle br3(0, DEFAULT_SCREEN_HEIGHT / 2, SCREEN_WIDTH + 30, 20);
 	//Body surface_body(img3, br3);
 	//Surface surface(surface_body);
 
@@ -175,9 +165,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//particle_body2.vel_y = 5;
 	//Particle particle2(particle_body2);
 
-	Camera* camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Camera* camera = new Camera(0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 	Image* background = new Image("assets/dark_cloud_background1024_720.png");
-	Scene* scene = new Scene(camera, background, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
+	Scene* scene = new Scene(camera, background, DEFAULT_SCREEN_WIDTH * 2, DEFAULT_SCREEN_HEIGHT * 2);
 	scene->gravity = 0;
 	//scene.bodies.push_back(&body);
 	//scene.bodies.push_back(&body2);
@@ -186,7 +176,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//scene.particles.push_back(&particle2);
 
 	Image* img2 = new Image("assets/main_character.png");
-	Vecf p2 = { SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2 };
+	Vecf p2 = { DEFAULT_SCREEN_WIDTH / 2 + 100, DEFAULT_SCREEN_HEIGHT / 2 };
 	BodyRectangle* br2 = new BodyRectangle(p2, img2->width, img2->height);
 	DynamicBody* b2 = new DynamicBody(img2, br2);
 	b2->draw_rect_overlay = true;
@@ -206,7 +196,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int neww = 200, newh = 200;
 	//Image btn_img("assets/basic_button.png", neww, newh);
 	Image btn_img("assets/basic_button_text.png", neww, newh);
-	Vecf button_pos = { (SCREEN_WIDTH - SCREEN_WIDTH / 3), 10 };
+	Vecf button_pos = { (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 3), 10 };
 	Button btn(button_pos, &btn_img, neww, newh);
 
 	// progress bar
@@ -214,14 +204,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Image* progress_front = new Image("assets/progress_bar_front.png");
 	Vecf pb_pos;
 	pb_pos[0] = 10;
-	pb_pos[1] = SCREEN_HEIGHT - 60;
+	pb_pos[1] = DEFAULT_SCREEN_HEIGHT - 60;
 	ProgressBar* pb = new ProgressBar(pb_pos, progress_back, progress_front);
 	//pb->set_current(50);
 	player->health_ui = pb;
 
 	// text display
 	Image* text_display_image = new Image("assets/basic_button.png");
-	Vecf text_pos = { SCREEN_WIDTH / 2, SCREEN_HEIGHT - 60 };
+	Vecf text_pos = { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT - 60 };
 	Font* f = FontsManager::get_instance()->default_font;
 	std::string t = "T";
 	TextDisplay* td = new TextDisplay(text_pos, text_display_image, t, f);
@@ -234,12 +224,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	scene->uis.push_front(td);
 
 	// Menu scene
-	Scene* menu_scene = new Scene(camera, background, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Scene* menu_scene = new Scene(camera, background, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 
 	//start button
 	int start_btn_w = 200, start_btn_h = 200;
 	Image btn_start_img("assets/basic_button.png", start_btn_w, start_btn_h);
-	Vecf button_start_pos = { SCREEN_WIDTH / 2 - btn_start_img.width/2, SCREEN_HEIGHT / 2 - btn_start_img.height / 2 };
+	Vecf button_start_pos = { DEFAULT_SCREEN_WIDTH / 2 - btn_start_img.width/2, DEFAULT_SCREEN_HEIGHT / 2 - btn_start_img.height / 2 };
 	Font* font_start = FontsManager::get_instance()->default_font;
 	Button* btn_start = new Button(button_start_pos, &btn_start_img, start_btn_w, start_btn_h, "START", font_start);
 	btn_start->font_pos[0] = btn_start->pos[0] + 20;
