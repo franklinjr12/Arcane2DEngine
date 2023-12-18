@@ -40,6 +40,12 @@ void Body::draw(int w, int h) {
 	}
 }
 
+void Body::resize(int new_w, int new_h) {
+	image->resize(new_w, new_h);
+	rectangle->w = new_w;
+	rectangle->h = new_h;
+}
+
 void Body::setX(float x) {
 	pos.x = x + image->width / 2;
 	rectangle->pos.x = x + image->width / 2;

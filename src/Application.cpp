@@ -114,7 +114,7 @@ void Application::MouseCallbackTrampoline(GLFWwindow* window, int button, int ac
 void Application::resolution_callback(GLFWwindow* window, int width, int height) {
 	this->width = width;
 	this->height = height;
-	printf("Resolution changed to %d %d\n", width, height);
+	current_scene->resolution_changed(width, height);
 }
 
 void Application::ResolutionCallbackTrampoline(GLFWwindow* window, int width, int height) {

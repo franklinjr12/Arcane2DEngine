@@ -17,6 +17,7 @@
 #include "FrameController.hpp"
 #include "Logger.hpp"
 #include "ConfigurationManager.hpp"
+#include "ArcaneUtils.hpp"
 
 #ifdef COMPILE_IMGUI
 #define IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION
@@ -28,12 +29,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
-#define DEFAULT_SCREEN_WIDTH 1920
-#define DEFAULT_SCREEN_HEIGHT 1080
-
-#define DEFAULT_FPS 30
-
 
 class A2D_API Application : public Object {
 public:

@@ -16,6 +16,7 @@ public:
 	Scene(Camera* camera, Image* background, uint32_t w, uint32_t h);
 	void draw() override;
 	void update(Veci mouse_pos);
+	void resolution_changed(int new_width, int new_height);
 	void process_events(std::vector<event_bytes_type> data) override;
 	void add_body(Body* body);
 	Body* get_body(ObjectId id);

@@ -1,4 +1,6 @@
 #include "Scene.hpp"
+
+#include "ArcaneUtils.hpp"
 #include "Collisions.hpp"
 #include "Logger.hpp"
 
@@ -88,6 +90,24 @@ void Scene::draw() {
 			ui->pos[0] = p.x;
 			ui->pos[1] = p.y;
 		}
+	}
+}
+
+void Scene::resolution_changed(int new_width, int new_height) {
+	float width_ratio = ((float)new_width) / DEFAULT_SCREEN_WIDTH;
+	float height_ratio = ((float)new_height) / DEFAULT_SCREEN_HEIGHT;
+	if (width_ratio <= 0 && height_ratio <= 0) return;
+	if (background)
+		background->resize(background->width * width_ratio, background->height * height_ratio);
+	camera->rect.w = camera->rect.w * width_ratio;
+	camera->rect.h = camera->rect.h * height_ratio;
+	for (auto it = bodies.begin(); it != bodies.end(); it++) {
+		Body* body = *it;
+		body->resize(body->rectangle->w * width_ratio, body->rectangle->h * height_ratio);
+	}
+	for (auto it = uis.begin(); it != uis.end(); it++) {
+		UiComponent* ui = *it;
+		ui->resize(ui->rect->w * width_ratio, ui->rect->h * height_ratio);
 	}
 }
 
