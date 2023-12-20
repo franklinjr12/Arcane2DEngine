@@ -14,6 +14,7 @@ Application::Application(int width, int height) : fc(DEFAULT_FPS) {
 		this->width = conf.get_resolution_width();
 	if (conf.get_fps() > 0)
 		fc.fps = conf.get_fps();
+	A2D_LOGI("Using resolution: {} x {} fps: {}", this->width, this->height, fc.fps);
 }
 
 //Application::~Application(){}
@@ -114,6 +115,7 @@ void Application::MouseCallbackTrampoline(GLFWwindow* window, int button, int ac
 void Application::resolution_callback(GLFWwindow* window, int width, int height) {
 	this->width = width;
 	this->height = height;
+	A2D_LOGI("Resolution changed: {} x {}", width, height);
 	current_scene->resolution_changed(width, height);
 }
 
@@ -186,6 +188,11 @@ void Application::run() {
 		game_draw();
 		// Swap the buffers for the game window
 		glfwSwapBuffers(window);
+		// handle the logging of those errors appropriatedly
+		GLenum err;
+		while ((err = glGetError()) != GL_NO_ERROR) {
+			A2D_LOGE("OpenGL error: {}", err);
+		}
 #ifdef COMPILE_IMGUI
 		handle_imgui();
 #endif

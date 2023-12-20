@@ -229,7 +229,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//start button
 	int start_btn_w = 200, start_btn_h = 200;
 	Image btn_start_img("assets/basic_button.png", start_btn_w, start_btn_h);
-	Vecf button_start_pos = { DEFAULT_SCREEN_WIDTH / 2 - btn_start_img.width/2, DEFAULT_SCREEN_HEIGHT / 2 - btn_start_img.height / 2 };
+	Vecf button_start_pos = { DEFAULT_SCREEN_WIDTH / 2 - btn_start_img.width / 2, DEFAULT_SCREEN_HEIGHT / 2 - btn_start_img.height / 2 };
 	Font* font_start = FontsManager::get_instance()->default_font;
 	Button* btn_start = new Button(button_start_pos, &btn_start_img, start_btn_w, start_btn_h, "START", font_start);
 	btn_start->font_pos[0] = btn_start->pos[0] + 20;

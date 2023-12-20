@@ -14,11 +14,11 @@ public:
     ~Image();
     void loadImage(std::string path, bool flipv = true);
     void draw(Vecf pos, int w = 1, int h = 1);
-    void draw(Vecf pos, RGBA_t color, int w=1, int h=1);
+    void draw(Vecf pos, RGBA_t color, float w=1, float h=1);
     void resize(int neww, int newh, bool flipv = true);
 
     std::string path;
-    int width, height;
+    float width, height;
     GLuint texture_id = 0;
     GLint texture_mode = GL_CLAMP_TO_EDGE;
 };

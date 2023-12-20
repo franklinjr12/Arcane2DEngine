@@ -4,8 +4,10 @@
 #include "Arcane2DLib.hpp"
 
 // all game images are based on this resolution
-#define DEFAULT_SCREEN_WIDTH 1920
-#define DEFAULT_SCREEN_HEIGHT 1080
+//#define DEFAULT_SCREEN_WIDTH 1920
+//#define DEFAULT_SCREEN_HEIGHT 1080
+#define DEFAULT_SCREEN_WIDTH 1280
+#define DEFAULT_SCREEN_HEIGHT 768
 
 #define DEFAULT_FPS 30
 
