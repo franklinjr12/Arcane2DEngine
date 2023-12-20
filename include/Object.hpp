@@ -10,12 +10,17 @@
 
 class A2D_API Object {
 public:
-	Object() { id = generate_id(); }
+
+	Object();
+	Object(std::vector<char>& serialized_data);
+
 	virtual void process_events(std::vector<event_bytes_type> data) {};
 	virtual void draw() {};
 	virtual void _draw() {};
 	virtual void update() {};
 	virtual void _update() {};
+	virtual std::vector<char> serialize();
+
 	ObjectId id;
 	std::vector<ObjectGroup> groups;
 	std::string name;
