@@ -14,6 +14,18 @@ Image::Image(std::string path, int custom_w, int custom_h, bool texture_clamp, b
 	else
 		loadImage(path, flipv);
 }
+
+Image::Image(std::vector<char>& serialized_data) {
+	width = *reinterpret_cast<const float*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(width));
+	height = *reinterpret_cast<const float*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(height));
+	texture_mode = *reinterpret_cast<const GLint*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(texture_mode));
+	path = std::string(serialized_data.begin(), serialized_data.end());
+	resize(width, height);
+}
+
 Image::~Image() {
 	if (texture_id != 0) {
 		glDeleteTextures(1, &texture_id);
@@ -136,3 +148,16 @@ void Image::resize(int neww, int newh, bool flipv) {
 
 	stbi_image_free(resized_data);
 }
+
+std::vector<char> Image::serialize() {
+	std::vector<char> v;
+	const char* ptr = reinterpret_cast<const char*>(&width);
+	v.insert(v.end(), ptr, ptr + sizeof(width));
+	ptr = reinterpret_cast<const char*>(&height);
+	v.insert(v.end(), ptr, ptr + sizeof(height));
+	ptr = reinterpret_cast<const char*>(&texture_mode);
+	v.insert(v.end(), ptr, ptr + sizeof(texture_mode));
+	v.insert(v.end(), path.begin(), path.end());
+	return v;
+}
+

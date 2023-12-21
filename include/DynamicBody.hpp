@@ -10,7 +10,10 @@ public:
 	
 	DynamicBody();
 	DynamicBody(Image* im, BodyRectangle* rect);
+	DynamicBody(std::vector<char>& serialized_data);
+	
 	virtual void update(float gravity=0) override;
+	virtual std::vector<char> serialize();
 
 	Vecf accel;
 	Vecf vel;
