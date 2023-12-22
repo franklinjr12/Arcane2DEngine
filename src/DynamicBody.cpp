@@ -14,6 +14,48 @@ DynamicBody::DynamicBody(Image* im, BodyRectangle* rect) : Body(im, rect) {
 	vel[1] = 0;
 }
 
+DynamicBody::DynamicBody(std::vector<char>& serialized_data) {
+	id = *reinterpret_cast<const ObjectId*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(ObjectId));
+	int bytes_size = serialized_data.front();
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	for (int i = 0; i < bytes_size; i++) {
+		ObjectGroup og = id = *reinterpret_cast<const ObjectGroup*>(&serialized_data[i * sizeof(ObjectGroup)]);
+		groups.push_back(og);
+	}
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size * sizeof(ObjectGroup));
+	bytes_size = serialized_data.front();
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	for (int i = 0; i < bytes_size; i++) {
+		name += serialized_data.front();
+		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	}
+	bytes_size = serialized_data.front();
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	std::vector<char> ser_img(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	image = new Image(ser_img);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	bytes_size = serialized_data.front();
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	std::vector<char> ser_rect(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	rectangle = new BodyRectangle(ser_rect);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	accel[0] = *reinterpret_cast<const Vecf*>(serialized_data.data())[0];
+	accel[1] = *reinterpret_cast<const Vecf*>(serialized_data.data())[1];
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(Vecf));
+	vel[0] = *reinterpret_cast<const Vecf*>(serialized_data.data())[0];
+	vel[1] = *reinterpret_cast<const Vecf*>(serialized_data.data())[1];
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(Vecf));
+	pos = *reinterpret_cast<const Point*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(Point));
+	can_collide = *reinterpret_cast<const bool*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bool));
+	suffer_gravity = *reinterpret_cast<const bool*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bool));
+	draw_rect_overlay = *reinterpret_cast<const bool*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bool));
+}
+
 
 void DynamicBody::update(float gravity) {
 	vel[0] += accel[0];
@@ -39,6 +81,7 @@ std::vector<char> DynamicBody::serialize() {
 		const char* group_ptr = reinterpret_cast<const char*>(&e);
 		v.insert(v.end(), group_ptr, group_ptr + sizeof(ObjectGroup));
 	}
+	v.push_back(name.size());
 	v.insert(v.end(), name.begin(), name.end());
 	auto ser_img = image->serialize();
 	size_t ser_img_size = ser_img.size();
