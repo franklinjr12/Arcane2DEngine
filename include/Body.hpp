@@ -11,7 +11,9 @@ public:
 	
 	Body();
 	Body(Image* im, BodyRectangle* rect);
+	Body(std::vector<char>& serialized_data);
 	~Body();
+	std::vector<char> serialize();
 	virtual void draw() override;
 	virtual void draw(int w, int h);
 	void resize(int new_w, int new_h);

@@ -17,9 +17,53 @@ Body::Body(Image* im, BodyRectangle* rect) {
 	rectangle = rect;
 }
 
+Body::Body(std::vector<char>& serialized_data) : Object(serialized_data) {
+	int bytes_size = serialized_data.front();
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	std::vector<char> ser_img(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	image = new Image(ser_img);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	bytes_size = serialized_data.front();
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	std::vector<char> ser_rect(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	rectangle = new BodyRectangle(ser_rect);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	pos = *reinterpret_cast<const Point*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(Point));
+	can_collide = *reinterpret_cast<const bool*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bool));
+	suffer_gravity = *reinterpret_cast<const bool*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bool));
+	draw_rect_overlay = *reinterpret_cast<const bool*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bool));
+}
+
+
 Body::~Body() {
 	if (image) delete image;
 	if (rectangle) delete rectangle;
+}
+
+std::vector<char> Body::serialize() {
+	std::vector<char> v = Object::serialize();
+	auto ser_img = image->serialize();
+	size_t ser_img_size = ser_img.size();
+	const char* ptr = reinterpret_cast<const char*>(&ser_img_size);
+	v.insert(v.end(), ptr, ptr + sizeof(ser_img_size));
+	v.insert(v.end(), ser_img.begin(), ser_img.end());
+	auto ser_rect = rectangle->serialize();
+	size_t ser_rect_size = ser_rect.size();
+	ptr = reinterpret_cast<const char*>(&ser_img_size);
+	v.insert(v.end(), ptr, ptr + sizeof(ser_img_size));
+	ptr = reinterpret_cast<const char*>(&pos);
+	v.insert(v.end(), ptr, ptr + sizeof(pos));
+	ptr = reinterpret_cast<const char*>(&can_collide);
+	v.insert(v.end(), ptr, ptr + sizeof(can_collide));
+	ptr = reinterpret_cast<const char*>(&suffer_gravity);
+	v.insert(v.end(), ptr, ptr + sizeof(suffer_gravity));
+	ptr = reinterpret_cast<const char*>(&draw_rect_overlay);
+	v.insert(v.end(), ptr, ptr + sizeof(draw_rect_overlay));
+	return v;
 }
 
 void Body::draw() {

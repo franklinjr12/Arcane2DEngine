@@ -17,4 +17,8 @@ public:
 
 	Vecf accel;
 	Vecf vel;
+
+protected:
+
+	std::vector<char>& from_serialized(std::vector<char>& serialized_data);
 };
