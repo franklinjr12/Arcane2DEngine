@@ -9,6 +9,8 @@
 class A2D_API Animation {
 public:
 	Animation();
+	Animation(std::vector<char>& serialized_data);
+	std::vector<char> serialize();
 	bool has_animation();
 	void next_frame();
 	void add_animation(Image& img);
