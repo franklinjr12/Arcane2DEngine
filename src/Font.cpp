@@ -5,6 +5,7 @@
 
 Font::Font(std::string font_path, int font_size)
 {
+	this->font_path = font_path;
 	std::fstream infile(font_path, std::ios::binary | std::ios::in);
 	infile.seekg(0, std::ios::end);
 	std::streamsize file_size = infile.tellg();
@@ -14,6 +15,7 @@ Font::Font(std::string font_path, int font_size)
 	infile.close();
 	font_temp_bitmap = new unsigned char[512 * 512];
 	font_cdata = (void*) new stbtt_bakedchar[96];
+	this->font_size = font_size;
 	stbtt_BakeFontBitmap(font_ttf_buffer, 0, (float)font_size, font_temp_bitmap, 512, 512, 32, 96, (stbtt_bakedchar*)font_cdata);
 	// can free font_ttf_buffer at this point
 	delete(font_ttf_buffer);
@@ -25,8 +27,28 @@ Font::Font(std::string font_path, int font_size)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
+Font::Font(std::vector<char> serialized_data) {
+	font_size = *reinterpret_cast<const int*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(font_size));
+	size_t bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
+	font_path = std::string(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+}
+
 Font::~Font() {
 	delete font_cdata;
+}
+
+std::vector<char> Font::serialize() {
+	std::vector<char> v;
+	const char* ptr = reinterpret_cast<const char*>(&font_size);
+	v.insert(v.end(), ptr, ptr + sizeof(font_size));
+	size_t bytes_size = font_path.size();
+	ptr = reinterpret_cast<const char*>(&bytes_size);
+	v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
+	v.insert(v.end(), font_path.begin(), font_path.end());
+	return v;
 }
 
 void Font::print(Vecf pos, char* text, float r, float g, float b, float a)

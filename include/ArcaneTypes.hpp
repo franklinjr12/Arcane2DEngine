@@ -3,6 +3,7 @@
 #include "Arcane2DLib.hpp"
 
 #include <cstdint>
+#include <vector>
 
 typedef int Veci[2];
 

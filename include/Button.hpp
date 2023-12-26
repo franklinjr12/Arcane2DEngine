@@ -9,7 +9,9 @@
 class A2D_API Button : public UiComponent {
 public:
     Button(Vecf pos, Image* image, float width=0, float height=0, std::string text="", Font* font=nullptr);
+    Button(std::vector<char>& serialized_data);
 
+    std::vector<char> serialize();
     void draw() override;
     void on_click() override;
 
