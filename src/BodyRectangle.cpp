@@ -19,10 +19,10 @@ BodyRectangle::BodyRectangle(std::vector<char> serialized_data) {
 std::vector<char> BodyRectangle::serialize() {
 	std::vector<char> v;
 	const char* ptr = reinterpret_cast<const char*>(&pos);
-	v.insert(v.begin(), ptr, ptr + sizeof(pos));
+	v.insert(v.end(), ptr, ptr + sizeof(pos));
 	ptr = reinterpret_cast<const char*>(&w);
-	v.insert(v.begin(), ptr, ptr + sizeof(w));
+	v.insert(v.end(), ptr, ptr + sizeof(w));
 	ptr = reinterpret_cast<const char*>(&h);
-	v.insert(v.begin(), ptr, ptr + sizeof(h));
+	v.insert(v.end(), ptr, ptr + sizeof(h));
 	return v;
 }

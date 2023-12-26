@@ -18,13 +18,13 @@ Body::Body(Image* im, BodyRectangle* rect) {
 }
 
 Body::Body(std::vector<char>& serialized_data) : Object(serialized_data) {
-	int bytes_size = serialized_data.front();
-	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	size_t bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
 	std::vector<char> ser_img(serialized_data.begin(), serialized_data.begin() + bytes_size);
 	image = new Image(ser_img);
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
-	bytes_size = serialized_data.front();
-	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + 1);
+	bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
 	std::vector<char> ser_rect(serialized_data.begin(), serialized_data.begin() + bytes_size);
 	rectangle = new BodyRectangle(ser_rect);
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
@@ -53,8 +53,9 @@ std::vector<char> Body::serialize() {
 	v.insert(v.end(), ser_img.begin(), ser_img.end());
 	auto ser_rect = rectangle->serialize();
 	size_t ser_rect_size = ser_rect.size();
-	ptr = reinterpret_cast<const char*>(&ser_img_size);
-	v.insert(v.end(), ptr, ptr + sizeof(ser_img_size));
+	ptr = reinterpret_cast<const char*>(&ser_rect_size);
+	v.insert(v.end(), ptr, ptr + sizeof(ser_rect_size));
+	v.insert(v.end(), ser_rect.begin(), ser_rect.end());
 	ptr = reinterpret_cast<const char*>(&pos);
 	v.insert(v.end(), ptr, ptr + sizeof(pos));
 	ptr = reinterpret_cast<const char*>(&can_collide);

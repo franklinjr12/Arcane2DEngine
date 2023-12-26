@@ -15,11 +15,11 @@ DynamicBody::DynamicBody(Image* im, BodyRectangle* rect) : Body(im, rect) {
 }
 
 DynamicBody::DynamicBody(std::vector<char>& serialized_data) : Body(serialized_data) {
-	accel[0] = *reinterpret_cast<const Vecf*>(serialized_data.data())[0];
-	accel[1] = *reinterpret_cast<const Vecf*>(serialized_data.data())[1];
+	accel[0] = reinterpret_cast<const float*>(serialized_data.data())[0];
+	accel[1] = reinterpret_cast<const float*>(serialized_data.data())[1];
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(Vecf));
-	vel[0] = *reinterpret_cast<const Vecf*>(serialized_data.data())[0];
-	vel[1] = *reinterpret_cast<const Vecf*>(serialized_data.data())[1];
+	vel[0] = reinterpret_cast<const float*>(serialized_data.data())[0];
+	vel[1] = reinterpret_cast<const float*>(serialized_data.data())[1];
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(Vecf));
 }
 

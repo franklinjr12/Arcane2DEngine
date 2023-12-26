@@ -22,7 +22,10 @@ Image::Image(std::vector<char>& serialized_data) {
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(height));
 	texture_mode = *reinterpret_cast<const GLint*>(serialized_data.data());
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(texture_mode));
-	path = std::string(serialized_data.begin(), serialized_data.end());
+	size_t bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
+	path = std::string(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
 	resize(width, height);
 }
 
@@ -157,6 +160,9 @@ std::vector<char> Image::serialize() {
 	v.insert(v.end(), ptr, ptr + sizeof(height));
 	ptr = reinterpret_cast<const char*>(&texture_mode);
 	v.insert(v.end(), ptr, ptr + sizeof(texture_mode));
+	size_t bytes_size = path.size();
+	ptr = reinterpret_cast<const char*>(&bytes_size);
+	v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
 	v.insert(v.end(), path.begin(), path.end());
 	return v;
 }
