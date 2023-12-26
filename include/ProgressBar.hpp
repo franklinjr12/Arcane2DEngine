@@ -9,7 +9,9 @@
 class A2D_API ProgressBar : public UiComponent {
 public:
     ProgressBar(Vecf pos, Image* back, Image* front, int min=0, int max=100);
+    ProgressBar(std::vector<char> serialized_data);
 
+    std::vector<char> serialize();
     void draw() override;
     //should show min max on mouse_over
     //void mouse_over() override;
