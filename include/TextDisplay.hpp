@@ -9,10 +9,12 @@
 class A2D_API TextDisplay : public UiComponent {
 public:
     TextDisplay(Vecf pos, Image* image, std::string text = "", Font* font=nullptr);
+    TextDisplay(std::vector<char> serialized_data);
 
+    std::vector<char> serialize();
     void draw() override;
 
     Vecf font_pos;
     Font* font;
-    std::string text; //unused at the moment
+    std::string text;
 };
