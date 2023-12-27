@@ -11,6 +11,8 @@
 
 Scene::Scene(Camera* camera, Image* background, uint32_t w, uint32_t h) : camera(camera), background(background), w(w), h(h) {}
 
+Scene::~Scene(){ free_resources(); }
+
 void Scene::update(Veci mouse_pos) {
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
 		Body* body = *it;
@@ -161,11 +163,11 @@ Body* Scene::remove_body(ObjectId id) {
 	return nullptr;
 }
 
-Scene::Scene(std::vector<char>& serialized_data) {
+void Scene::init_from_serialized_data(std::vector<char>& serialized_data) {
 	size_t bytes_size;
 	const char* ptr;
 	ObjectType ot;
-	
+
 	w = *reinterpret_cast<const uint32_t*>(serialized_data.data());
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(w));
 	h = *reinterpret_cast<const uint32_t*>(serialized_data.data());
@@ -246,6 +248,10 @@ Scene::Scene(std::vector<char>& serialized_data) {
 	}
 }
 
+Scene::Scene(std::vector<char>& serialized_data) {
+	init_from_serialized_data(serialized_data);
+}
+
 std::vector<char> Scene::serialize() {
 	std::vector<char> v;
 	size_t bytes_size;
@@ -294,4 +300,27 @@ std::vector<char> Scene::serialize() {
 	}
 
 	return v;
+}
+
+void Scene::save_scene() {
+	saved_scene_data = serialize();
+}
+
+void Scene::free_resources() {
+	auto temp_bodies = bodies;
+	for (auto* e : temp_bodies)
+		remove_body(e->id);
+	auto temp_uis = uis;
+	for (auto* e : temp_uis)
+		remove_body(e->id);
+	if (background)
+		delete background;
+	delete camera;
+}
+
+void Scene::load_scene() {
+	free_resources();
+	// must to a copy because the vector is cleared during init
+	auto data = saved_scene_data;
+	init_from_serialized_data(data);
 }
