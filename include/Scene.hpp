@@ -14,6 +14,7 @@ class A2D_API Scene : public Object {
 public:
 
 	Scene(Camera* camera, Image* background, uint32_t w, uint32_t h);
+	Scene(std::vector<char>& serialized_data);
 	void draw() override;
 	void update(Veci mouse_pos);
 	void resolution_changed(int new_width, int new_height);
@@ -21,6 +22,8 @@ public:
 	void add_body(Body* body);
 	Body* get_body(ObjectId id);
 	Body* remove_body(ObjectId id);
+	virtual std::vector<char> serialize();
+
 	Camera* camera;
 	Image* background;
 	uint32_t w, h;

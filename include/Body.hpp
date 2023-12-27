@@ -13,7 +13,7 @@ public:
 	Body(Image* im, BodyRectangle* rect);
 	Body(std::vector<char>& serialized_data);
 	~Body();
-	std::vector<char> serialize();
+	virtual std::vector<char> serialize();
 	virtual void draw() override;
 	virtual void draw(int w, int h);
 	void resize(int new_w, int new_h);
@@ -23,6 +23,7 @@ public:
 	float getX();
 	void setY(float y);
 	float getY();
+	virtual ObjectType get_type() { return ObjectType::Body; }
 
 	Image* image = nullptr;
 	BodyRectangle* rectangle = nullptr;

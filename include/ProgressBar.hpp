@@ -11,7 +11,7 @@ public:
     ProgressBar(Vecf pos, Image* back, Image* front, int min=0, int max=100);
     ProgressBar(std::vector<char> serialized_data);
 
-    std::vector<char> serialize();
+    virtual std::vector<char> serialize();
     void draw() override;
     //should show min max on mouse_over
     //void mouse_over() override;
@@ -19,6 +19,7 @@ public:
     //may do animations
     void set_max(int nmax);
     void set_current(int ncurrent);
+    virtual ObjectType get_type() { return ObjectType::ProgressBar; }
 
     Image* progress_back;
     Image* progress_front;

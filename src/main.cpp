@@ -185,6 +185,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//scene.bodies.push_front(&player);
 	//scene.bodies.push_front(&b2);
+	player->name = "player name";
+	b2->name = "b2 name";
 	scene->add_body(player);
 	scene->add_body(b2);
 
@@ -220,6 +222,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	td->font_pos[1] = td->pos[1] + td->image->height / 2 + 5;
 
 	// add Ui to scene
+	btn.name = "button name";
+	pb->name = "progressbar name";
+	td->name = "textdisplay name";
 	scene->uis.push_front(&btn);
 	scene->uis.push_front(pb);
 	scene->uis.push_front(td);

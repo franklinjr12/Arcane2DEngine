@@ -14,6 +14,7 @@ public:
 	
 	virtual void update(float gravity=0) override;
 	virtual std::vector<char> serialize();
+	virtual ObjectType get_type() { return ObjectType::DynamicBody; }
 
 	Vecf accel;
 	Vecf vel;

@@ -10,7 +10,8 @@ public:
 	}
 	StaticBody(std::vector<char>& serialized_data) : Body(serialized_data) {
 	}
-	std::vector<char> serialize() {
+	virtual std::vector<char> serialize() {
 		return Body::serialize();
 	}
+	virtual ObjectType get_type() { return ObjectType::StaticBody; }
 };

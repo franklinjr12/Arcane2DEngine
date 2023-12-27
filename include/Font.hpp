@@ -13,7 +13,7 @@ public:
 	Font(std::vector<char>& serialized_data);
 	~Font();
 
-	std::vector<char> serialize();
+	virtual std::vector<char> serialize();
 	void print(Vecf pos, char* text, float r = 0, float g = 0, float b = 0, float a = 1);
 
 	unsigned char* font_ttf_buffer;

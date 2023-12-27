@@ -18,7 +18,8 @@ public:
     void draw(Vecf pos, int w = 1, int h = 1);
     void draw(Vecf pos, RGBA_t color, float w=1, float h=1);
     void resize(int neww, int newh, bool flipv = true);
-    std::vector<char> serialize();
+    virtual std::vector<char> serialize();
+    virtual ObjectType get_type() { return ObjectType::Image; }
 
     std::string path;
     float width, height;

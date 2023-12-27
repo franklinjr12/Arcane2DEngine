@@ -41,7 +41,7 @@ public:
 		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(h));
 	}
 
-	std::vector<char> serialize() {
+	virtual std::vector<char> serialize() {
 		std::vector<char> v = Object::serialize();
 		auto ser_img = image->serialize();
 		size_t ser_img_size = ser_img.size();
@@ -80,6 +80,7 @@ public:
 		rect->h = new_h;
 		image->resize(new_w, new_h);
 	}
+	virtual ObjectType get_type() { return ObjectType::UiComponent; }
 
 	bool has_animation = false;
 	bool should_draw = true;

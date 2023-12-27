@@ -3,6 +3,11 @@
 #include "ArcaneUtils.hpp"
 #include "Collisions.hpp"
 #include "Logger.hpp"
+#include "StaticBody.hpp"
+#include "Button.hpp"
+#include "ProgressBar.hpp"
+#include "ImageDisplay.hpp"
+#include "TextDisplay.hpp"
 
 Scene::Scene(Camera* camera, Image* background, uint32_t w, uint32_t h) : camera(camera), background(background), w(w), h(h) {}
 
@@ -154,4 +159,139 @@ Body* Scene::remove_body(ObjectId id) {
 
 	// Body with the specified ID not found
 	return nullptr;
+}
+
+Scene::Scene(std::vector<char>& serialized_data) {
+	size_t bytes_size;
+	const char* ptr;
+	ObjectType ot;
+	
+	w = *reinterpret_cast<const uint32_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(w));
+	h = *reinterpret_cast<const uint32_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(h));
+	gravity = *reinterpret_cast<const float*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(gravity));
+
+	bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
+	auto v = std::vector<char>(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	camera = new Camera(v);
+
+	bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
+	v = std::vector<char>(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+	background = new Image(v);
+
+	while (!serialized_data.empty()) {
+		ot = *reinterpret_cast<const ObjectType*>(serialized_data.data());
+		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(ot));
+		bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
+		v = std::vector<char>(serialized_data.begin(), serialized_data.begin() + bytes_size);
+		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+		// check if it is really needed to case for types like Object, Image...
+		switch (ot) {
+		case ObjectType::Body:
+		{
+			Body* b = new Body(v);
+			add_body(b);
+			break;
+		}
+		case ObjectType::DynamicBody:
+		{
+			auto* d = new DynamicBody(v);
+			add_body(d);
+			break;
+		}
+		case ObjectType::StaticBody:
+		{
+			auto* s = new StaticBody(v);
+			add_body(s);
+			break;
+		}
+		case ObjectType::UiComponent:
+		{
+			auto* u = new UiComponent(v);
+			uis.push_front(u);
+			break;
+		}
+		case ObjectType::Button:
+		{
+			auto* bu = new Button(v);
+			uis.push_front(bu);
+			break;
+		}
+		case ObjectType::ProgressBar:
+		{
+			auto* pu = new ProgressBar(v);
+			uis.push_front(pu);
+			break;
+		}
+		case ObjectType::TextDisplay:
+		{
+			auto* tu = new TextDisplay(v);
+			uis.push_front(tu);
+			break;
+		}
+		case ObjectType::ImageDisplay:
+		{
+			auto* iu = new ImageDisplay(v);
+			uis.push_front(iu);
+			break;
+		}
+		}
+	}
+}
+
+std::vector<char> Scene::serialize() {
+	std::vector<char> v;
+	size_t bytes_size;
+	const char* ptr;
+	ObjectType ot;
+
+	ptr = reinterpret_cast<const char*>(&w);
+	v.insert(v.end(), ptr, ptr + sizeof(w));
+	ptr = reinterpret_cast<const char*>(&h);
+	v.insert(v.end(), ptr, ptr + sizeof(h));
+	ptr = reinterpret_cast<const char*>(&gravity);
+	v.insert(v.end(), ptr, ptr + sizeof(gravity));
+
+	auto ser_camera = camera->serialize();
+	bytes_size = ser_camera.size();
+	ptr = reinterpret_cast<const char*>(&bytes_size);
+	v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
+	v.insert(v.end(), ser_camera.begin(), ser_camera.end());
+
+	auto ser_back = background->serialize();
+	bytes_size = ser_back.size();
+	ptr = reinterpret_cast<const char*>(&bytes_size);
+	v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
+	v.insert(v.end(), ser_back.begin(), ser_back.end());
+
+	for (Object* e : bodies) {
+		ot = e->get_type();
+		ptr = reinterpret_cast<const char*>(&ot);
+		v.insert(v.end(), ptr, ptr + sizeof(ot));
+		auto ser = e->serialize();
+		bytes_size = ser.size();
+		ptr = reinterpret_cast<const char*>(&bytes_size);
+		v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
+		v.insert(v.end(), ser.begin(), ser.end());
+	}
+
+	for (Object* e : uis) {
+		ot = e->get_type();
+		ptr = reinterpret_cast<const char*>(&ot);
+		v.insert(v.end(), ptr, ptr + sizeof(ot));
+		auto ser = e->serialize();
+		bytes_size = ser.size();
+		ptr = reinterpret_cast<const char*>(&bytes_size);
+		v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
+		v.insert(v.end(), ser.begin(), ser.end());
+	}
+
+	return v;
 }

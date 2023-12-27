@@ -11,8 +11,9 @@ public:
     TextDisplay(Vecf pos, Image* image, std::string text = "", Font* font=nullptr);
     TextDisplay(std::vector<char> serialized_data);
 
-    std::vector<char> serialize();
+    virtual std::vector<char> serialize();
     void draw() override;
+    virtual ObjectType get_type() { return ObjectType::TextDisplay; }
 
     Vecf font_pos;
     Font* font;

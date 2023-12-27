@@ -4,6 +4,7 @@
 #include "ArcaneTypes.hpp"
 #include "IdGenerator.hpp"
 #include "EventType.hpp"
+#include "ArcaneTypes.hpp"
 
 #include <string>
 #include <vector>
@@ -20,6 +21,7 @@ public:
 	virtual void update() {};
 	virtual void _update() {};
 	virtual std::vector<char> serialize();
+	virtual ObjectType get_type() { return ObjectType::Object; }
 
 	ObjectId id;
 	std::vector<ObjectGroup> groups;
