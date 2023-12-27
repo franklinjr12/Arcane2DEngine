@@ -3,6 +3,7 @@
 ProgressBar::ProgressBar(Vecf pos, Image* back, Image* front, int min, int max) {
 	this->pos[0] = pos[0];
 	this->pos[1] = pos[1];
+	image = back;
 	progress_back = back;
 	progress_front = front;
 	original_width = front->width;

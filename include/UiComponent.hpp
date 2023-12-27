@@ -8,7 +8,7 @@
 class A2D_API UiComponent : public Object {
 public:
 
-	UiComponent(){}
+	UiComponent() {}
 
 	UiComponent(std::vector<char>& serialized_data) : Object(serialized_data) {
 		size_t bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
@@ -16,18 +16,22 @@ public:
 		std::vector<char> ser_img(serialized_data.begin(), serialized_data.begin() + bytes_size);
 		image = new Image(ser_img);
 		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
-		bytes_size = serialized_data.front();
+		bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
 		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
 		std::vector<char> ser_rect(serialized_data.begin(), serialized_data.begin() + bytes_size);
 		rect = new BodyRectangle(ser_rect);
 		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
-		bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
-		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
-		std::vector<char> ser_animation(serialized_data.begin(), serialized_data.begin() + bytes_size);
-		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
-		animation = new Animation(ser_animation);
-		pos[0] = *reinterpret_cast<const Vecf*>(serialized_data.data())[0];
-		pos[1] = *reinterpret_cast<const Vecf*>(serialized_data.data())[1];
+		has_animation = *reinterpret_cast<const bool*>(serialized_data.data());
+		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(has_animation));
+		if (has_animation) {
+			bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
+			serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
+			std::vector<char> ser_animation(serialized_data.begin(), serialized_data.begin() + bytes_size);
+			serialized_data.erase(serialized_data.begin(), serialized_data.begin() + bytes_size);
+			animation = new Animation(ser_animation);
+		}
+		pos[0] = reinterpret_cast<const float*>(serialized_data.data())[0];
+		pos[1] = reinterpret_cast<const float*>(serialized_data.data())[1];
 		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(pos));
 		should_draw = *reinterpret_cast<const bool*>(serialized_data.data());
 		serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(should_draw));
@@ -48,10 +52,16 @@ public:
 		size_t ser_rect_size = ser_rect.size();
 		ptr = reinterpret_cast<const char*>(&ser_rect_size);
 		v.insert(v.end(), ptr, ptr + sizeof(ser_rect_size));
-		auto ser_animation = animation->serialize();
-		size_t ser_animation_size = ser_animation.size();
-		ptr = reinterpret_cast<const char*>(&ser_animation_size);
-		v.insert(v.end(), ptr, ptr + sizeof(ser_animation_size));
+		v.insert(v.end(), ser_rect.begin(), ser_rect.end());
+		ptr = reinterpret_cast<const char*>(&has_animation);
+		v.insert(v.end(), ptr, ptr + sizeof(has_animation));
+		if (has_animation) {
+			auto ser_animation = animation->serialize();
+			size_t ser_animation_size = ser_animation.size();
+			ptr = reinterpret_cast<const char*>(&ser_animation_size);
+			v.insert(v.end(), ptr, ptr + sizeof(ser_animation_size));
+			v.insert(v.end(), ser_animation.begin(), ser_animation.end());
+		}
 		ptr = reinterpret_cast<const char*>(&pos);
 		v.insert(v.end(), ptr, ptr + sizeof(pos));
 		ptr = reinterpret_cast<const char*>(&should_draw);
@@ -71,6 +81,7 @@ public:
 		image->resize(new_w, new_h);
 	}
 
+	bool has_animation = false;
 	bool should_draw = true;
 	Vecf pos;
 	float w, h;

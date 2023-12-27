@@ -17,8 +17,8 @@ TextDisplay::TextDisplay(std::vector<char> serialized_data) : UiComponent(serial
 	size_t bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));
 	font = new Font(serialized_data);
-	font_pos[0] = *reinterpret_cast<const Vecf*>(serialized_data.data())[0];
-	font_pos[1] = *reinterpret_cast<const Vecf*>(serialized_data.data())[1];
+	font_pos[0] = reinterpret_cast<const float*>(serialized_data.data())[0];
+	font_pos[1] = reinterpret_cast<const float*>(serialized_data.data())[1];
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(font_pos));
 	bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(bytes_size));

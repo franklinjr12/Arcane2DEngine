@@ -27,7 +27,7 @@ Font::Font(std::string font_path, int font_size)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
-Font::Font(std::vector<char> serialized_data) {
+Font::Font(std::vector<char>& serialized_data) {
 	font_size = *reinterpret_cast<const int*>(serialized_data.data());
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(font_size));
 	size_t bytes_size = *reinterpret_cast<const size_t*>(serialized_data.data());

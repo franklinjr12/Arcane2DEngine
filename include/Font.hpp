@@ -10,7 +10,7 @@
 class A2D_API Font {
 public:
 	Font(std::string font_path = "assets/16020_FUTURAM.ttf", int font_size = 32);
-	Font(std::vector<char> serialized_data);
+	Font(std::vector<char>& serialized_data);
 	~Font();
 
 	std::vector<char> serialize();

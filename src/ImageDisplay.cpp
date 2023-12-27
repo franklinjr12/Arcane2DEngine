@@ -9,6 +9,15 @@ ImageDisplay::ImageDisplay(Vecf pos, Image* image) {
 	rect = new BodyRectangle(pos, w, h);
 }
 
+ImageDisplay::ImageDisplay(std::vector<char>& serialized_data) : UiComponent(serialized_data) {
+
+}
+
+std::vector<char> ImageDisplay::serialize() {
+	auto v = UiComponent::serialize();
+	return v;
+}
+
 void ImageDisplay::draw() {
 	image->draw(pos, w, h);
 }

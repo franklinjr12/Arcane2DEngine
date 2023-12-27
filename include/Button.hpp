@@ -15,6 +15,7 @@ public:
     void draw() override;
     void on_click() override;
 
+    bool has_font = false;
     Font* font;
     Vecf font_pos;
     std::string text; //unused at the moment

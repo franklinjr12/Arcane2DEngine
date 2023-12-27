@@ -2,6 +2,7 @@
 #include "DynamicBody.hpp"
 #include "ProgressBar.hpp"
 #include "TextDisplay.hpp"
+#include "ImageDisplay.hpp"
 #include "FontsManager.hpp"
 
 #include <iostream>
