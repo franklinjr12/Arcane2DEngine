@@ -217,7 +217,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Vecf text_pos = { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT - 60 };
 	Font* f = FontsManager::get_instance()->default_font;
 	std::string t = "T";
-	TextDisplay* td = new TextDisplay(text_pos, text_display_image, t, f);
+	TextDisplay* td = new TextDisplay(text_pos, text_display_image, t, new Font(*f));
 	td->font_pos[0] = td->pos[0] + 5;
 	td->font_pos[1] = td->pos[1] + td->image->height / 2 + 5;
 
@@ -228,9 +228,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	scene->uis.push_front(&btn);
 	scene->uis.push_front(pb);
 	scene->uis.push_front(td);
+	scene->name = "main scene";
+	scene->groups.push_back((ObjectGroup)22);
+	scene->groups.push_back((ObjectGroup)100);
+	scene->gravity = 0.98;
 
 	// Menu scene
-	Scene* menu_scene = new Scene(camera, background, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+	Scene* menu_scene = new Scene(new Camera(*camera), new Image(*background), DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 
 	//start button
 	int start_btn_w = 200, start_btn_h = 200;
@@ -254,6 +258,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->events_manager->subscribe(EventType::MouseInput, scene);
 	app->events_manager->subscribe(EventType::MouseInput, menu_scene);
 	app->events_manager->subscribe(EventType::ButtonClicked, app);
+
+	scene->save_scene_to_file("scene.txt");
+
+	scene->load_scene_from_file("scene.txt");
 
 	// infinity loop
 	app->run();

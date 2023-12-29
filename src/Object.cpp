@@ -5,6 +5,10 @@ Object::Object() {
 }
 
 Object::Object(std::vector<char>& serialized_data) {
+	process_serialized_data(serialized_data);
+}
+
+void Object::process_serialized_data(std::vector<char>& serialized_data) {
 	// id
 	id = *reinterpret_cast<const ObjectId*>(serialized_data.data());
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(ObjectId));

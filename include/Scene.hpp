@@ -26,9 +26,11 @@ public:
 	Body* remove_body(ObjectId id);
 	virtual std::vector<char> serialize();
 	// this should be used to set a scene initial condition
-	void save_scene();
+	void save_initial_scene();
 	// this will cause deletion of external objects which is a problem, must be careful when using
-	void load_scene();
+	void load_initial_scene();
+	bool save_scene_to_file(std::string path = "saved_data/scene");
+	bool load_scene_from_file(std::string path = "");
 
 	Camera* camera;
 	Image* background;

@@ -168,6 +168,8 @@ void Scene::init_from_serialized_data(std::vector<char>& serialized_data) {
 	const char* ptr;
 	ObjectType ot;
 
+	Object::process_serialized_data(serialized_data);
+
 	w = *reinterpret_cast<const uint32_t*>(serialized_data.data());
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(w));
 	h = *reinterpret_cast<const uint32_t*>(serialized_data.data());
@@ -248,7 +250,7 @@ void Scene::init_from_serialized_data(std::vector<char>& serialized_data) {
 	}
 }
 
-Scene::Scene(std::vector<char>& serialized_data) {
+Scene::Scene(std::vector<char>& serialized_data) : Object(serialized_data) {
 	init_from_serialized_data(serialized_data);
 }
 
@@ -257,6 +259,9 @@ std::vector<char> Scene::serialize() {
 	size_t bytes_size;
 	const char* ptr;
 	ObjectType ot;
+
+	auto ser_obj = Object::serialize();
+	v.insert(v.end(), ser_obj.begin(), ser_obj.end());
 
 	ptr = reinterpret_cast<const char*>(&w);
 	v.insert(v.end(), ptr, ptr + sizeof(w));
@@ -302,11 +307,12 @@ std::vector<char> Scene::serialize() {
 	return v;
 }
 
-void Scene::save_scene() {
+void Scene::save_initial_scene() {
 	saved_scene_data = serialize();
 }
 
 void Scene::free_resources() {
+	A2D_LOGI("Freeing scene {}{}", name, (uint64_t)id);
 	auto temp_bodies = bodies;
 	for (auto* e : temp_bodies)
 		remove_body(e->id);
@@ -318,9 +324,50 @@ void Scene::free_resources() {
 	delete camera;
 }
 
-void Scene::load_scene() {
+void Scene::load_initial_scene() {
+	A2D_LOGI("Loading scene {}{}", name, (uint64_t)id);
 	free_resources();
 	// must to a copy because the vector is cleared during init
 	auto data = saved_scene_data;
 	init_from_serialized_data(data);
+}
+
+bool Scene::save_scene_to_file(std::string path) {
+	if (saved_scene_data.empty())
+		save_initial_scene();
+	try {
+		std::ofstream outfile(path, std::ios::binary);
+		if (outfile.is_open()) {
+			outfile.write(saved_scene_data.data(), saved_scene_data.size());
+			outfile.close();
+		}
+		else
+			throw std::exception("couldn't open file");
+	}
+	catch (std::exception e) {
+		A2D_LOGE("Error saving scene {}{} to file {}", name, (uint64_t)id, path);
+		return false;
+	}
+	return true;
+}
+
+bool Scene::load_scene_from_file(std::string path) {
+	try {
+		std::ifstream infile(path, std::ios::binary | std::ios::ate);
+		std::streamsize size = infile.tellg();
+		infile.seekg(0, std::ios::beg);
+		if (infile.is_open()) {
+			saved_scene_data.reserve(size);
+			infile.read(saved_scene_data.data(), size);
+			infile.close();
+		}
+		else
+			throw std::exception("couldn't open file");
+		load_initial_scene();
+	}
+	catch (std::exception e) {
+		A2D_LOGE("Error reading scene from file {}", path);
+		return false;
+	}
+	return true;
 }
