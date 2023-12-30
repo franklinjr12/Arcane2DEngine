@@ -3,7 +3,7 @@
 #include "ProgressBar.hpp"
 #include "TextDisplay.hpp"
 #include "ImageDisplay.hpp"
-#include "FontsManager.hpp"
+#include "AssetsManager.hpp"
 
 #include <iostream>
 #include <Windows.h>
@@ -215,7 +215,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// text display
 	Image* text_display_image = new Image("assets/basic_button.png");
 	Vecf text_pos = { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT - 60 };
-	Font* f = FontsManager::get_instance()->default_font;
+	Font* f = AssetsManager::get_instance().get_default_font();
 	std::string t = "T";
 	TextDisplay* td = new TextDisplay(text_pos, text_display_image, t, new Font(*f));
 	td->font_pos[0] = td->pos[0] + 5;
@@ -240,7 +240,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int start_btn_w = 200, start_btn_h = 200;
 	Image btn_start_img("assets/basic_button.png", start_btn_w, start_btn_h);
 	Vecf button_start_pos = { DEFAULT_SCREEN_WIDTH / 2 - btn_start_img.width / 2, DEFAULT_SCREEN_HEIGHT / 2 - btn_start_img.height / 2 };
-	Font* font_start = FontsManager::get_instance()->default_font;
+	Font* font_start = AssetsManager::get_instance().get_default_font();
 	Button* btn_start = new Button(button_start_pos, &btn_start_img, start_btn_w, start_btn_h, "START", font_start);
 	btn_start->font_pos[0] = btn_start->pos[0] + 20;
 	btn_start->font_pos[1] = btn_start->pos[1] + 60;

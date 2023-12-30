@@ -111,6 +111,9 @@
     <ClCompile Include="src\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\AssetsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -205,6 +208,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ConfigurationManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AssetsManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

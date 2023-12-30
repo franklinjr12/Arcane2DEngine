@@ -390,6 +390,7 @@
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ArcaneUtils.cpp" />
+    <ClCompile Include="src\AssetsManager.cpp" />
     <ClCompile Include="src\Body.cpp" />
     <ClCompile Include="src\BodyRectangle.cpp" />
     <ClCompile Include="src\Button.cpp" />
@@ -421,6 +422,7 @@
     <ClInclude Include="include\Application.hpp" />
     <ClInclude Include="include\Arcane2DLib.hpp" />
     <ClInclude Include="include\ArcaneVersion.hpp" />
+    <ClInclude Include="include\AssetsManager.hpp" />
     <ClInclude Include="include\Body.hpp" />
     <ClInclude Include="include\BodyRectangle.hpp" />
     <ClInclude Include="include\Button.hpp" />
