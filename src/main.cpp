@@ -133,54 +133,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->font_big = asset_man->get_font("font64");
 	app->font = app->font_big;
 
-
-	//Image ske1("assets/skelleton1.png");
-	//Image ske2("assets/skelleton2.png");
-	//Image ske3("assets/skelleton3.png");
-	//Image ske4("assets/skelleton4.png");
-	//img = ske1;
 	MyPlayer* player = new MyPlayer();
 	player->draw_rect_overlay = true;
 	player->vel[0] = 0.1;
-	//player->animation.add_animation(ske1);
-	//player->animation.add_animation(ske2);
-	//player->animation.add_animation(ske3);
-	//player->animation.add_animation(ske4);
-
-	//Image img2("assets/big_demon_run_anim_f3.png");
-	//BodyRectangle br2(SCREEN_WIDTH + 10, 0, img.width, img.height);
-	//Body body2(img2, br2);
-
-	//Image img3("assets/wall_edge_left.png", true);
-	//BodyRectangle br3(0, DEFAULT_SCREEN_HEIGHT / 2, SCREEN_WIDTH + 30, 20);
-	//Body surface_body(img3, br3);
-	//Surface surface(surface_body);
-
-	//Image particle_img("assets/first_spell.png", 100, 100);
-	//Image particle_img("assets/first_spell.png");
-	//BodyRectangle particle_rect(0, 300, particle_img.width, particle_img.height);
-	//Body particle_body(particle_img, particle_rect);
-	//particle_body.suffer_gravity = false;
-	//particle_body.vel_y = 5;
-	//Particle particle1(particle_body);
-
-	//Image particle_img2("assets/first_spell.png");
-	//BodyRectangle particle_rect2(0, 300, particle_img2.width, particle_img2.height);
-	//Body particle_body2(particle_img2, particle_rect2);
-	//particle_body2.suffer_gravity = false;
-	//particle_body2.vel_x = 5;
-	//particle_body2.vel_y = 5;
-	//Particle particle2(particle_body2);
 
 	Camera* camera = new Camera(0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 	Image* background = asset_man->get_image("dark_cloud_background1024_720.png");
 	Scene* scene = new Scene(camera, background, DEFAULT_SCREEN_WIDTH * 2, DEFAULT_SCREEN_HEIGHT * 2);
 	scene->gravity = 0;
-	//scene.bodies.push_back(&body);
-	//scene.bodies.push_back(&body2);
-	//scene.surfaces.push_back(&surface);
-	//scene.particles.push_back(&particle1);
-	//scene.particles.push_back(&particle2);
 
 	Image* img2 = asset_man->get_image("main_character.png");
 	Vecf p2 = { DEFAULT_SCREEN_WIDTH / 2 + 100, DEFAULT_SCREEN_HEIGHT / 2 };
@@ -189,8 +149,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	b2->draw_rect_overlay = true;
 	b2->vel[0] = -1;
 
-	//scene.bodies.push_front(&player);
-	//scene.bodies.push_front(&b2);
 	player->name = "player name";
 	b2->name = "b2 name";
 	scene->add_body(player);
@@ -215,7 +173,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pb_pos[0] = 10;
 	pb_pos[1] = DEFAULT_SCREEN_HEIGHT - 60;
 	ProgressBar* pb = new ProgressBar(pb_pos, progress_back, progress_front);
-	//pb->set_current(50);
 	player->health_ui = pb;
 
 	// text display
@@ -235,9 +192,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	scene->uis.push_front(pb);
 	scene->uis.push_front(td);
 	scene->name = "main scene";
-	scene->groups.push_back((ObjectGroup)22);
-	scene->groups.push_back((ObjectGroup)100);
-	scene->gravity = 0.98;
 
 	// Menu scene
 	Scene* menu_scene = new Scene(new Camera(*camera), new Image(*background), DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
@@ -264,10 +218,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->events_manager->subscribe(EventType::MouseInput, scene);
 	app->events_manager->subscribe(EventType::MouseInput, menu_scene);
 	app->events_manager->subscribe(EventType::ButtonClicked, app);
-
-	scene->save_scene_to_file("scene.txt");
-
-	scene->load_scene_from_file("scene.txt");
 
 	// infinity loop
 	app->run();
