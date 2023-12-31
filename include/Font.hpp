@@ -23,4 +23,7 @@ public:
 	GLuint font_ftex;
 	std::string font_path;
 	int font_size;
+
+protected:
+	void load_font();
 };
