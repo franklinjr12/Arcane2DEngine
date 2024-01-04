@@ -297,7 +297,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DEBUG_SHOW_FPS;_DEBUG;ARCANE2D_COMPILE;_WIN64;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\glfw\include;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\spdlog\include;$(SolutionDir)dependencies\stb;$(SolutionDir)dependencies\imgui;$(SolutionDir)dependencies\imgui\backends;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\glfw\include;$(SolutionDir)dependencies\glew\include;$(SolutionDir)dependencies\spdlog\include;$(SolutionDir)dependencies\stb;$(SolutionDir)dependencies\imgui;$(SolutionDir)dependencies\imgui\backends;$(SolutionDir)dependencies\inifile-cpp\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>

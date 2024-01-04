@@ -5,7 +5,7 @@
 
 #define MAJOR 0
 #define MINOR 4
-#define PATCH 0
+#define PATCH 1
 #define BUILD 3
 
 std::string arcane_version_string() {

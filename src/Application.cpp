@@ -7,6 +7,7 @@ Application::Application(int width, int height) : fc(DEFAULT_FPS) {
 	this->width = width;
 	this->height = height;
 	//window_name = name;
+	events_manager = EventsManager::getInstance();
 	auto conf = ConfigurationManager::get_instance();
 	if (conf.get_resolution_height() > 0)
 		this->height = conf.get_resolution_height();
