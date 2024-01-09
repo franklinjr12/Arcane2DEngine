@@ -143,6 +143,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	scene->gravity = 0;
 
 	Image* img2 = asset_man->get_image("main_character.png");
+	img2->fliph();
 	Vecf p2 = { DEFAULT_SCREEN_WIDTH / 2 + 100, DEFAULT_SCREEN_HEIGHT / 2 };
 	BodyRectangle* br2 = new BodyRectangle(p2, img2->width, img2->height);
 	DynamicBody* b2 = new DynamicBody(img2, br2);

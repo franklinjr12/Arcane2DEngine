@@ -6,7 +6,7 @@
 #define MAJOR 0
 #define MINOR 4
 #define PATCH 1
-#define BUILD 3
+#define BUILD 5
 
 std::string arcane_version_string() {
 	char b[128];

@@ -5,14 +5,14 @@
 #include <stb_image_resize2.h>
 #include "Image.hpp"
 
-Image::Image(std::string path, int custom_w, int custom_h, bool texture_clamp, bool flipv) {
+Image::Image(std::string path, int custom_w, int custom_h, bool texture_clamp, bool flipv, bool fliph) {
 	this->path = path;
 	if (texture_clamp)
 		texture_mode = GL_REPEAT;
 	if (custom_w && custom_h)
-		resize(custom_w, custom_h, flipv);
+		resize(custom_w, custom_h, flipv, fliph);
 	else
-		loadImage(path, flipv);
+		loadImage(path, flipv, fliph);
 }
 
 Image::Image(std::vector<char>& serialized_data) {
@@ -36,7 +36,9 @@ Image::~Image() {
 	}
 
 }
-void Image::loadImage(std::string path, bool flipv) {
+void Image::loadImage(std::string path, bool flipv, bool fliph) {
+	last_fliph = fliph;
+	last_flipv = flipv;
 	if (texture_id != 0)
 		glDeleteTextures(1, &texture_id);
 	int nrChannels;
@@ -56,6 +58,20 @@ void Image::loadImage(std::string path, bool flipv) {
 
 	if (data)
 	{
+		if (fliph) {
+			int rowSize = width * nrChannels;
+			uint8_t* tempRow = new uint8_t[rowSize];
+			for (int y = 0; y < height; ++y) {
+				uint8_t* row = data + y * rowSize;
+				std::memcpy(tempRow, row, rowSize);
+				for (int x = 0; x < width / 2; ++x) {
+					for (int c = 0; c < nrChannels; ++c) {
+						std::swap(row[x * nrChannels + c], row[((int)width - 1 - x) * nrChannels + c]);
+					}
+				}
+			}
+			delete[] tempRow;
+		}
 		if (nrChannels == 4) {
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		}
@@ -94,7 +110,9 @@ void Image::draw(Vecf pos, RGBA_t color, float w, float h) {
 	glEnd();
 }
 
-void Image::resize(int neww, int newh, bool flipv) {
+void Image::resize(int neww, int newh, bool flipv, bool fliph) {
+	last_fliph = fliph;
+	last_flipv = flipv;
 	if (texture_id != 0) {
 		glDeleteTextures(1, &texture_id);
 		texture_id = 0;
@@ -109,6 +127,20 @@ void Image::resize(int neww, int newh, bool flipv) {
 
 	// Perform the resize
 	if (data) {
+		if (fliph) {
+			int rowSize = width * nrChannels;
+			uint8_t* tempRow = new uint8_t[rowSize];
+			for (int y = 0; y < height; ++y) {
+				uint8_t* row = data + y * rowSize;
+				std::memcpy(tempRow, row, rowSize);
+				for (int x = 0; x < width / 2; ++x) {
+					for (int c = 0; c < nrChannels; ++c) {
+						std::swap(row[x * nrChannels + c], row[((int)width - 1 - x) * nrChannels + c]);
+					}
+				}
+			}
+			delete[] tempRow;
+		}
 		stbir_pixel_layout sp = STBIR_RGBA;
 		if (nrChannels == 3) sp = STBIR_RGB;
 		if (!stbir_resize_uint8_linear(data, width, height, 0, resized_data, neww, newh, 0, sp)) {
@@ -150,6 +182,16 @@ void Image::resize(int neww, int newh, bool flipv) {
 	}
 
 	stbi_image_free(resized_data);
+}
+
+void Image::flipv() {
+	last_flipv = !last_flipv;
+	loadImage(path, last_flipv, last_fliph);
+}
+
+void Image::fliph() {
+	last_fliph = !last_fliph;
+	loadImage(path, last_flipv, last_fliph);
 }
 
 std::vector<char> Image::serialize() {
