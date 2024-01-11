@@ -68,7 +68,8 @@ std::vector<char> Body::serialize() {
 }
 
 void Body::draw() {
-	image->draw(pos.pos, rectangle->w, rectangle->h);
+	Vecf draw_pos = { pos.x - image->width / 2,  pos.y - image->height / 2 };
+	image->draw(draw_pos, image->width, image->height);
 	if (draw_rect_overlay) {
 		Image& blue_overlay = GetBlueOverlayImage();
 		RGBA_t color = { 1,1,1,OVERLAY_ALPHA };
@@ -77,7 +78,8 @@ void Body::draw() {
 }
 
 void Body::draw(int w, int h) {
-	image->draw(pos.pos, w, h);
+	Vecf draw_pos = { pos.x - w / 2,  pos.y - h / 2 };
+	image->draw(draw_pos, w, h);
 	if (draw_rect_overlay) {
 		Image& blue_overlay = GetBlueOverlayImage();
 		RGBA_t color = { 1,1,1,OVERLAY_ALPHA };
@@ -92,20 +94,18 @@ void Body::resize(int new_w, int new_h) {
 }
 
 void Body::setX(float x) {
-	pos.x = x + image->width / 2;
-	rectangle->pos.x = x + image->width / 2;
+	pos.x = x;
+	rectangle->pos.x = x - image->width / 2;
 }
 
-//float Body::getX() { return pos.x - image->width / 2; }
-float Body::getX() { return pos.x + image->width; }
+float Body::getX() { return pos.x; }
 
 void Body::setY(float y) {
-	pos.y = y - image->height / 2;
+	pos.y = y;
 	rectangle->pos.y = y - image->height / 2;
 }
 
-//float Body::getY() { return pos.y + image->height / 2; }
-float Body::getY() { return pos.y - image->height; }
+float Body::getY() { return pos.y; }
 
 void Body::update(float gravity) {}
 

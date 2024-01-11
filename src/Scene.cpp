@@ -81,8 +81,8 @@ void Scene::draw() {
 			body->setX(p.x + camera->rect.pos.x);
 			body->setY(p.y + camera->rect.pos.y);
 			body->draw();
-			body->setX(p.x - (1.5*body->image->width));
-			body->setY(p.y + (1.5*body->image->height));
+			body->setX(p.x);
+			body->setY(p.y);
 		}
 	}
 	for (auto it = uis.begin(); it != uis.end(); it++) {
