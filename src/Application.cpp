@@ -16,6 +16,7 @@ Application::Application(int width, int height) : fc(DEFAULT_FPS) {
 	if (conf.get_fps() > 0)
 		fc.fps = conf.get_fps();
 	A2D_LOGI("Using resolution: {} x {} fps: {}", this->width, this->height, fc.fps);
+	init();
 }
 
 //Application::~Application(){}

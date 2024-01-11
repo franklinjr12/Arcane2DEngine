@@ -25,7 +25,7 @@ public:
 		sprintf_s(text_buffer, "mx: %03d my: %03d", (int)mouse_pos[0], (int)mouse_pos[1]);
 		font->print(pos, (char*)text_buffer);
 		pos[1] += 20;
-		sprintf_s(text_buffer, "px: %03d py: %03d", (int)player->getX(), (int)player->getY());
+		sprintf_s(text_buffer, "px: %03d py: %03d", (int)player->getX() + (int)player->image->width, (int)player->getY());
 		font->print(pos, (char*)text_buffer);
 		pos[1] += 20;
 		sprintf_s(text_buffer, "rx: %03d ry: %03d", (int)player->rectangle->pos.x, (int)player->rectangle->pos.x);
@@ -117,7 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #endif
 {
 	GameExample* app = new GameExample();
-	app->init();
+	//app->init();
 
 	auto asset_man = AssetsManager::get_instance();
 
@@ -135,7 +135,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	MyPlayer* player = new MyPlayer();
 	player->draw_rect_overlay = true;
-	player->vel[0] = 0.1;
+	player->vel[0] = 0;
 
 	Camera* camera = new Camera(0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 	Image* background = asset_man->get_image("dark_cloud_background1024_720.png");
@@ -153,7 +153,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	player->name = "player name";
 	b2->name = "b2 name";
 	scene->add_body(player);
-	scene->add_body(b2);
+	//scene->add_body(b2);
 
 	app->game_scene = scene;
 	app->player = player;

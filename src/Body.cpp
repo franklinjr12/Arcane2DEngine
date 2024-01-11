@@ -96,14 +96,16 @@ void Body::setX(float x) {
 	rectangle->pos.x = x + image->width / 2;
 }
 
-float Body::getX() { return pos.x - image->width / 2; }
+//float Body::getX() { return pos.x - image->width / 2; }
+float Body::getX() { return pos.x + image->width; }
 
 void Body::setY(float y) {
 	pos.y = y - image->height / 2;
 	rectangle->pos.y = y - image->height / 2;
 }
 
-float Body::getY() { return pos.y + image->height / 2; }
+//float Body::getY() { return pos.y + image->height / 2; }
+float Body::getY() { return pos.y - image->height; }
 
 void Body::update(float gravity) {}
 

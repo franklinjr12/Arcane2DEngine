@@ -11,7 +11,7 @@
 
 Scene::Scene(Camera* camera, Image* background, uint32_t w, uint32_t h) : camera(camera), background(background), w(w), h(h) {}
 
-Scene::~Scene(){ free_resources(); }
+Scene::~Scene() { free_resources(); }
 
 void Scene::update(Veci mouse_pos) {
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
@@ -81,8 +81,8 @@ void Scene::draw() {
 			body->setX(p.x + camera->rect.pos.x);
 			body->setY(p.y + camera->rect.pos.y);
 			body->draw();
-			body->setX(p.x);
-			body->setY(p.y);
+			body->setX(p.x - (1.5*body->image->width));
+			body->setY(p.y + (1.5*body->image->height));
 		}
 	}
 	for (auto it = uis.begin(); it != uis.end(); it++) {
