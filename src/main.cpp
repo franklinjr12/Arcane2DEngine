@@ -56,6 +56,7 @@ public:
 			for (int i = 0; i < size; i++)
 				s += (char)data[2 + i];
 			printf("Timer %s timeout\n", s.c_str());
+			t1->stop();
 			break;
 		}
 	}

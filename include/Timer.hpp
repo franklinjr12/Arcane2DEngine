@@ -17,6 +17,7 @@ public:
 	std::chrono::milliseconds timeout;
 	std::chrono::milliseconds current;
 	bool should_repeat;
+	bool should_stop = false;
 	std::thread* t = nullptr;
 };
 

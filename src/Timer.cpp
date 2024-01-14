@@ -11,32 +11,32 @@ Timer::Timer(uint64_t timeout_ms, bool repeat) {
 	name = "timer" + std::string(buffer);
 	should_repeat = repeat;
 	timeout = timeout_ms * 1ms;
-	current = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 }
 
 void Timer::start() {
+	should_stop = false;
+	current = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 	if (!t) {
 		t = new std::thread(timer_thread, this);
 	}
 }
 
 void Timer::stop() {
+	should_stop = true;
+	t->join();
 	delete t;
+	t = nullptr;
 }
 
 void Timer::reset(){
-	current = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-	if (!t) {
-		t = new std::thread(timer_thread, this);
-	}
+	stop();
+	start();
 }
 
 void timer_thread(Timer* timer) {
-	while (true) {
+	while (!timer->should_stop) {
 		auto now = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-		auto diff = now - timer->current;
-		if (diff >= timer->timeout) {
-		//if (now - timer->current >= timer->timeout) {
+		if (now - timer->current >= timer->timeout) {
 			EventData ed;
 			ed.type = EventType::Timer;
 			ed.data.push_back((event_bytes_type)EventType::Timer);
@@ -47,7 +47,6 @@ void timer_thread(Timer* timer) {
 			if (timer->should_repeat)
 				timer->current = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 			else {
-				//delete timer->t;
 				break;
 			}
 		}
