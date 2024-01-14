@@ -18,6 +18,7 @@
 #include "Logger.hpp"
 #include "ConfigurationManager.hpp"
 #include "ArcaneUtils.hpp"
+#include "Timer.hpp"
 
 #ifdef COMPILE_IMGUI
 #define IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION

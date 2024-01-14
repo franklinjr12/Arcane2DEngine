@@ -40,7 +40,7 @@ public:
 	}
 	void process_events(std::vector<event_bytes_type> data) override {
 		switch (data[0]) {
-		case (event_bytes_type)EventType::ButtonClicked:
+		case (event_bytes_type)EventType::ButtonClicked: {
 			ObjectId btn_id = (ObjectId)data[1];
 			if (start_btn != nullptr && btn_id == start_btn->id) {
 				if (game_scene != nullptr) {
@@ -48,6 +48,15 @@ public:
 					font = font_small;
 				}
 			}
+			break;
+		}
+		case (event_bytes_type)EventType::Timer:
+			int size = (int)data[1];
+			std::string s = "";
+			for (int i = 0; i < size; i++)
+				s += (char)data[2 + i];
+			printf("Timer %s timeout\n", s.c_str());
+			break;
 		}
 	}
 
@@ -57,6 +66,7 @@ public:
 	Button* start_btn;
 	Scene* menu_scene;
 	Scene* game_scene;
+	Timer* t1;
 };
 
 class MyPlayer : public Player {
@@ -117,6 +127,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #endif
 {
 	GameExample* app = new GameExample();
+	app->t1 = new Timer(2000, false);
+	app->t1->start();
 	//app->init();
 
 	auto asset_man = AssetsManager::get_instance();
@@ -219,6 +231,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->events_manager->subscribe(EventType::MouseInput, scene);
 	app->events_manager->subscribe(EventType::MouseInput, menu_scene);
 	app->events_manager->subscribe(EventType::ButtonClicked, app);
+	app->events_manager->subscribe(EventType::Timer, app);
 
 	// infinity loop
 	app->run();

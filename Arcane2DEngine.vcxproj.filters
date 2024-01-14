@@ -81,30 +81,6 @@
     <ClCompile Include="src\FontsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\imgui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\imgui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\imgui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\imgui\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ConfigurationManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,6 +91,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ImagesManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -217,6 +196,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ImagesManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

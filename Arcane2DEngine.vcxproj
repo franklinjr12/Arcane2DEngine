@@ -413,6 +413,7 @@
     <ClCompile Include="src\ProgressBar.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\TextDisplay.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -451,6 +452,7 @@
     <ClInclude Include="include\ArcaneUtils.hpp" />
     <ClInclude Include="include\TextDisplay.hpp" />
     <ClInclude Include="include\UiComponent.hpp" />
+    <ClInclude Include="include\Timer.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
