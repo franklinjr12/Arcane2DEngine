@@ -51,11 +51,8 @@ public:
 			break;
 		}
 		case (event_bytes_type)EventType::Timer:
-			int size = (int)data[1];
-			std::string s = "";
-			for (int i = 0; i < size; i++)
-				s += (char)data[2 + i];
-			printf("Timer %s timeout\n", s.c_str());
+			ObjectId timer_id = (ObjectId)data[1];
+			printf("Timer %lu timeout\n", timer_id);
 			t1->stop();
 			break;
 		}

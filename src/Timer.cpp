@@ -40,9 +40,7 @@ void timer_thread(Timer* timer) {
 			EventData ed;
 			ed.type = EventType::Timer;
 			ed.data.push_back((event_bytes_type)EventType::Timer);
-			ed.data.push_back(static_cast<event_bytes_type>(timer->name.size()));
-			for (auto& e : timer->name)
-				ed.data.push_back(static_cast<event_bytes_type>(e));
+			ed.data.push_back((event_bytes_type)timer->id);
 			EventsManager::getInstance()->events_data.push(ed);
 			if (timer->should_repeat)
 				timer->current = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
