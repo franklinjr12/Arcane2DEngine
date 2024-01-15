@@ -5,7 +5,7 @@
 #include <thread>
 #include <chrono>
 
-class Timer : public Object {
+class A2D_API Timer : public Object {
 public:
 	
 	Timer(uint64_t timeout_ms, bool repeat = false);
