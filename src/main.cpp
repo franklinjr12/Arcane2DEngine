@@ -53,7 +53,7 @@ public:
 		case (event_bytes_type)EventType::Timer:
 			ObjectId timer_id = (ObjectId)data[1];
 			printf("Timer %lu timeout\n", timer_id);
-			t1->stop();
+			t1->reset();
 			break;
 		}
 	}

@@ -23,9 +23,11 @@ void Timer::start() {
 
 void Timer::stop() {
 	should_stop = true;
-	t->join();
-	delete t;
-	t = nullptr;
+	if (t) {
+		t->join();
+		delete t;
+		t = nullptr;
+	}
 }
 
 void Timer::reset(){
