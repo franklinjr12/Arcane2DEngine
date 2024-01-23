@@ -75,6 +75,7 @@ void Body::draw() {
 		RGBA_t color = { 1,1,1,OVERLAY_ALPHA };
 		blue_overlay.draw(rectangle->pos.pos, color, rectangle->w, rectangle->h);
 	}
+	_draw();
 }
 
 void Body::draw(int w, int h) {
@@ -85,6 +86,7 @@ void Body::draw(int w, int h) {
 		RGBA_t color = { 1,1,1,OVERLAY_ALPHA };
 		blue_overlay.draw(rectangle->pos.pos, color, rectangle->w, rectangle->h);
 	}
+	_draw();
 }
 
 void Body::resize(int new_w, int new_h) {
