@@ -70,7 +70,9 @@ void ProgressBar::draw() {
 			last_current = current;
 			progress_front->resize((current * original_width) / max, progress_front->height);
 		}
-		progress_front->draw(pos, current, progress_front->height);
+		float temp = current;
+		temp = (temp * progress_front->width) / max;
+		progress_front->draw(pos, temp, progress_front->height);
 	}
 }
 
