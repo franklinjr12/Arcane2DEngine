@@ -4,24 +4,29 @@
 #include <iostream>
 
 void EventsManager::run() {
-		while (!events_data.empty()) {
-			auto& evt = events_data.front();
+	while (!events_data.empty()) {
+		auto& evt = events_data.front();
+		if (&evt != NULL) {
 			auto& v = subscribers[evt.type];
 			for (int i = 0; i < v.size(); i++) {
-				A2D_LOGI("Object {} processing evt {}", v[i]->id, (int)evt.type);
-				v[i]->process_events(evt.data);
+				// this is a workaround, but no events should have empty data
+				if (!evt.data.empty()) {
+					A2D_LOGI("Object {} processing evt {}", v[i]->id, (int)evt.type);
+					v[i]->process_events(evt.data);
+				}
 			}
 			events_data.pop();
 		}
-		while (!custom_events_data.empty()) {
-			auto& cevt = custom_events_data.front();
-			auto& v = custom_subscribers[cevt.name];
-			for (int i = 0; i < v.size(); i++) {
-				A2D_LOGI("Object {} processing cevt {}", v[i]->id, cevt.name);
-				v[i]->process_events(cevt.data);
-			}
-			custom_events_data.pop();
+	}
+	while (!custom_events_data.empty()) {
+		auto& cevt = custom_events_data.front();
+		auto& v = custom_subscribers[cevt.name];
+		for (int i = 0; i < v.size(); i++) {
+			A2D_LOGI("Object {} processing cevt {}", v[i]->id, cevt.name);
+			v[i]->process_events(cevt.data);
 		}
+		custom_events_data.pop();
+	}
 }
 
 void EventsManager::subscribe(EventType evt, Object* obj) {
