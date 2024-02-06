@@ -15,6 +15,7 @@ public:
 
 	virtual std::vector<char> serialize();
 	void print(Vecf pos, char* text, float r = 0, float g = 0, float b = 0, float a = 1);
+	void print(Vecf pos, char* text, RGBA_t color);
 
 	unsigned char* font_ttf_buffer;
 	unsigned char* font_temp_bitmap;

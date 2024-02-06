@@ -81,3 +81,7 @@ void Font::print(Vecf pos, char* text, float r, float g, float b, float a)
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //unset the color to not affect other stuff
 	glEnd();
 }
+
+void Font::print(Vecf pos, char* text, RGBA_t color){
+	print(pos, text, color[0], color[1], color[2], color[3]);
+}

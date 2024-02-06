@@ -18,3 +18,5 @@ A2D_API Image& GetBlueOverlayImage();
 A2D_API float DistanceVecf(Vecf v1, Vecf v2);
 
 A2D_API float MagVecf(Vecf v);
+
+A2D_API bool VectorHasGroupId(std::vector<ObjectGroup>* groups, ObjectGroup& id);

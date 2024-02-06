@@ -14,3 +14,11 @@ float DistanceVecf(Vecf v1, Vecf v2) {
 float MagVecf(Vecf v) {
 	return sqrt(v[0] * v[0] + v[1] * v[1]);
 }
+
+A2D_API bool VectorHasGroupId(std::vector<ObjectGroup>& groups, ObjectGroup& id) {
+	for (int i = 0; i < groups.size(); i++) {
+		if ((uint32_t)groups[i] == (uint32_t)id)
+			return true;
+	}
+	return false;
+}
