@@ -46,6 +46,7 @@ void Scene::update(Veci mouse_pos) {
 				ui->mouse_over();
 		}
 	}
+	_update();
 }
 
 void Scene::process_events(std::vector<event_bytes_type> data) {
@@ -98,6 +99,7 @@ void Scene::draw() {
 			ui->pos[1] = p.y;
 		}
 	}
+	_draw();
 }
 
 void Scene::resolution_changed(int new_width, int new_height) {
