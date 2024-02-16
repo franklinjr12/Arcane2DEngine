@@ -54,7 +54,10 @@ public:
 	void poll_events();
 	void update();
 	void draw();
+	void change_scene(ObjectId scene_id);
+	void change_scene(std::string scene_name);
 	Scene* current_scene = nullptr;
+	std::vector<Scene*> scenes;
 	GLFWwindow* window = nullptr;
 	int width, height;
 #ifdef COMPILE_IMGUI

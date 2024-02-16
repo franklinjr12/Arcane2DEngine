@@ -9,7 +9,8 @@ enum class A2D_API EventType {
 	KeyboardInput,
 	MouseInput,
 	ButtonClicked,
-	Timer
+	Timer,
+	SceneChanged
 };
 
 typedef uint64_t event_bytes_type;

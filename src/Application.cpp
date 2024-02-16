@@ -160,6 +160,39 @@ void Application::draw() {
 	current_scene->draw();
 }
 
+EventData create_change_scene_event(Scene* s) {
+	EventData ed;
+	ed.type = EventType::SceneChanged;
+	ed.data.push_back((event_bytes_type)EventType::SceneChanged);
+	ed.data.push_back((event_bytes_type)s->name.size());
+	for (auto c : s->name) {
+		ed.data.push_back((event_bytes_type)c);
+	}
+	return ed;
+}
+
+void Application::change_scene(ObjectId scene_id) {
+	for (Scene* s : scenes) {
+		if (s->id == scene_id) {
+			EventData ed = create_change_scene_event(current_scene);
+			events_manager->events_data.push(ed);
+			current_scene = s;
+			return;
+		}
+	}
+}
+
+void Application::change_scene(std::string scene_name) {
+	for (Scene* s : scenes) {
+		if (s->name == scene_name) {
+			EventData ed = create_change_scene_event(current_scene);
+			events_manager->events_data.push(ed);
+			current_scene = s;
+			return;
+		}
+	}
+}
+
 #ifdef COMPILE_IMGUI
 void Application::handle_imgui() {
 	// Start the Dear ImGui frame
