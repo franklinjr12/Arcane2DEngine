@@ -36,11 +36,13 @@ void EventsManager::subscribe(EventType evt, Object* obj) {
 
 void EventsManager::unsubscribe(EventType evt, Object* obj) {
 	A2D_LOGI("Object {} unsubscribed to {}", obj->id, (int)evt);
-	auto v = subscribers[evt];
+	auto& v = subscribers[evt];
 	auto it = v.begin();
 	for (int i = 0; i < v.size(); i++, it++)
-		if (v[i] == obj)
+		if (v[i] == obj) {
 			v.erase(it);
+			return;
+		}
 }
 
 void EventsManager::subscribe(std::string evt_name, Object* obj) {
@@ -50,9 +52,11 @@ void EventsManager::subscribe(std::string evt_name, Object* obj) {
 
 void EventsManager::unsubscribe(std::string evt_name, Object* obj) {
 	A2D_LOGI("Object {} unsubscribed to {}", obj->id, evt_name);
-	auto v = custom_subscribers[evt_name];
+	auto& v = custom_subscribers[evt_name];
 	auto it = v.begin();
 	for (int i = 0; i < v.size(); i++, it++)
-		if (v[i] == obj)
+		if (v[i] == obj) {
 			v.erase(it);
+			return;
+		}
 }

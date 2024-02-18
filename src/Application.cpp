@@ -174,7 +174,7 @@ EventData create_change_scene_event(Scene* s) {
 void Application::change_scene(ObjectId scene_id) {
 	for (Scene* s : scenes) {
 		if (s->id == scene_id) {
-			EventData ed = create_change_scene_event(current_scene);
+			EventData ed = create_change_scene_event(s);
 			events_manager->events_data.push(ed);
 			current_scene = s;
 			return;
@@ -185,7 +185,7 @@ void Application::change_scene(ObjectId scene_id) {
 void Application::change_scene(std::string scene_name) {
 	for (Scene* s : scenes) {
 		if (s->name == scene_name) {
-			EventData ed = create_change_scene_event(current_scene);
+			EventData ed = create_change_scene_event(s);
 			events_manager->events_data.push(ed);
 			current_scene = s;
 			return;
