@@ -17,6 +17,7 @@ public:
 
 	void process_serialized_data(std::vector<char>& serialized_data);
 	virtual void process_events(std::vector<event_bytes_type> data) {};
+	virtual void _process_events(std::vector<event_bytes_type> data) {};
 	virtual void draw() {};
 	virtual void _draw() {};
 	virtual void update() {};

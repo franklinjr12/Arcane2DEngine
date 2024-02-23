@@ -80,6 +80,9 @@ public:
 		rect->h = new_h;
 		image->resize(new_w, new_h);
 	}
+	virtual void update() override {
+		_update();
+	}
 	virtual ObjectType get_type() { return ObjectType::UiComponent; }
 
 	bool has_animation = false;

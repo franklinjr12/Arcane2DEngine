@@ -38,6 +38,7 @@ void Scene::update(Veci mouse_pos) {
 	}
 	for (auto it = uis.begin(); it != uis.end(); it++) {
 		UiComponent* ui = *it;
+		ui->update();
 		if (ui->should_draw) {
 			Point p;
 			p.x = mouse_pos[0];
@@ -68,6 +69,7 @@ void Scene::process_events(std::vector<event_bytes_type> data) {
 	default:
 		;
 	}
+	_process_events(data);
 }
 
 void Scene::draw() {
