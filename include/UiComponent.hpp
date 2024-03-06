@@ -5,6 +5,8 @@
 #include "BodyRectangle.hpp"
 #include "Animation.hpp"
 
+#include <forward_list>
+
 class A2D_API UiComponent : public Object {
 public:
 
@@ -93,3 +95,5 @@ public:
 	BodyRectangle* rect;
 	Animation* animation;
 };
+
+A2D_API Object* GetObjectFromCollectionByName(std::forward_list<UiComponent*>& collection, const std::string& name);

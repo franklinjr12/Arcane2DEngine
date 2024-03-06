@@ -414,6 +414,7 @@
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\TextDisplay.cpp" />
     <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\UiComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

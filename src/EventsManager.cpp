@@ -17,6 +17,8 @@ void EventsManager::run() {
 			}
 			events_data.pop();
 		}
+		else
+			break;
 	}
 	while (!custom_events_data.empty()) {
 		auto& cevt = custom_events_data.front();
