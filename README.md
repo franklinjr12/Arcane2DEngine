@@ -1,3 +1,5 @@
+<img align="center" src="github/logo.png">
+
 # Arcane2DEngine
 A game engine focused on 2D games for Windows OS. Done to be simple.
 Currently under development, the test code relies on main.cpp when option Debug is set.
