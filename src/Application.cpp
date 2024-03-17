@@ -187,7 +187,9 @@ void Application::change_scene(std::string scene_name) {
 		if (s->name == scene_name) {
 			EventData ed = create_change_scene_event(s);
 			events_manager->events_data.push(ed);
+			current_scene->on_scene_exited();
 			current_scene = s;
+			current_scene->on_scene_entered();
 			return;
 		}
 	}

@@ -17,8 +17,21 @@ void EventsManager::run() {
 			}
 			events_data.pop();
 		}
-		else
-			break;
+		else {
+			// this is also some workaround, but no NULL events should exist
+			try {
+				events_data.pop();
+			}
+			catch (std::exception e) {
+				A2D_LOGE("exception removing event {}", e.what());
+			}
+			catch (...) {
+				A2D_LOGE("exception removing event");
+			}
+
+			//events_data.pop();
+			//break;
+		}
 	}
 	while (!custom_events_data.empty()) {
 		auto& cevt = custom_events_data.front();

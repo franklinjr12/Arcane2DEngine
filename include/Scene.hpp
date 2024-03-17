@@ -21,6 +21,9 @@ public:
 	void update(Veci mouse_pos);
 	void resolution_changed(int new_width, int new_height);
 	void process_events(std::vector<event_bytes_type> data) override;
+	// should implement this if you want something to happen when this scene is loaded
+	virtual void on_scene_entered() {}
+	virtual void on_scene_exited() {}
 	void add_body(Body* body);
 	Body* get_body(ObjectId id);
 	Body* remove_body(ObjectId id);
