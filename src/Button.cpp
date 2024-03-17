@@ -72,7 +72,7 @@ void Button::draw() {
 }
 
 void Button::on_click() {
-	A2D_LOGI("Button {} clicked", id);
+	A2D_LOGI("Button {} clicked {}", id, name);
 	EventData ed;
 	ed.type = EventType::ButtonClicked;
 	ed.data.push_back((event_bytes_type)ed.type);

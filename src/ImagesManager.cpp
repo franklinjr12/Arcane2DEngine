@@ -11,8 +11,10 @@ ImagesManager* ImagesManager::get_instance() {
 
 Image* ImagesManager::get_image(std::string img_name) {
 	try {
-		if (images_map.at(img_name))
-			return images_map.at(img_name);
+		if (images_map.at(img_name)) {
+			auto* i = images_map.at(img_name);
+			return i;
+		}
 	}
 	catch (std::out_of_range) {
 		Image* img = new Image("assets/" + img_name);

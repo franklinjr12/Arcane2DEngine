@@ -8,10 +8,16 @@
 #include "ProgressBar.hpp"
 #include "ImageDisplay.hpp"
 #include "TextDisplay.hpp"
+#include "EventsManager.hpp"
 
-Scene::Scene(Camera* camera, Image* background, uint32_t w, uint32_t h) : camera(camera), background(background), w(w), h(h) {}
+Scene::Scene(Camera* camera, Image* background, uint32_t w, uint32_t h) : camera(camera), background(background), w(w), h(h) {
+	EventsManager::getInstance()->subscribe(EventType::MouseInput, this);
+}
 
-Scene::~Scene() { free_resources(); }
+Scene::~Scene() {
+	EventsManager::getInstance()->unsubscribe(EventType::MouseInput, this);
+	free_resources();
+}
 
 void Scene::update(Veci mouse_pos) {
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
@@ -323,8 +329,8 @@ void Scene::free_resources() {
 	auto temp_uis = uis;
 	for (auto* e : temp_uis)
 		remove_body(e->id);
-	if (background)
-		delete background;
+	//if (background)
+	//	delete background;
 	delete camera;
 }
 
