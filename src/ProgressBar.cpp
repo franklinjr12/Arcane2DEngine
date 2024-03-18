@@ -68,10 +68,12 @@ void ProgressBar::draw() {
 		if (current < 1) current = 1;
 		if (last_current != current) {
 			last_current = current;
-			progress_front->resize((current * original_width) / max, progress_front->height);
+			float temp = current;
+			temp = (temp * original_width) / max;
+			progress_front->resize(temp, progress_front->height);
 		}
 		float temp = current;
-		temp = (temp * progress_front->width) / max;
+		temp = (temp * original_width) / max;
 		progress_front->draw(pos, temp, progress_front->height);
 	}
 }
