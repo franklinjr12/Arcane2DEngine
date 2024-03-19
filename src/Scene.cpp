@@ -144,13 +144,13 @@ Body* Scene::get_body(ObjectId id) {
 }
 
 Body* Scene::remove_body(ObjectId id) {
-	A2D_LOGI("body {} removed", id);
 	auto prev = bodies.before_begin();
 	auto current = bodies.begin();
 
 	while (current != bodies.end()) {
 		if ((*current)->id == id) {
 			// Body with the specified ID found
+			A2D_LOGI("body id {} name {} removed", (*current)->id, (*current)->name);
 
 			// Remove the body from the 'bodies' container
 			current = bodies.erase_after(prev);

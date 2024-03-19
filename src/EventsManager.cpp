@@ -28,9 +28,6 @@ void EventsManager::run() {
 			catch (...) {
 				A2D_LOGE("exception removing event");
 			}
-
-			//events_data.pop();
-			//break;
 		}
 	}
 	while (!custom_events_data.empty()) {
