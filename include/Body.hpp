@@ -17,7 +17,7 @@ public:
 	virtual void draw() override;
 	virtual void draw(int w, int h);
 	void resize(int new_w, int new_h);
-	virtual void update(float gravity = 0);
+	virtual void update(float gravity = 0, float delta = 1);
 	virtual void handle_collision(ObjectId _id) {};
 	void setX(float x);
 	float getX();

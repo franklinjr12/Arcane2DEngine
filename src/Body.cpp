@@ -109,5 +109,5 @@ void Body::setY(float y) {
 
 float Body::getY() { return pos.y; }
 
-void Body::update(float gravity) {}
+void Body::update(float gravity, float delta) {}
 

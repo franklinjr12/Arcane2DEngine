@@ -54,6 +54,7 @@ public:
 	void poll_events();
 	void update();
 	void draw();
+	void process_thread();
 	void change_scene(ObjectId scene_id);
 	void change_scene(std::string scene_name);
 	Scene* current_scene = nullptr;
@@ -68,6 +69,11 @@ public:
 	EventsManager* events_manager;
 	Player* player;
 	FramesController fc;
+	std::chrono::system_clock::time_point current_time;
+	std::chrono::system_clock::time_point last_time;
+	float delta = 0;
+	bool running = false;
+	long process_execution_between_frames = 0;
 	//std::string window_name;
 };
 

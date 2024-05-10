@@ -7,6 +7,7 @@ void EventsManager::run() {
 	while (!events_data.empty()) {
 		auto& evt = events_data.front();
 		if (&evt != NULL) {
+						printf("event_type %d\n", (int)evt.type);
 			auto& v = subscribers[evt.type];
 			for (int i = 0; i < v.size(); i++) {
 				// this is a workaround, but no events should have empty data

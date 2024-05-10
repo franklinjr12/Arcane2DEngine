@@ -42,6 +42,7 @@ public:
 		switch (data[0]) {
 		case (event_bytes_type)EventType::ButtonClicked: {
 			ObjectId btn_id = (ObjectId)data[1];
+						printf("Got button clicked id %lu\n", btn_id);
 			if (start_btn != nullptr && btn_id == start_btn->id) {
 				if (game_scene != nullptr) {
 					current_scene = game_scene;
@@ -127,7 +128,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GameExample* app = new GameExample();
 	app->t1 = new Timer(2000, false);
 	app->t1->start();
-	//app->init();
 
 	auto asset_man = AssetsManager::get_instance();
 
@@ -223,11 +223,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	app->current_scene = menu_scene;
 
 	// events
-	app->events_manager = EventsManager::getInstance();
 	app->events_manager->subscribe(EventType::KeyboardInput, player);
 	app->events_manager->subscribe(EventType::ButtonClicked, player);
-	app->events_manager->subscribe(EventType::MouseInput, scene);
-	app->events_manager->subscribe(EventType::MouseInput, menu_scene);
+	app->events_manager->subscribe(EventType::ButtonClicked, menu_scene);
 	app->events_manager->subscribe(EventType::ButtonClicked, app);
 	app->events_manager->subscribe(EventType::Timer, app);
 

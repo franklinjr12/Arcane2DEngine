@@ -4,9 +4,9 @@
 #include <cstdio>
 
 #define MAJOR 0
-#define MINOR 4
-#define PATCH 1
-#define BUILD 13
+#define MINOR 5
+#define PATCH 0
+#define BUILD 0
 
 std::string arcane_version_string() {
 	char b[128];

@@ -23,10 +23,10 @@ DynamicBody::DynamicBody(std::vector<char>& serialized_data) : Body(serialized_d
 	serialized_data.erase(serialized_data.begin(), serialized_data.begin() + sizeof(Vecf));
 }
 
-void DynamicBody::update(float gravity) {
-	vel[0] += accel[0];
+void DynamicBody::update(float gravity, float delta) {
+	vel[0] += accel[0] * delta;
 	//vel[1] += accel[1];
-	pos.x += vel[0];
+	pos.x += vel[0] * delta;
 	if (suffer_gravity)
 		vel[1] += accel[1] + gravity;
 	else

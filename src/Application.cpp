@@ -1,5 +1,6 @@
 #include "Application.hpp"
 
+#include <thread>
 #include <stdio.h>
 #include <assert.h>
 
@@ -94,6 +95,7 @@ void Application::KeyCallbackTrampoline(GLFWwindow* window, int key, int scancod
 }
 
 void Application::mouse_callback(GLFWwindow* window, int button, int action, int mods) {
+				printf("Application::mouse_callback");
 	EventData ed;
 	ed.type = EventType::MouseInput;
 	ed.data.push_back((event_bytes_type)ed.type);
@@ -145,7 +147,11 @@ void Application::poll_events() {
 }
 
 void Application::update() {
-	current_scene->update(mouse_pos);
+				current_time = std::chrono::system_clock::now();
+				auto diff = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time).count();
+				delta = diff * 1.0e-6;
+				current_scene->update(mouse_pos, delta);
+				last_time = std::chrono::system_clock::now();
 }
 
 void Application::game_loop() {}
@@ -158,6 +164,15 @@ void Application::draw() {
 	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 	current_scene->draw();
+}
+
+void Application::process_thread() {
+				while (running) {
+								poll_events();
+								update();
+								game_loop();
+								process_execution_between_frames++;
+				}
 }
 
 EventData create_change_scene_event(Scene* s) {
@@ -216,11 +231,11 @@ void Application::handle_imgui() {
 void Application::run() {
 	assert(current_scene != nullptr);
 	assert(events_manager != nullptr);
+	running = true;
+	std::thread update_thread(&Application::process_thread, this);
+	update_thread.detach();
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
-		poll_events();
-		update();
-		game_loop();
 		draw();
 		game_draw();
 		// Swap the buffers for the game window
@@ -235,7 +250,10 @@ void Application::run() {
 #endif
 		fc.frameEnd();
 		fc.sleep();
+		//printf("Number of updates %ul\n", process_execution_between_frames);
+		process_execution_between_frames = 0;
 	}
+	running = false;
 #ifdef COMPILE_IMGUI
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

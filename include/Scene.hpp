@@ -18,7 +18,7 @@ public:
 	~Scene();
 
 	void draw() override;
-	void update(Veci mouse_pos);
+	void update(Veci mouse_pos, float delta = 1);
 	void resolution_changed(int new_width, int new_height);
 	void process_events(std::vector<event_bytes_type> data) override;
 	// should implement this if you want something to happen when this scene is loaded

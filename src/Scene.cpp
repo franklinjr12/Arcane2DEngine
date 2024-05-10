@@ -19,13 +19,13 @@ Scene::~Scene() {
 	free_resources();
 }
 
-void Scene::update(Veci mouse_pos) {
+void Scene::update(Veci mouse_pos, float delta) {
 	for (auto it = bodies.begin(); it != bodies.end(); it++) {
 		Body* body = *it;
 		if (body->suffer_gravity)
-			body->update(gravity);
+			body->update(gravity, delta);
 		else
-			body->update();
+			body->update(0, delta);
 		// TODO check if there is a better way to check collisions
 		if (body->can_collide) {
 			for (auto it_inner = bodies.begin(); it_inner != bodies.end(); it_inner++) {

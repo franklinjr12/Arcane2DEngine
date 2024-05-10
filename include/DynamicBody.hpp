@@ -12,7 +12,7 @@ public:
 	DynamicBody(Image* im, BodyRectangle* rect);
 	DynamicBody(std::vector<char>& serialized_data);
 	
-	virtual void update(float gravity=0) override;
+	virtual void update(float gravity=0, float delta=1) override;
 	virtual std::vector<char> serialize();
 	virtual ObjectType get_type() { return ObjectType::DynamicBody; }
 
