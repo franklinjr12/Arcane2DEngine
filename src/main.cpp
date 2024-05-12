@@ -82,21 +82,21 @@ public:
 	void process_events(std::vector<event_bytes_type> data) override {
 		switch (data[0]) {
 		case (event_bytes_type)EventType::KeyboardInput:
-			if (data[1] == GLFW_PRESS || GLFW_RELEASE) {
+			if (data[1] == GLFW_PRESS || data[1] == GLFW_REPEAT) {
 				switch (data[2]) {
 				case GLFW_KEY_RIGHT:
-					vel[0] = 5;
+					vel[0] = 500;
 					break;
 				case GLFW_KEY_LEFT:
-					vel[0] = -5;
+					vel[0] = -500;
 					break;
 
 				case GLFW_KEY_DOWN:
-					vel[1] = 5;
+					vel[1] = 500;
 					break;
 
 				case GLFW_KEY_UP:
-					vel[1] = -5;
+					vel[1] = -500;
 					break;
 				default:
 					break;

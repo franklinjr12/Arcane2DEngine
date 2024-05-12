@@ -95,7 +95,7 @@ void Application::KeyCallbackTrampoline(GLFWwindow* window, int key, int scancod
 }
 
 void Application::mouse_callback(GLFWwindow* window, int button, int action, int mods) {
-				printf("Application::mouse_callback");
+	printf("Application::mouse_callback");
 	EventData ed;
 	ed.type = EventType::MouseInput;
 	ed.data.push_back((event_bytes_type)ed.type);
@@ -168,10 +168,14 @@ void Application::draw() {
 
 void Application::process_thread() {
 				while (running) {
-								poll_events();
 								update();
 								game_loop();
 								process_execution_between_frames++;
+								auto CYCLES_TO_WAIT = 1000;
+								auto t1 = std::chrono::system_clock::now();
+								while ((std::chrono::system_clock::now() - t1).count() < CYCLES_TO_WAIT) {
+												std::this_thread::yield();
+								}
 				}
 }
 
@@ -236,6 +240,7 @@ void Application::run() {
 	update_thread.detach();
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
+		poll_events();
 		draw();
 		game_draw();
 		// Swap the buffers for the game window
@@ -250,7 +255,7 @@ void Application::run() {
 #endif
 		fc.frameEnd();
 		fc.sleep();
-		//printf("Number of updates %ul\n", process_execution_between_frames);
+		printf("Number of updates %ul\n", process_execution_between_frames);
 		process_execution_between_frames = 0;
 	}
 	running = false;
