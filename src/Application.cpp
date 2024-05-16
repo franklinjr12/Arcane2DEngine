@@ -168,14 +168,17 @@ void Application::draw() {
 
 void Application::process_thread() {
 				while (running) {
+								auto t1 = std::chrono::system_clock::now();
 								update();
 								game_loop();
 								process_execution_between_frames++;
+								auto t2 = std::chrono::system_clock::now();
+								auto cycles_to_update = (unsigned long)(t2 - t1).count();
+								printf("Cycles to complete update %ul\n", cycles_to_update);
 								auto CYCLES_TO_WAIT = 1000;
-								auto t1 = std::chrono::system_clock::now();
-								while ((std::chrono::system_clock::now() - t1).count() < CYCLES_TO_WAIT) {
-												std::this_thread::yield();
-								}
+								//while ((std::chrono::system_clock::now() - t1).count() < CYCLES_TO_WAIT) {
+								//				std::this_thread::yield();
+								//}
 				}
 }
 
@@ -255,7 +258,7 @@ void Application::run() {
 #endif
 		fc.frameEnd();
 		fc.sleep();
-		printf("Number of updates %ul\n", process_execution_between_frames);
+		//printf("Number of updates %ul\n", process_execution_between_frames);
 		process_execution_between_frames = 0;
 	}
 	running = false;

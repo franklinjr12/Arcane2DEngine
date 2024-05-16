@@ -9,7 +9,7 @@
 #define DEFAULT_SCREEN_WIDTH 1280
 #define DEFAULT_SCREEN_HEIGHT 768
 
-#define DEFAULT_FPS 30
+#define DEFAULT_FPS 60
 
 const float OVERLAY_ALPHA = 0.2;
 

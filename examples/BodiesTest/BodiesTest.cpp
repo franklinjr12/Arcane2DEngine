@@ -46,7 +46,7 @@ public:
 		}
 	}
 
-	const int max_vel = 9;
+	const int max_vel = 500;
 };
 
 class Wall : public StaticBody {
@@ -91,8 +91,13 @@ public:
 				Vecf p;
 				p[0] = data[3];
 				p[1] = data[4];
-				current_scene->add_body(new CollisionBall(p));
-				body_count++;
+				const int NUM_BALLS = 10;
+				for (int i = 0; i < NUM_BALLS; i++) {
+								p[0] = 20 + rand() % 550;
+								p[1] = 130 + rand() % (660 - 130);
+								current_scene->add_body(new CollisionBall(p));
+								body_count++;
+				}
 			}
 		}
 	}
@@ -102,11 +107,10 @@ public:
 
 int main()
 {
-	printf("BodyTest app!\n");
+	printf("BodyTest app\n");
 	printf("Arcane version: %s\n", arcane_version_string().c_str());
 
 	app = new BodiesTest();
-	app->init();
 
 	Camera* camera = new Camera(0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 	Image* background_img = new Image("assets/flappy_bird_background.png");
@@ -119,10 +123,10 @@ int main()
 	auto wb = new Wall(Vecf{ 10,DEFAULT_SCREEN_HEIGHT - 100 }, DEFAULT_SCREEN_WIDTH - 80, 20);
 	wb->name = "wb";
 	scene->add_body(wb);
-	auto wl = new Wall(Vecf{ 10,100 }, 20, DEFAULT_SCREEN_HEIGHT - 190);
+	auto wl = new Wall(Vecf{ 10,380 }, 20, DEFAULT_SCREEN_HEIGHT - 190);
 	wl->name = "wl";
 	scene->add_body(wl);
-	auto wr = new Wall(Vecf{ DEFAULT_SCREEN_WIDTH - 90, 100 }, 20, DEFAULT_SCREEN_HEIGHT - 190);
+	auto wr = new Wall(Vecf{ 600, 380 }, 20, DEFAULT_SCREEN_HEIGHT - 190);
 	wr->name = "wr";
 	scene->add_body(wr);
 
