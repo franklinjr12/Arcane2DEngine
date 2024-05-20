@@ -16,7 +16,8 @@ public:
     ~Image();
     void loadImage(std::string path, bool flipv = true, bool fliph = false);
     void draw(Vecf pos, int w = 1, int h = 1);
-    void draw(Vecf pos, RGBA_t color, float w=1, float h=1);
+    void draw(Vecf pos, RGBA_t color, float w = 1, float h = 1);
+    void drawRotated(Vecf pos, float angle, float w=1, float h=1);
     void resize(int neww, int newh, bool flipv = true, bool fliph = false);
     void flipv();
     void fliph();

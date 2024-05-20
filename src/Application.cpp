@@ -256,7 +256,7 @@ void Application::run() {
 #endif
 		fc.frameEnd();
 		fc.sleep();
-		printf("Number of updates %lu\n", process_execution_between_frames);
+		//printf("Number of updates %lu\n", process_execution_between_frames);
 		process_execution_between_frames = 0;
 	}
 	running = false;

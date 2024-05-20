@@ -13,6 +13,7 @@ public:
 
 	GameExample() {
 		start_btn = nullptr;
+		rotatedImage = new Image("assets/main_character.png");
 	}
 	void game_loop() override {
 	}
@@ -37,6 +38,7 @@ public:
 		font->print(pos, (char*)text_buffer);
 		//delete font;
 #endif
+		rotatedImage->drawRotated(Vecf{ 300,300 }, 90);
 	}
 	void process_events(std::vector<event_bytes_type> data) override {
 		switch (data[0]) {
@@ -66,6 +68,7 @@ public:
 	Scene* menu_scene;
 	Scene* game_scene;
 	Timer* t1;
+	Image* rotatedImage;
 };
 
 class MyPlayer : public Player {

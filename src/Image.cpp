@@ -4,6 +4,7 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <stb_image_resize2.h>
 #include "Image.hpp"
+#include <cmath>
 
 Image::Image(std::string path, int custom_w, int custom_h, bool texture_clamp, bool flipv, bool fliph) {
 	this->path = path;
@@ -108,6 +109,51 @@ void Image::draw(Vecf pos, RGBA_t color, float w, float h) {
 	glTexCoord2f(0.0f, (h / height) * 1.0f); glVertex2f(x, y);
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //unset the color to not affect other stuff
 	glEnd();
+}
+
+void Image::drawRotated(Vecf pos, float angle, float w, float h) {
+				float x = pos[0];
+				float y = pos[1];
+
+				// Calculate the center of the rectangle
+				float cx = x + w / 2.0f;
+				float cy = y + h / 2.0f;
+
+				// Precompute the sine and cosine of the angle
+				float rad = angle * (3.1415 / 180.0f); // Convert angle to radians
+				float cosA = cos(rad);
+				float sinA = sin(rad);
+
+				// Define the corners of the rectangle
+				struct Vertex {
+								float x, y;
+								float tx, ty; // Texture coordinates
+				};
+
+				Vertex vertices[4] = {
+								{x, y + h, 0.0f, 0.0f},
+								{x + w, y + h, (w / width), 0.0f},
+								{x + w, y, (w / width), (h / height)},
+								{x, y, 0.0f, (h / height)}
+				};
+
+				// Apply rotation to each vertex around the center
+				for (int i = 0; i < 4; ++i) {
+								float newX = cosA * (vertices[i].x - cx) - sinA * (vertices[i].y - cy) + cx;
+								float newY = sinA * (vertices[i].x - cx) + cosA * (vertices[i].y - cy) + cy;
+								vertices[i].x = newX;
+								vertices[i].y = newY;
+				}
+
+				glBindTexture(GL_TEXTURE_2D, texture_id);
+				glBegin(GL_QUADS);
+				glColor4f(FULL_WHITE[0], FULL_WHITE[1], FULL_WHITE[2], FULL_WHITE[3]);
+				for (int i = 0; i < 4; ++i) {
+								glTexCoord2f(vertices[i].tx, vertices[i].ty);
+								glVertex2f(vertices[i].x, vertices[i].y);
+				}
+				glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // unset the color to not affect other stuff
+				glEnd();
 }
 
 void Image::resize(int neww, int newh, bool flipv, bool fliph) {
