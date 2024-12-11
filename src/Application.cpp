@@ -237,11 +237,15 @@ void Application::run() {
 	assert(current_scene != nullptr);
 	assert(events_manager != nullptr);
 	running = true;
-	std::thread update_thread(&Application::process_thread, this);
-	update_thread.detach();
+	// for multithread uncomment the next 2 lines
+	//std::thread update_thread(&Application::process_thread, this);
+	//update_thread.detach();
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		poll_events();
+		// for multithread comment the next 2 lines
+		update();
+		game_loop();
 		draw();
 		game_draw();
 		// Swap the buffers for the game window

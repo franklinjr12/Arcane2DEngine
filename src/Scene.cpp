@@ -20,40 +20,43 @@ Scene::~Scene() {
 }
 
 void Scene::update(Veci mouse_pos, float delta) {
-	for (auto it = bodies.begin(); it != bodies.end(); it++) {
-		Body* body = *it;
-		if (body->suffer_gravity)
-			body->update(gravity, delta);
-		else
-			body->update(0, delta);
-		// TODO check if there is a better way to check collisions
-		if (body->can_collide) {
-			for (auto it_inner = bodies.begin(); it_inner != bodies.end(); it_inner++) {
-				Body* body_inner = *it_inner;
-				if (body_inner->can_collide) {
-					if (isRectColliding(*body->rectangle, *body_inner->rectangle)) {
-						if (body != body_inner) { // don't check collision with self
-							body->collided = true;
-							body_inner->collided = true;
-							body->handle_collision(body_inner->id);
-						}
-					}
-				}
-			}
-		}
-	}
-	for (auto it = uis.begin(); it != uis.end(); it++) {
-		UiComponent* ui = *it;
-		ui->update();
-		if (ui->should_draw) {
-			Point p;
-			p.x = mouse_pos[0];
-			p.y = mouse_pos[1];
-			if (isPointRectColliding(*(ui->rect), p))
-				ui->mouse_over();
-		}
-	}
-	_update();
+				auto bodies_end = bodies.end();
+    for (auto it = bodies.begin(); it != bodies_end; it++) {
+        Body* body = *it;
+        if (body->suffer_gravity)
+            body->update(gravity, delta);
+        else
+            body->update(0, delta);
+        // TODO check if there is a better way to check collisions
+        if (body->can_collide) {
+            auto inner_bodies_end = bodies.end();
+            for (auto it_inner = bodies.begin(); it_inner != inner_bodies_end; it_inner++) {
+                Body* body_inner = *it_inner;
+                if (body_inner->can_collide) {
+                    if (isRectColliding(*body->rectangle, *body_inner->rectangle)) {
+                        if (body != body_inner) { // don't check collision with self
+                            body->collided = true;
+                            body_inner->collided = true;
+                            body->handle_collision(body_inner->id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+				auto uis_end = uis.end();
+    for (auto it = uis.begin(); it != uis_end; it++) {
+        UiComponent* ui = *it;
+        ui->update();
+        if (ui->should_draw) {
+            Point p;
+            p.x = mouse_pos[0];
+            p.y = mouse_pos[1];
+            if (isPointRectColliding(*(ui->rect), p))
+                ui->mouse_over();
+        }
+    }
+    _update();
 }
 
 void Scene::process_events(std::vector<event_bytes_type> data) {
