@@ -148,8 +148,8 @@ void Application::poll_events() {
 
 void Application::update() {
 				current_time = std::chrono::system_clock::now();
-				auto diff = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time).count();
-				delta = diff * 1.0e-6;
+				auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time - last_time).count();
+				delta = diff * 1.0e-9;
 				current_scene->update(mouse_pos, delta);
 				last_time = std::chrono::system_clock::now();
 }
@@ -171,12 +171,13 @@ void Application::process_thread() {
 				while (running) {
 								update();
 								game_loop();
-								process_execution_between_frames++;
-								if (process_execution_between_frames > MAX_UPDATES) {
-												while (process_execution_between_frames != 0) { // waits for main thread to clear
-																std::this_thread::sleep_for(std::chrono::milliseconds(1));
-												}
-								}
+								std::this_thread::sleep_for(std::chrono::microseconds(1));
+								//process_execution_between_frames++;
+								//if (process_execution_between_frames > MAX_UPDATES) {
+								//				while (process_execution_between_frames != 0) { // waits for main thread to clear
+								//								std::this_thread::sleep_for(std::chrono::milliseconds(1));
+								//				}
+								//}
 				}
 }
 
@@ -233,19 +234,25 @@ void Application::handle_imgui() {
 }
 #endif
 
+//#define MULTI
+
 void Application::run() {
 	assert(current_scene != nullptr);
 	assert(events_manager != nullptr);
 	running = true;
 	// for multithread uncomment the next 2 lines
-	//std::thread update_thread(&Application::process_thread, this);
-	//update_thread.detach();
+#ifdef MULTI
+	std::thread update_thread(&Application::process_thread, this);
+	update_thread.detach();
+#endif
 	while (!glfwWindowShouldClose(window)) {
 		fc.frameBegin();
 		poll_events();
 		// for multithread comment the next 2 lines
+#ifndef MULTI
 		update();
 		game_loop();
+#endif
 		draw();
 		game_draw();
 		// Swap the buffers for the game window

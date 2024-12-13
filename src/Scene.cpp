@@ -20,8 +20,8 @@ Scene::~Scene() {
 }
 
 void Scene::update(Veci mouse_pos, float delta) {
-				auto bodies_end = bodies.end();
-    for (auto it = bodies.begin(); it != bodies_end; it++) {
+				auto bodies_end = dynamic_bodies.end();
+    for (auto it = dynamic_bodies.begin(); it != bodies_end; it++) {
         Body* body = *it;
         if (body->suffer_gravity)
             body->update(gravity, delta);
@@ -29,8 +29,8 @@ void Scene::update(Veci mouse_pos, float delta) {
             body->update(0, delta);
         // TODO check if there is a better way to check collisions
         if (body->can_collide) {
-            auto inner_bodies_end = bodies.end();
-            for (auto it_inner = bodies.begin(); it_inner != inner_bodies_end; it_inner++) {
+            auto inner_bodies_end = dynamic_bodies.end();
+            for (auto it_inner = dynamic_bodies.begin(); it_inner != inner_bodies_end; it_inner++) {
                 Body* body_inner = *it_inner;
                 if (body_inner->can_collide) {
                     if (isRectColliding(*body->rectangle, *body_inner->rectangle)) {
@@ -42,6 +42,19 @@ void Scene::update(Veci mouse_pos, float delta) {
                     }
                 }
             }
+												auto inner_static_bodies_end = static_bodies.end();
+												for (auto it_inner = static_bodies.begin(); it_inner != inner_static_bodies_end; it_inner++) {
+																Body* body_inner = *it_inner;
+																if (body_inner->can_collide) {
+																				if (isRectColliding(*body->rectangle, *body_inner->rectangle)) {
+																								if (body != body_inner) { // don't check collision with self
+																												body->collided = true;
+																												body_inner->collided = true;
+																												body->handle_collision(body_inner->id);
+																								}
+																				}
+																}
+												}
         }
     }
 				auto uis_end = uis.end();
@@ -84,7 +97,9 @@ void Scene::process_events(std::vector<event_bytes_type> data) {
 void Scene::draw() {
 	if (background)
 		background->draw(Vecf{ camera->rect.pos.x, camera->rect.pos.y }, background->width, background->height);
-	for (auto it = bodies.begin(); it != bodies.end(); it++) {
+	//static bodies draw
+	auto static_end = static_bodies.end();
+	for (auto it = static_bodies.begin(); it != static_end; it++) {
 		Body* body = *it;
 		if (isRectColliding(*body->rectangle, camera->rect)) {
 			Point p;
@@ -96,6 +111,21 @@ void Scene::draw() {
 			body->setX(p.x);
 			body->setY(p.y);
 		}
+	}
+	//dynamic bodies draw
+	auto dynamic_end = dynamic_bodies.end();
+	for (auto it = dynamic_bodies.begin(); it != dynamic_end; it++) {
+					Body* body = *it;
+					if (isRectColliding(*body->rectangle, camera->rect)) {
+									Point p;
+									p.x = body->getX();
+									p.y = body->getY();
+									body->setX(p.x + camera->rect.pos.x);
+									body->setY(p.y + camera->rect.pos.y);
+									body->draw();
+									body->setX(p.x);
+									body->setY(p.y);
+					}
 	}
 	for (auto it = uis.begin(); it != uis.end(); it++) {
 		UiComponent* ui = *it;
@@ -138,7 +168,10 @@ void Scene::resolution_changed(int new_width, int new_height) {
 
 void Scene::add_body(Body* body) {
 	A2D_LOGI("body {} added", body->id);
-	bodies.push_front(body);
+	if(body->get_type() == ObjectType::DynamicBody)
+				dynamic_bodies.push_front((DynamicBody*)body);
+	else
+					static_bodies.push_front((StaticBody*)body);
 	bodies_map[body->id] = body;
 }
 
@@ -146,34 +179,48 @@ Body* Scene::get_body(ObjectId id) {
 	return bodies_map[id];
 }
 
+Body* _remove_body(ObjectId id, std::forward_list<Body*>& bodies, std::unordered_map<ObjectId, Body*>& bodies_map) {
+				auto prev = bodies.before_begin();
+				auto current = bodies.begin();
+				auto end = bodies.end();
+				auto map_end = bodies_map.end();
+
+				while (current != end) {
+								if ((*current)->id == id) {
+												// Body with the specified ID found
+												A2D_LOGI("body id {} name {} removed", (*current)->id, (*current)->name);
+
+												// Remove the body from the 'bodies' container
+												current = bodies.erase_after(prev);
+
+												// Remove the body from the 'bodies_map' container
+												auto it = bodies_map.find(id);
+												if (it != map_end) {
+																bodies_map.erase(it);
+												}
+
+												if (current == end) return nullptr;
+												return *current; // Return a pointer to the removed body
+								}
+
+								++prev;
+								++current;
+				}
+
+				// Body with the specified ID not found
+				return nullptr;
+}
+
 Body* Scene::remove_body(ObjectId id) {
-	auto prev = bodies.before_begin();
-	auto current = bodies.begin();
+				auto& dynamic_bodies_cast = reinterpret_cast<std::forward_list<Body*>&>(dynamic_bodies);
+				Body* b = _remove_body(id, dynamic_bodies_cast, bodies_map);
 
-	while (current != bodies.end()) {
-		if ((*current)->id == id) {
-			// Body with the specified ID found
-			A2D_LOGI("body id {} name {} removed", (*current)->id, (*current)->name);
+				if (b == nullptr) {
+								auto& static_bodies_cast = reinterpret_cast<std::forward_list<Body*>&>(static_bodies);
+								return _remove_body(id, static_bodies_cast, bodies_map);
+				}
 
-			// Remove the body from the 'bodies' container
-			current = bodies.erase_after(prev);
-
-			// Remove the body from the 'bodies_map' container
-			auto it = bodies_map.find(id);
-			if (it != bodies_map.end()) {
-				bodies_map.erase(it);
-			}
-
-			if (current == bodies.end()) return nullptr;
-			return *current; // Return a pointer to the removed body
-		}
-
-		++prev;
-		++current;
-	}
-
-	// Body with the specified ID not found
-	return nullptr;
+				return b;
 }
 
 void Scene::init_from_serialized_data(std::vector<char>& serialized_data) {
@@ -295,7 +342,7 @@ std::vector<char> Scene::serialize() {
 	v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
 	v.insert(v.end(), ser_back.begin(), ser_back.end());
 
-	for (Object* e : bodies) {
+	for (Object* e : static_bodies) {
 		ot = e->get_type();
 		ptr = reinterpret_cast<const char*>(&ot);
 		v.insert(v.end(), ptr, ptr + sizeof(ot));
@@ -304,6 +351,17 @@ std::vector<char> Scene::serialize() {
 		ptr = reinterpret_cast<const char*>(&bytes_size);
 		v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
 		v.insert(v.end(), ser.begin(), ser.end());
+	}
+
+	for (Object* e : dynamic_bodies) {
+					ot = e->get_type();
+					ptr = reinterpret_cast<const char*>(&ot);
+					v.insert(v.end(), ptr, ptr + sizeof(ot));
+					auto ser = e->serialize();
+					bytes_size = ser.size();
+					ptr = reinterpret_cast<const char*>(&bytes_size);
+					v.insert(v.end(), ptr, ptr + sizeof(bytes_size));
+					v.insert(v.end(), ser.begin(), ser.end());
 	}
 
 	for (Object* e : uis) {
@@ -326,9 +384,12 @@ void Scene::save_initial_scene() {
 
 void Scene::free_resources() {
 	A2D_LOGI("Freeing scene {}{}", name, (uint64_t)id);
-	auto temp_bodies = bodies;
-	for (auto* e : temp_bodies)
+	auto temp_static_bodies = static_bodies;
+	for (auto* e : temp_static_bodies)
 		remove_body(e->id);
+	auto temp_dynamic_bodies = dynamic_bodies;
+	for (auto* e : temp_dynamic_bodies)
+					remove_body(e->id);
 	auto temp_uis = uis;
 	for (auto* e : temp_uis)
 		remove_body(e->id);

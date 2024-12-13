@@ -2,7 +2,8 @@
 
 #include "Arcane2DLib.hpp"
 #include "Camera.hpp"
-#include "Body.hpp"
+#include "DynamicBody.hpp"
+#include "StaticBody.hpp"
 #include "Particle.hpp"
 #include "UiComponent.hpp"
 
@@ -40,7 +41,8 @@ public:
 	uint32_t w, h;
 	float gravity = 0.1f;
 
-	std::forward_list<Body*> bodies;
+	std::forward_list<StaticBody*> static_bodies;
+	std::forward_list<DynamicBody*> dynamic_bodies;
 	std::forward_list<UiComponent*> uis;
 	std::unordered_map<ObjectId, Body*> bodies_map;
 
